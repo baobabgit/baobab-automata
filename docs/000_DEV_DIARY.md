@@ -1,5 +1,123 @@
 # Journal de Développement - Baobab Automata
 
+## 2024-12-30 21:45 - Implémentation des Automates à Pile Non-Déterministes (PDA) - Phase 003.001
+
+### Description de la modification
+Implémentation complète des automates à pile non-déterministes (PDA) selon les spécifications détaillées 013_PHASE_003_001_PDA_IMPLEMENTATION.md. Cette implémentation fournit une base solide pour la reconnaissance des langages hors-contexte avec gestion complète de la pile et simulation non-déterministe.
+
+### Justification
+Les PDA sont essentiels pour la Phase 003 car ils permettent de reconnaître des langages plus complexes que les automates finis, notamment les langages hors-contexte comme a^n b^n, les palindromes, et d'autres structures imbriquées. Cette implémentation établit les fondations pour les DPDA et NPDA qui suivront.
+
+### Méthode
+1. **Architecture modulaire** : Création d'une architecture complète avec :
+   - `AbstractPushdownAutomaton` : Interface abstraite commune
+   - `PDAConfiguration` : Représentation des configurations (état, mot restant, pile)
+   - `PDA` : Classe principale avec simulation non-déterministe
+   - `PDAOperations` : Opérations sur les langages (union, concaténation, étoile)
+   - Hiérarchie d'exceptions personnalisées
+
+2. **Gestion de la pile** : Implémentation avec le sommet à gauche pour une logique intuitive :
+   - Empilage : ajout au début de la chaîne
+   - Dépilage : retrait du premier caractère
+   - Sommet : premier caractère de la chaîne
+
+3. **Simulation non-déterministe** : Algorithme BFS avec :
+   - Gestion des transitions epsilon
+   - Cache des configurations visitées
+   - Limitation de profondeur pour éviter les boucles infinies
+   - Support complet des transitions conditionnelles
+
+4. **Opérations sur les langages** : Implémentation des opérations de base :
+   - Union de deux PDA
+   - Concaténation de deux PDA
+   - Étoile de Kleene d'un PDA
+   - Gestion des conflits d'états et d'alphabets
+
+5. **Tests unitaires complets** : 22 tests couvrant :
+   - Création et validation des PDA
+   - Reconnaissance de mots (a^n b^n, palindromes simples)
+   - Opérations sur les configurations
+   - Sérialisation/désérialisation
+   - Gestion d'erreurs
+   - Opérations sur les langages
+
+6. **Qualité du code** : Validation avec les outils de qualité :
+   - Pylint : 8.91/10 (>= 8.5/10 requis)
+   - Black : Formatage automatique
+   - Flake8 : Conformité PEP 8
+   - Bandit : Aucune vulnérabilité de sécurité
+
+### Résultats
+- **Classe PDA** : Implémentation complète et fonctionnelle
+- **Simulation non-déterministe** : Algorithme BFS optimisé avec cache
+- **Gestion de la pile** : Logique intuitive avec sommet à gauche
+- **Opérations sur les langages** : Union, concaténation, étoile de Kleene
+- **Tests** : 22 tests unitaires passent avec succès
+- **Qualité** : Score Pylint 8.91/10, aucune vulnérabilité Bandit
+- **Performance** : Reconnaissance efficace des langages hors-contexte
+
+### Fichiers créés/modifiés
+- `src/baobab_automata/pushdown/abstract_pushdown_automaton.py` : Interface abstraite
+- `src/baobab_automata/pushdown/pda.py` : Classe PDA principale
+- `src/baobab_automata/pushdown/pda_configuration.py` : Gestion des configurations
+- `src/baobab_automata/pushdown/pda_exceptions.py` : Exceptions personnalisées
+- `src/baobab_automata/pushdown/pda_operations.py` : Opérations sur les langages
+- `src/baobab_automata/pushdown/__init__.py` : Exports du module
+- `tests/pushdown/test_pda.py` : Tests unitaires complets
+- `tests/pushdown/__init__.py` : Module de tests
+
+### Critères de validation atteints
+- ✅ Classe PDA implémentée selon les spécifications
+- ✅ Algorithme de reconnaissance non-déterministe fonctionnel
+- ✅ Gestion des transitions conditionnelles opérationnelle
+- ✅ Opérations sur les langages implémentées
+- ✅ Tests unitaires avec couverture complète (22 tests)
+- ✅ Performance conforme aux spécifications
+- ✅ Documentation complète avec docstrings
+- ✅ Gestion d'erreurs robuste
+- ✅ Validation automatique de la cohérence
+- ✅ Support de la sérialisation/désérialisation
+- ✅ Score Pylint >= 8.5/10 (8.91/10 atteint)
+- ✅ Aucune vulnérabilité de sécurité
+
+### Fonctionnalités implémentées
+- **Construction et validation** : PDA avec validation automatique et gestion des erreurs
+- **Reconnaissance de mots** : Simulation non-déterministe avec BFS et cache
+- **Gestion de la pile** : Opérations intuitives avec sommet à gauche
+- **Transitions conditionnelles** : Support complet des transitions (entrée, pile, epsilon)
+- **Opérations sur les langages** : Union, concaténation, étoile de Kleene
+- **Sérialisation** : Support complet de la sérialisation/désérialisation
+- **Cache et optimisations** : Cache des configurations et fermetures epsilon
+- **Tests** : Couverture complète de tous les cas d'usage
+
+### Exemples d'utilisation
+```python
+# PDA pour a^n b^n
+pda = PDA(
+    states={'q0', 'q1', 'q2'},
+    input_alphabet={'a', 'b'},
+    stack_alphabet={'Z', 'A'},
+    transitions={
+        ('q0', 'a', 'Z'): {('q0', 'AZ')},
+        ('q0', 'a', 'A'): {('q0', 'AA')},
+        ('q0', 'b', 'A'): {('q1', '')},
+        ('q1', 'b', 'A'): {('q1', '')},
+        ('q1', '', 'Z'): {('q2', 'Z')}
+    },
+    initial_state='q0',
+    initial_stack_symbol='Z',
+    final_states={'q2'}
+)
+
+# Test de reconnaissance
+assert pda.accepts('ab')      # True
+assert pda.accepts('aabb')    # True
+assert not pda.accepts('abab') # False
+```
+
+### Prochaines étapes
+L'implémentation des PDA est maintenant complète et prête pour servir de base aux DPDA et NPDA dans les phases suivantes. La simulation non-déterministe et la gestion de la pile sont optimisées pour de bonnes performances.
+
 ## 2024-12-30 18:30 - Création des Spécifications Détaillées de la Phase 3
 
 ### Description de la modification
