@@ -1,5 +1,3 @@
 """
-Tests unitaires pour Baobab Automata.
-
-Ce package contient tous les tests unitaires pour la bibliothèque.
+Tests unitaires pour , d'intégration et de performance pour la librairie Baobab Automata.
 """
