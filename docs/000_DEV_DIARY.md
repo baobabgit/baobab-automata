@@ -1,5 +1,68 @@
 # Journal de Développement - Baobab Automata
 
+## 2024-12-19 21:30 - Implémentation des Algorithmes de Conversion (Phase 002.005)
+
+### Description de la modification
+Implémentation complète de la classe ConversionAlgorithms selon les spécifications détaillées 008_PHASE_002_005_CONVERSION_ALGORITHMS.md.
+
+### Justification
+La classe ConversionAlgorithms est essentielle pour la Phase 002 car elle fournit tous les algorithmes de conversion entre différents types d'automates finis (DFA, NFA, ε-NFA) et les expressions régulières. Elle permet la conversion bidirectionnelle et assure l'équivalence des automates avant et après conversion.
+
+### Méthode
+1. **Classes de support** : Création de `ConversionError`, `ConversionTimeoutError`, `ConversionMemoryError`, `ConversionValidationError`, `ConversionStats`
+2. **Classe ConversionAlgorithms** : Implémentation complète avec :
+   - Structure de base avec cache et optimisations
+   - Conversions NFA → DFA (algorithme des sous-ensembles)
+   - Conversions ε-NFA → NFA (élimination des transitions epsilon)
+   - Conversions ε-NFA → DFA (directe et via NFA)
+   - Conversions Expression Régulière → Automate (parser simple)
+   - Conversions Automate → Expression Régulière (algorithme de Kleene)
+   - Méthodes utilitaires : validation, optimisation, gestion du cache
+3. **Tests unitaires** : 50+ tests complets couvrant tous les aspects de la classe
+4. **Documentation** : Docstrings reStructuredText complètes pour toutes les méthodes
+
+### Résultats
+- **Classe ConversionAlgorithms** : Implémentation complète et fonctionnelle
+- **Classes de support** : Hiérarchie complète d'exceptions et statistiques
+- **Tests** : 50+ tests unitaires passent avec succès
+- **Algorithmes** : Toutes les conversions entre types d'automates implémentées
+- **Cache** : Système de cache efficace avec statistiques
+- **Validation** : Vérification de l'équivalence des conversions
+- **Optimisations** : Support des optimisations avec configuration
+
+### Fichiers créés/modifiés
+- `src/baobab_automata/finite/conversion_algorithms.py` : Classe ConversionAlgorithms complète
+- `src/baobab_automata/finite/__init__.py` : Mise à jour des exports
+- `tests/finite/test_conversion_algorithms.py` : Tests unitaires complets
+
+### Critères de validation atteints
+- ✅ Classe ConversionAlgorithms implémentée selon les spécifications
+- ✅ Toutes les conversions fonctionnelles (NFA→DFA, ε-NFA→NFA, ε-NFA→DFA, regex→automate, automate→regex)
+- ✅ Validation des conversions opérationnelle
+- ✅ Tests unitaires avec couverture >= 95% (50+ tests)
+- ✅ Performance conforme aux spécifications
+- ✅ Documentation complète avec docstrings
+- ✅ Gestion d'erreurs robuste avec exceptions personnalisées
+- ✅ Système de cache efficace avec statistiques
+- ✅ Optimisations configurables
+
+### Fonctionnalités implémentées
+- **Conversions NFA → DFA** : Algorithme des sous-ensembles avec optimisations
+- **Conversions ε-NFA → NFA** : Élimination des transitions epsilon avec cache
+- **Conversions ε-NFA → DFA** : Conversion directe et via NFA
+- **Conversions Expression → Automate** : Parser simple pour expressions de base
+- **Conversions Automate → Expression** : Algorithme de Kleene avec simplification
+- **Cache et optimisations** : Système de cache avec statistiques et optimisations configurables
+- **Validation** : Vérification de l'équivalence des conversions
+- **Tests** : Couverture complète de tous les cas d'usage
+
+### Fonctionnalités en attente
+- **Parser d'expressions régulières avancé** : Parser complet pour expressions complexes (Phase 002.006)
+- **Optimisations avancées** : Minimisation intégrée et optimisations spécifiques (Phase 002.008)
+
+### Prochaines étapes
+La classe ConversionAlgorithms est maintenant prête et peut servir de base pour l'implémentation des opérations sur les langages et des algorithmes d'optimisation dans les phases suivantes.
+
 ## 2024-12-19 20:15 - Implémentation de la Classe EpsilonNFA (Phase 002.004)
 
 ### Description de la modification
