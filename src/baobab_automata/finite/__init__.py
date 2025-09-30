@@ -32,10 +32,18 @@ from .mapping import Mapping
 from .nfa import NFA
 from .nfa_exceptions import ConversionError as NFAConversionError, InvalidNFAError, InvalidTransitionError as NFAInvalidTransitionError, NFAError
 from .operation_stats import OperationStats
+from .optimization_algorithms import OptimizationAlgorithms, OptimizationStats
+from .optimization_exceptions import (
+    OptimizationError,
+    OptimizationMemoryError,
+    OptimizationTimeoutError,
+    OptimizationValidationError
+)
 from .regex_ast import ASTNode, NodeType
 from .regex_exceptions import RegexConversionError, RegexError, RegexParseError, RegexSyntaxError
 from .regex_parser import RegexParser
 from .regex_token import Token, TokenType
+from .transition_change import TransitionChange
 
 __all__ = [
     'AbstractFiniteAutomaton',
@@ -71,11 +79,18 @@ __all__ = [
     'OperationStats',
     'OperationTimeoutError',
     'OperationValidationError',
+    'OptimizationAlgorithms',
+    'OptimizationError',
+    'OptimizationMemoryError',
+    'OptimizationStats',
+    'OptimizationTimeoutError',
+    'OptimizationValidationError',
     'RegexConversionError',
     'RegexError',
     'RegexParseError',
     'RegexParser',
     'RegexSyntaxError',
     'Token',
-    'TokenType'
+    'TokenType',
+    'TransitionChange'
 ]
