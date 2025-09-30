@@ -19,6 +19,16 @@ from .pda_exceptions import (
     PDAOperationError,
 )
 from .pda_operations import PDAOperations
+from .dpda import DPDA
+from .dpda_configuration import DPDAConfiguration
+from .dpda_exceptions import (
+    DPDAError,
+    InvalidDPDAError,
+    DeterminismError,
+    ConflictError,
+    ConversionError,
+    DPDAOptimizationError,
+)
 
 __all__ = [
     "AbstractPushdownAutomaton",
@@ -33,4 +43,12 @@ __all__ = [
     "PDAValidationError",
     "PDAOperationError",
     "PDAOperations",
+    "DPDA",
+    "DPDAConfiguration",
+    "DPDAError",
+    "InvalidDPDAError",
+    "DeterminismError",
+    "ConflictError",
+    "ConversionError",
+    "DPDAOptimizationError",
 ]
