@@ -70,6 +70,18 @@ dev: install
 	@echo "Utilisez 'make test' pour exécuter les tests"
 	@echo "Utilisez 'make quality' pour vérifier la qualité du code"
 
+# Spécifications
+specs-list:
+	$(PYTHON) scripts/list_specifications.py
+
+specs-stats:
+	$(PYTHON) scripts/list_specifications.py --stats
+
+specs-phase:
+	@echo "Usage: make specs-phase PHASE=<numéro>"
+	@echo "Exemple: make specs-phase PHASE=002"
+	$(PYTHON) scripts/list_specifications.py --phase $(PHASE)
+
 # Aide
 help:
 	@echo "Commandes disponibles:"
@@ -89,4 +101,7 @@ help:
 	@echo "  quality      - Exécute tous les contrôles de qualité"
 	@echo "  clean        - Nettoie les fichiers temporaires"
 	@echo "  dev          - Configure l'environnement de développement"
+	@echo "  specs-list   - Liste toutes les spécifications par priorité"
+	@echo "  specs-stats  - Affiche les statistiques des spécifications"
+	@echo "  specs-phase  - Liste les spécifications d'une phase (PHASE=<numéro>)"
 	@echo "  help         - Affiche cette aide"

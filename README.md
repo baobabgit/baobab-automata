@@ -112,6 +112,33 @@ La documentation complète est disponible dans le dossier `docs/` et peut être 
 make docs
 ```
 
+### Spécifications Détaillées
+
+Les spécifications détaillées suivent une notation de priorité pour faciliter le développement :
+
+- **Format** : `XXX_YYY_PHASE_ZZZ_DESCRIPTION.md`
+- **XXX** : Priorité de développement (001-999)
+- **YYY** : Numéro de phase (001-007)
+- **ZZZ** : Identifiant de phase (PHASE_001, etc.)
+
+#### Outils de gestion des spécifications
+
+```bash
+# Lister toutes les spécifications par priorité
+python3 scripts/list_specifications.py
+
+# Lister les spécifications d'une phase
+python3 scripts/list_specifications.py --phase 002
+
+# Afficher les statistiques
+python3 scripts/list_specifications.py --stats
+
+# Créer une nouvelle spécification
+python3 scripts/create_specification.py 003 201 "PDA Implementation"
+```
+
+Voir `docs/PRIORITY_NOTATION.md` pour plus de détails sur la notation des priorités.
+
 ## Licence
 
 MIT License - Voir le fichier LICENSE pour plus de détails.

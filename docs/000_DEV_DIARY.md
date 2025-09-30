@@ -3,7 +3,7 @@
 ## 2025-09-30 16:05:00 - Implémentation des Interfaces Abstraites (Phase 001)
 
 ### Description de la modification
-Implémentation complète des interfaces abstraites et des classes concrètes pour la Phase 001 du projet Baobab Automata selon la spécification détaillée `001_PHASE_001_ABSTRACT_INTERFACES.md`.
+Implémentation complète des interfaces abstraites et des classes concrètes pour la Phase 001 du projet Baobab Automata selon la spécification détaillée `002_001_PHASE_001_ABSTRACT_INTERFACES.md`.
 
 ### Justification
 Cette implémentation établit les fondations du projet en définissant les contrats communs pour tous les types d'automates. Elle respecte les principes SOLID et fournit une architecture extensible pour les phases suivantes.
@@ -151,7 +151,7 @@ Le journal de développement respecte maintenant les contraintes définies et do
 ## 2024-12-19 16:30 - Implémentation du Framework de Tests (Phase 001)
 
 ### Description de la modification
-Implémentation complète du framework de tests pour la Phase 001 du projet Baobab Automata selon la spécification détaillée `001_PHASE_001_TESTING_FRAMEWORK.md`. Création d'un Makefile PowerShell pour les postes Windows.
+Implémentation complète du framework de tests pour la Phase 001 du projet Baobab Automata selon la spécification détaillée `004_001_PHASE_001_TESTING_FRAMEWORK.md`. Création d'un Makefile PowerShell pour les postes Windows.
 
 ### Justification
 Le framework de tests est essentiel pour garantir la qualité et la fiabilité du code. Il doit être implémenté dès la Phase 001 pour établir les bonnes pratiques de développement et assurer la couverture de code. Le Makefile PowerShell permet aux développeurs Windows d'utiliser les mêmes fonctionnalités que le Makefile Linux.
