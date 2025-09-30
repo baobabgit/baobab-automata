@@ -44,7 +44,7 @@
 
 ### Cahier des charges
 
-- **Emplacement** : `docs/SPECIFICATIONS.md`
+- **Emplacement** : `docs/001_SPECIFICATIONS.md`
 - **Contenu** : Cahier des charges exhaustif
 - **Format** : Markdown
 
@@ -100,7 +100,7 @@
 ├── tests/                          # Tests unitaires (structure miroir de src/)
 ├── docs/                           # Documentation
 │   ├── 000_DEV_DIARY.md           # Journal de développement
-│   ├── SPECIFICATIONS.md          # Cahier des charges
+│   ├── 001_SPECIFICATIONS.md      # Cahier des charges
 │   ├── phases/                     # Phases de développement
 │   ├── detailed_specifications/   # Spécifications détaillées
 │   └── coverage/                   # Rapports de couverture de code
