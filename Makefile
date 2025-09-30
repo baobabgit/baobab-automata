@@ -1,48 +1,92 @@
-.PHONY: help install install-dev test lint format clean docs build
+.PHONY: test test-unit test-integration test-performance test-coverage test-all test-watch clean
 
-help:
-	@echo "Available commands:"
-	@echo "  install      Install production dependencies"
-	@echo "  install-dev  Install development dependencies"
-	@echo "  test         Run tests"
-	@echo "  lint         Run linting"
-	@echo "  format       Format code"
-	@echo "  clean        Clean build artifacts"
-	@echo "  docs         Build documentation"
-	@echo "  build        Build package"
+# Variables
+PYTHON := python3
+VENV := .venv
+PIP := $(VENV)/bin/pip
+PYTEST := $(VENV)/bin/pytest
+COVERAGE := $(VENV)/bin/coverage
 
+# Installation des dépendances
 install:
-	pip install -e .
+	$(PYTHON) -m venv $(VENV)
+	$(PIP) install --upgrade pip
+	$(PIP) install -e .
+	$(PIP) install pytest pytest-cov pytest-watch black pylint flake8 bandit
 
-install-dev:
-	pip install -e ".[dev]"
-	pre-commit install
-
+# Tests
 test:
-	pytest
+	$(PYTEST)
+
+test-unit:
+	$(PYTEST) -m unit
+
+test-integration:
+	$(PYTEST) -m integration
+
+test-performance:
+	$(PYTEST) -m performance
+
+test-slow:
+	$(PYTEST) -m slow
+
+test-coverage:
+	$(PYTEST) --cov=baobab_automata --cov-report=html:docs/coverage
+
+test-all:
+	$(PYTEST) -m "unit or integration or performance"
+
+test-watch:
+	$(PYTEST) --watch
+
+# Qualité du code
+format:
+	$(VENV)/bin/black src/ tests/
 
 lint:
-	pylint src/ tests/
-	flake8 src/ tests/
-	bandit -r src/
-	mypy src/
+	$(VENV)/bin/pylint src/ tests/
 
-format:
-	black src/ tests/
-	isort src/ tests/
+flake8:
+	$(VENV)/bin/flake8 src/ tests/
 
+security:
+	$(VENV)/bin/bandit -r src/
+
+quality: format lint flake8 security
+
+# Nettoyage
 clean:
-	rm -rf build/
-	rm -rf dist/
-	rm -rf *.egg-info/
+	rm -rf $(VENV)
+	rm -rf docs/coverage/
 	rm -rf .pytest_cache/
 	rm -rf .coverage
 	rm -rf htmlcov/
-	rm -rf docs/_build/
-	rm -rf docs/coverage/
+	find . -type d -name __pycache__ -exec rm -rf {} +
+	find . -type f -name "*.pyc" -delete
 
-docs:
-	cd docs && make html
+# Développement
+dev: install
+	@echo "Environnement de développement prêt!"
+	@echo "Utilisez 'make test' pour exécuter les tests"
+	@echo "Utilisez 'make quality' pour vérifier la qualité du code"
 
-build:
-	python -m build
+# Aide
+help:
+	@echo "Commandes disponibles:"
+	@echo "  install      - Installe les dépendances"
+	@echo "  test         - Exécute tous les tests"
+	@echo "  test-unit    - Exécute les tests unitaires"
+	@echo "  test-integration - Exécute les tests d'intégration"
+	@echo "  test-performance - Exécute les tests de performance"
+	@echo "  test-slow    - Exécute les tests lents"
+	@echo "  test-coverage - Exécute les tests avec couverture"
+	@echo "  test-all     - Exécute tous les types de tests"
+	@echo "  test-watch   - Exécute les tests en mode watch"
+	@echo "  format       - Formate le code avec Black"
+	@echo "  lint         - Vérifie le code avec Pylint"
+	@echo "  flake8       - Vérifie le code avec Flake8"
+	@echo "  security     - Vérifie la sécurité avec Bandit"
+	@echo "  quality      - Exécute tous les contrôles de qualité"
+	@echo "  clean        - Nettoie les fichiers temporaires"
+	@echo "  dev          - Configure l'environnement de développement"
+	@echo "  help         - Affiche cette aide"

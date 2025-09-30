@@ -46,10 +46,17 @@ class Transition(ITransition):
 
     def __post_init__(self):
         """Créer des copies profondes des conditions et actions pour l'immutabilité."""
-        object.__setattr__(
-            self, "_conditions", copy.deepcopy(self._conditions)
-        )
-        object.__setattr__(self, "_actions", copy.deepcopy(self._actions))
+        if self._conditions is None:
+            object.__setattr__(self, "_conditions", {})
+        else:
+            object.__setattr__(
+                self, "_conditions", copy.deepcopy(self._conditions)
+            )
+        
+        if self._actions is None:
+            object.__setattr__(self, "_actions", {})
+        else:
+            object.__setattr__(self, "_actions", copy.deepcopy(self._actions))
 
     @property
     def source_state(self) -> IState:
@@ -95,8 +102,14 @@ class Transition(ITransition):
         :rtype: bool
         """
         # Vérification du symbole
-        if self._symbol is not None and self._symbol != symbol:
-            return False
+        if self._symbol is not None:
+            # Transition symbolique : le symbole doit correspondre
+            if self._symbol != symbol:
+                return False
+        else:
+            # Transition epsilon : le symbole doit être None
+            if symbol is not None:
+                return False
 
         # Vérification des conditions
         for condition_key, condition_value in self._conditions.items():
