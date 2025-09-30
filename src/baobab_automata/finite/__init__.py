@@ -20,9 +20,14 @@ from .epsilon_nfa import EpsilonNFA
 from .epsilon_nfa_exceptions import ConversionError as EpsilonConversionError, EpsilonNFAError, InvalidEpsilonNFAError, InvalidEpsilonTransitionError
 from .nfa import NFA
 from .nfa_exceptions import ConversionError as NFAConversionError, InvalidNFAError, InvalidTransitionError as NFAInvalidTransitionError, NFAError
+from .regex_ast import ASTNode, NodeType
+from .regex_exceptions import RegexConversionError, RegexError, RegexParseError, RegexSyntaxError
+from .regex_parser import RegexParser
+from .regex_token import Token, TokenType
 
 __all__ = [
     'AbstractFiniteAutomaton',
+    'ASTNode',
     'ConversionAlgorithms',
     'ConversionError',
     'ConversionMemoryError',
@@ -31,17 +36,24 @@ __all__ = [
     'ConversionValidationError',
     'DFA',
     'DFAError',
-    'InvalidDFAError',
-    'InvalidStateError',
-    'InvalidTransitionError',
+    'EpsilonConversionError',
     'EpsilonNFA',
     'EpsilonNFAError',
+    'InvalidDFAError',
     'InvalidEpsilonNFAError',
     'InvalidEpsilonTransitionError',
-    'EpsilonConversionError',
-    'NFA',
-    'NFAError',
     'InvalidNFAError',
+    'InvalidStateError',
+    'InvalidTransitionError',
+    'NFAConversionError',
+    'NFAError',
     'NFAInvalidTransitionError',
-    'NFAConversionError'
+    'NodeType',
+    'RegexConversionError',
+    'RegexError',
+    'RegexParseError',
+    'RegexParser',
+    'RegexSyntaxError',
+    'Token',
+    'TokenType'
 ]
