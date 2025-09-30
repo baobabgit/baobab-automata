@@ -16,27 +16,29 @@ class TestInterfaces:
         """Test placeholder pour valider le fonctionnement de pytest."""
         assert True
 
-    def test_sample_states_fixture(self, sample_states: List[str]) -> None:
+    def test_sample_states_fixture(self, sample_states) -> None:
         """Test de la fixture sample_states."""
-        assert isinstance(sample_states, list)
+        assert isinstance(sample_states, dict)
         assert len(sample_states) > 0
-        assert all(isinstance(state, str) for state in sample_states)
+        assert "initial" in sample_states
+        assert "intermediate" in sample_states
+        assert "final" in sample_states
+        assert "accepting" in sample_states
 
-    def test_sample_alphabet_fixture(self, sample_alphabet: List[str]) -> None:
+    def test_sample_alphabet_fixture(self, sample_alphabet) -> None:
         """Test de la fixture sample_alphabet."""
-        assert isinstance(sample_alphabet, list)
+        assert isinstance(sample_alphabet, set)
         assert len(sample_alphabet) > 0
         assert all(isinstance(symbol, str) for symbol in sample_alphabet)
 
     def test_sample_transitions_fixture(
-        self, sample_transitions: Dict[tuple, str]
+        self, sample_transitions
     ) -> None:
         """Test de la fixture sample_transitions."""
         assert isinstance(sample_transitions, dict)
         assert len(sample_transitions) > 0
-        for key, value in sample_transitions.items():
-            assert isinstance(key, tuple)
-            assert isinstance(value, str)
+        assert "symbol" in sample_transitions
+        assert "epsilon" in sample_transitions
 
     def test_sample_initial_state_fixture(
         self, sample_initial_state: str

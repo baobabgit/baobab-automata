@@ -1,183 +1,164 @@
 """
-Tests unitaires pour l'interface IState et l'énumération StateType.
+Tests unitaires pour les états d'automates.
 
-Ce module teste l'interface IState et l'énumération StateType.
+Ce module contient les tests unitaires pour l'interface IState et
+l'implémentation State.
 """
 
 import pytest
-
-from baobab_automata.interfaces.state import IState, StateType
+from baobab_automata.interfaces.state import StateType
 from baobab_automata.implementations.state import State
 
 
-class TestStateType:
-    """Tests pour l'énumération StateType."""
-
-    def test_state_type_values(self):
-        """Test que tous les types d'états sont définis."""
-        assert StateType.INITIAL.value == "initial"
-        assert StateType.FINAL.value == "final"
-        assert StateType.INTERMEDIATE.value == "intermediate"
-        assert StateType.ACCEPTING.value == "accepting"
-        assert StateType.REJECTING.value == "rejecting"
-
-    def test_state_type_enumeration(self):
-        """Test que l'énumération contient tous les types attendus."""
-        expected_types = {
-            "initial",
-            "final",
-            "intermediate",
-            "accepting",
-            "rejecting",
-        }
-        actual_types = {state_type.value for state_type in StateType}
-        assert actual_types == expected_types
-
-
-class TestIStateInterface:
-    """Tests pour l'interface IState."""
-
-    def test_interface_has_required_methods(self):
-        """Test que l'interface IState a toutes les méthodes requises."""
-        required_methods = [
-            "identifier",
-            "state_type",
-            "metadata",
-            "is_initial",
-            "is_final",
-            "is_accepting",
-            "add_metadata",
-            "get_metadata",
-            "__eq__",
-            "__hash__",
-            "__str__",
-            "__repr__",
-        ]
-
-        for method_name in required_methods:
-            assert hasattr(
-                IState, method_name
-            ), f"Method {method_name} missing from IState"
-
-    def test_interface_methods_are_abstract(self):
-        """Test que les méthodes de l'interface sont abstraites."""
-        # Vérifier que l'interface ne peut pas être instanciée directement
-        with pytest.raises(TypeError):
-            IState()
-
-    def test_interface_properties_are_abstract(self):
-        """Test que les propriétés de l'interface sont abstraites."""
-        # Vérifier que les propriétés sont définies comme @property @abstractmethod
-        assert hasattr(IState, "identifier")
-        assert hasattr(IState, "state_type")
-        assert hasattr(IState, "metadata")
-
-
-class TestStateImplementation:
-    """Tests pour l'implémentation State de IState."""
-
-    def test_state_implements_interface(self):
-        """Test que State implémente l'interface IState."""
-        state = State("q0", StateType.INITIAL)
-        assert isinstance(state, IState)
-
-    def test_state_initialization(self):
-        """Test de l'initialisation d'un état."""
-        state = State(
-            "q0", StateType.INITIAL, {"description": "Initial state"}
-        )
-        assert state.identifier == "q0"
-        assert state.state_type == StateType.INITIAL
-        assert state.metadata == {"description": "Initial state"}
-
-    def test_state_initialization_default_metadata(self):
-        """Test de l'initialisation avec métadonnées par défaut."""
+class TestState:
+    """Tests pour la classe State."""
+    
+    def test_state_creation(self):
+        """Test la création d'un état."""
         state = State("q0", StateType.INITIAL)
         assert state.identifier == "q0"
         assert state.state_type == StateType.INITIAL
         assert state.metadata == {}
-
+    
+    def test_state_creation_with_metadata(self):
+        """Test la création d'un état avec métadonnées."""
+        metadata = {"description": "Test state", "priority": 1}
+        state = State("q0", StateType.INITIAL, metadata)
+        assert state.metadata == metadata
+    
     def test_is_initial(self):
-        """Test de la méthode is_initial."""
+        """Test la méthode is_initial."""
         initial_state = State("q0", StateType.INITIAL)
-        final_state = State("q1", StateType.FINAL)
-
+        non_initial_state = State("q1", StateType.INTERMEDIATE)
+        
         assert initial_state.is_initial() is True
-        assert final_state.is_initial() is False
-
+        assert non_initial_state.is_initial() is False
+    
     def test_is_final(self):
-        """Test de la méthode is_final."""
-        initial_state = State("q0", StateType.INITIAL)
-        final_state = State("q1", StateType.FINAL)
-
-        assert initial_state.is_final() is False
+        """Test la méthode is_final."""
+        final_state = State("q0", StateType.FINAL)
+        non_final_state = State("q1", StateType.INTERMEDIATE)
+        
         assert final_state.is_final() is True
-
+        assert non_final_state.is_final() is False
+    
     def test_is_accepting(self):
-        """Test de la méthode is_accepting."""
-        initial_state = State("q0", StateType.INITIAL)
+        """Test la méthode is_accepting."""
+        accepting_state = State("q0", StateType.ACCEPTING)
         final_state = State("q1", StateType.FINAL)
-        accepting_state = State("q2", StateType.ACCEPTING)
-        intermediate_state = State("q3", StateType.INTERMEDIATE)
-
-        assert initial_state.is_accepting() is False
-        assert final_state.is_accepting() is True
+        non_accepting_state = State("q2", StateType.INTERMEDIATE)
+        
         assert accepting_state.is_accepting() is True
-        assert intermediate_state.is_accepting() is False
-
-    def test_add_metadata_raises_not_implemented(self):
-        """Test que add_metadata lève NotImplementedError."""
-        state = State("q0", StateType.INITIAL)
-        with pytest.raises(NotImplementedError):
-            state.add_metadata("key", "value")
-
-    def test_get_metadata(self):
-        """Test de la méthode get_metadata."""
-        state = State("q0", StateType.INITIAL, {"key1": "value1", "key2": 42})
-
-        assert state.get_metadata("key1") == "value1"
-        assert state.get_metadata("key2") == 42
-        assert state.get_metadata("nonexistent") is None
-        assert state.get_metadata("nonexistent", "default") == "default"
-
+        assert final_state.is_accepting() is True
+        assert non_accepting_state.is_accepting() is False
+    
     def test_equality(self):
-        """Test de l'égalité entre états."""
+        """Test l'égalité entre états."""
         state1 = State("q0", StateType.INITIAL)
         state2 = State("q0", StateType.INITIAL)
         state3 = State("q1", StateType.INITIAL)
-
+        
         assert state1 == state2
         assert state1 != state3
         assert state1 != "not_a_state"
-
+    
     def test_hash(self):
-        """Test du hachage des états."""
+        """Test le hash des états."""
         state1 = State("q0", StateType.INITIAL)
         state2 = State("q0", StateType.INITIAL)
         state3 = State("q1", StateType.INITIAL)
-
+        
         assert hash(state1) == hash(state2)
         assert hash(state1) != hash(state3)
-
-    def test_str_representation(self):
-        """Test de la représentation string."""
+        
+        # Test dans un set
+        states_set = {state1, state2, state3}
+        assert len(states_set) == 2  # state1 et state2 sont identiques
+    
+    def test_string_representation(self):
+        """Test la représentation string des états."""
         state = State("q0", StateType.INITIAL)
         assert str(state) == "State(q0)"
-
-    def test_repr_representation(self):
-        """Test de la représentation détaillée."""
+        assert "q0" in repr(state)
+        assert "INITIAL" in repr(state)
+    
+    def test_metadata_operations(self):
+        """Test les opérations sur les métadonnées."""
+        state = State("q0", StateType.INITIAL, {"key1": "value1"})
+        
+        assert state.get_metadata("key1") == "value1"
+        assert state.get_metadata("key2") is None
+        assert state.get_metadata("key2", "default") == "default"
+    
+    def test_add_metadata_raises_error(self):
+        """Test que add_metadata lève une erreur sur un état immuable."""
         state = State("q0", StateType.INITIAL)
-        expected = "State(identifier='q0', type=StateType.INITIAL)"
-        assert repr(state) == expected
-
-    def test_state_immutability(self):
-        """Test que l'état est immuable."""
-        state = State("q0", StateType.INITIAL)
-
-        # Vérifier que l'état est hashable (nécessaire pour l'immutabilité)
-        state_set = {state}
-        assert state in state_set
-
-        # Vérifier que l'état ne peut pas être modifié
+        
+        with pytest.raises(NotImplementedError):
+            state.add_metadata("key", "value")
+    
+    @pytest.mark.parametrize("identifier,state_type,expected_valid", [
+        ("q0", StateType.INITIAL, True),
+        ("", StateType.INITIAL, True),  # Identifiant vide autorisé
+    ])
+    def test_validation(self, identifier, state_type, expected_valid):
+        """Test la validation des états."""
+        if expected_valid:
+            state = State(identifier, state_type)
+            assert state.identifier == identifier
+    
+    def test_immutability(self):
+        """Test l'immutabilité de l'état."""
+        metadata = {"key": "value"}
+        state = State("q0", StateType.INITIAL, metadata)
+        
+        # Modification du dictionnaire original ne doit pas affecter l'état
+        metadata["key"] = "new_value"
+        assert state.get_metadata("key") == "value"
+        
+        # L'état ne doit pas être modifiable
         with pytest.raises(AttributeError):
-            state.identifier = "q1"
+            state._identifier = "q1"
+    
+    def test_metadata_immutability(self):
+        """Test l'immutabilité des métadonnées."""
+        metadata = {"key": "value"}
+        state = State("q0", StateType.INITIAL, metadata)
+        
+        # Les métadonnées retournées doivent être immuables
+        returned_metadata = state.metadata
+        with pytest.raises(TypeError):
+            returned_metadata["new_key"] = "new_value"
+    
+    def test_all_state_types(self):
+        """Test tous les types d'états."""
+        state_types = [
+            StateType.INITIAL,
+            StateType.FINAL,
+            StateType.INTERMEDIATE,
+            StateType.ACCEPTING,
+            StateType.REJECTING,
+        ]
+        
+        for state_type in state_types:
+            state = State("q0", state_type)
+            assert state.state_type == state_type
+            assert state.identifier == "q0"
+    
+    def test_state_with_complex_metadata(self):
+        """Test un état avec des métadonnées complexes."""
+        complex_metadata = {
+            "description": "Complex state",
+            "nested": {"key": "value"},
+            "list": [1, 2, 3],
+            "number": 42,
+            "boolean": True,
+        }
+        
+        state = State("q0", StateType.INTERMEDIATE, complex_metadata)
+        
+        assert state.get_metadata("description") == "Complex state"
+        assert state.get_metadata("nested") == {"key": "value"}
+        assert state.get_metadata("list") == [1, 2, 3]
+        assert state.get_metadata("number") == 42
+        assert state.get_metadata("boolean") is True

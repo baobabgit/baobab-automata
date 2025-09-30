@@ -36,7 +36,10 @@ class State(IState):
 
     def __post_init__(self):
         """Créer une copie profonde des métadonnées pour l'immutabilité."""
-        object.__setattr__(self, "_metadata", copy.deepcopy(self._metadata))
+        if self._metadata is None:
+            object.__setattr__(self, "_metadata", {})
+        else:
+            object.__setattr__(self, "_metadata", copy.deepcopy(self._metadata))
 
     @property
     def identifier(self) -> str:
