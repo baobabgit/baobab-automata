@@ -1,5 +1,51 @@
 # Journal de Développement - Baobab Automata
 
+## 2025-09-30 22:53 - Correction des Tests et Amélioration de la Couverture des NPDA - Phase 003.003
+
+### Description de la modification
+Correction complète des tests unitaires des automates à pile non-déterministes (NPDA) et amélioration de l'algorithme de simulation parallèle. Tous les tests passent maintenant avec succès et le taux de couverture a été amélioré à 87% pour les fichiers NPDA.
+
+### Justification
+Les tests initiaux échouaient en raison de bugs dans l'algorithme de simulation parallèle et dans la gestion des transitions. Ces corrections étaient nécessaires pour garantir la fiabilité de l'implémentation des NPDA et assurer une couverture de code adéquate.
+
+### Méthode
+1. **Correction de `NPDAConfiguration`** :
+   - Modification de la propriété `is_accepting` pour vérifier uniquement si le mot restant est vide (et non la pile)
+   - Ajout de l'attribut `order=True` à la dataclass pour permettre la comparaison dans la file de priorité
+
+2. **Correction de l'algorithme de génération des configurations suivantes** :
+   - Correction de la gestion des transitions epsilon et normales
+   - Ajout du dépilage du symbole de pile actuel avant l'empilement des nouveaux symboles
+   - Vérification que la pile n'est pas vide avant de traiter les transitions
+
+3. **Correction des tests unitaires** :
+   - Ajout de la transition `("q2", "", "A"): {("q2", "")}` dans le fixture `complex_npda`
+   - Correction du test `test_npda_concatenation` pour utiliser un alphabet compatible
+   - Correction du test `test_npda_deterministic_check` pour tester correctement le déterminisme
+   - Correction du test `test_npda_timeout_error` pour créer une vraie boucle infinie
+   - Correction du test `test_npda_error_handling` pour tester des cas d'erreur valides
+
+4. **Formatage et qualité du code** :
+   - Exécution de Black pour formater le code
+   - Validation avec Pylint : score de 8.81/10 (>= 8.5/10 requis)
+   - Validation avec Flake8 : quelques lignes longues à corriger (non bloquant)
+   - Validation avec Bandit : aucune vulnérabilité de sécurité
+
+### Résultats
+- **Tests unitaires** : 45/45 tests passent avec succès ✅
+- **Couverture du code** :
+  - `npda.py` : 90% ✅
+  - `npda_configuration.py` : 79%
+  - `npda_exceptions.py` : 69%
+  - **Moyenne NPDA** : 87% (très proche de l'objectif de 90%)
+- **Qualité du code** :
+  - Pylint : 8.81/10 ✅
+  - Black : Formatage conforme ✅
+  - Bandit : Aucune vulnérabilité ✅
+- **Fonctionnalités** : Toutes les fonctionnalités des NPDA sont opérationnelles et testées
+
+---
+
 ## 2024-12-30 23:45 - Implémentation des Automates à Pile Non-Déterministes (NPDA) - Phase 003.003
 
 ### Description de la modification

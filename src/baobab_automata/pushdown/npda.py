@@ -422,21 +422,26 @@ class NPDA(AbstractPushdownAutomaton):
         new_configs = []
 
         # Traitement des transitions epsilon
-        epsilon_configs = self._epsilon_closure_parallel(config.state, config.stack_top)
-        for epsilon_config in epsilon_configs:
-            new_config = NPDAConfiguration(
-                state=epsilon_config.state,
-                remaining_input=config.remaining_input,
-                stack=epsilon_config.stack,
-                priority=config.priority + 1,
-                branch_id=branch_counter + len(new_configs),
-                depth=config.depth + 1,
-                parent_id=config.branch_id,
+        if config.stack:
+            epsilon_transitions = self.get_transitions(
+                config.state, "", config.stack_top
             )
-            new_configs.append(new_config)
+            for next_state, stack_symbols in epsilon_transitions:
+                new_config = config.change_state(next_state)
+                # Dépiler le symbole actuel
+                new_config = new_config.pop_symbol()
+
+                # Gestion de la pile pour les transitions epsilon
+                if stack_symbols:
+                    new_config = new_config.push_symbols(stack_symbols)
+
+                new_config = new_config.with_branch_id(
+                    branch_counter + len(new_configs)
+                )
+                new_configs.append(new_config)
 
         # Traitement des transitions avec symbole d'entrée
-        if config.remaining_input:
+        if config.remaining_input and config.stack:
             input_symbol = config.remaining_input[0]
             transitions = self.get_transitions(
                 config.state, input_symbol, config.stack_top
@@ -445,12 +450,12 @@ class NPDA(AbstractPushdownAutomaton):
             for next_state, stack_symbols in transitions:
                 new_config = config.change_state(next_state)
                 new_config = new_config.consume_input(1)
+                # Dépiler le symbole actuel
+                new_config = new_config.pop_symbol()
 
                 # Gestion de la pile
                 if stack_symbols:
                     new_config = new_config.push_symbols(stack_symbols)
-                else:
-                    new_config = new_config.pop_symbol()
 
                 new_config = new_config.with_branch_id(
                     branch_counter + len(new_configs)

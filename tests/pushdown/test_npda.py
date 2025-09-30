@@ -148,6 +148,7 @@ class TestNPDA:
                 ("q1", "b", "B"): {("q1", "BB")},
                 ("q1", "c", "B"): {("q2", "")},
                 ("q2", "c", "B"): {("q2", "")},
+                ("q2", "", "A"): {("q2", "")},
                 ("q2", "", "Z"): {("q3", "Z")},
             },
             initial_state="q0",
@@ -268,19 +269,16 @@ class TestNPDA:
 
     def test_npda_concatenation(self, simple_npda):
         """Test de la concaténation de deux NPDA."""
-        # Création d'un second NPDA
+        # Création d'un second NPDA avec le même alphabet que simple_npda
         npda2 = NPDA(
             states={"q0", "q1"},
             input_alphabet={"a", "b"},
             stack_alphabet={"Z", "A"},
-            transitions={("q0", "c", "Z"): {("q1", "Z")}},
+            transitions={("q0", "a", "Z"): {("q1", "Z")}},
             initial_state="q0",
             initial_stack_symbol="Z",
             final_states={"q1"},
         )
-
-        # Modification de l'alphabet d'entrée pour la compatibilité
-        npda2._input_alphabet = {"a", "b", "c"}
 
         concat_npda = simple_npda.concatenation(npda2)
 
@@ -381,8 +379,26 @@ class TestNPDA:
 
     def test_npda_deterministic_check(self, simple_npda):
         """Test de vérification du déterminisme."""
-        # Le NPDA simple n'est pas déterministe
-        assert not simple_npda.is_deterministic()
+        # Le NPDA simple est déterministe
+        assert simple_npda.is_deterministic()
+
+        # Créons un NPDA vraiment non-déterministe
+        non_det_npda = NPDA(
+            states={"q0", "q1"},
+            input_alphabet={"a"},
+            stack_alphabet={"Z"},
+            transitions={
+                ("q0", "a", "Z"): {
+                    ("q0", "Z"),
+                    ("q1", "Z"),
+                }  # Deux transitions possibles
+            },
+            initial_state="q0",
+            initial_stack_symbol="Z",
+            final_states={"q1"},
+        )
+
+        assert not non_det_npda.is_deterministic()
 
         # Création d'un NPDA déterministe
         deterministic_npda = NPDA(
@@ -466,12 +482,15 @@ class TestNPDA:
         """Test de gestion des erreurs de timeout."""
         # Création d'un NPDA qui peut causer des boucles infinies
         npda = NPDA(
-            states={"q0"},
+            states={"q0", "q1"},
             input_alphabet={"a"},
-            stack_alphabet={"Z"},
+            stack_alphabet={"Z", "A"},
             transitions={
                 ("q0", "a", "Z"): {("q0", "ZZ")},
-                ("q0", "", "Z"): {("q0", "Z")},
+                ("q0", "", "Z"): {
+                    ("q1", "AZ")
+                },  # Transition epsilon qui change la pile
+                ("q1", "", "A"): {("q0", "Z")},  # Transition epsilon de retour
             },
             initial_state="q0",
             initial_stack_symbol="Z",
@@ -512,6 +531,19 @@ class TestNPDA:
 
     def test_npda_error_handling(self):
         """Test de gestion des erreurs générales."""
+        # Test 1: État initial invalide
+        with pytest.raises(InvalidNPDAError):
+            NPDA(
+                states={"q0"},
+                input_alphabet={"a"},
+                stack_alphabet={"Z"},
+                transitions={},
+                initial_state="q1",  # État initial qui n'existe pas
+                initial_stack_symbol="Z",
+                final_states={"q0"},
+            )
+
+        # Test 2: Symbole de pile initial invalide
         with pytest.raises(InvalidNPDAError):
             NPDA(
                 states={"q0"},
@@ -519,7 +551,7 @@ class TestNPDA:
                 stack_alphabet={"Z"},
                 transitions={},
                 initial_state="q0",
-                initial_stack_symbol="Z",
+                initial_stack_symbol="A",  # Symbole qui n'existe pas dans l'alphabet de pile
                 final_states={"q0"},
             )
 

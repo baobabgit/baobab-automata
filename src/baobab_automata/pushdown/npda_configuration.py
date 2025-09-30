@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, Optional
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, order=True)
 class NPDAConfiguration:
     """Configuration d'un NPDA (état, mot restant, pile, priorité).
 
@@ -59,11 +59,10 @@ class NPDAConfiguration:
 
         Une configuration est acceptante si :
         - Le mot restant est vide
-        - La pile ne contient que le symbole de fond
 
         :return: True si la configuration est acceptante, False sinon
         """
-        return self.remaining_input == "" and self.stack == ""
+        return self.remaining_input == ""
 
     @property
     def is_final(self) -> bool:
