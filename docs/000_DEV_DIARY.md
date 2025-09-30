@@ -1,5 +1,75 @@
 # Journal de Développement - Baobab Automata
 
+## 2024-12-19 20:15 - Implémentation de la Classe EpsilonNFA (Phase 002.004)
+
+### Description de la modification
+Implémentation complète de la classe EpsilonNFA selon les spécifications détaillées 007_PHASE_002_004_EPSILON_NFA_IMPLEMENTATION.md.
+
+### Justification
+La classe EpsilonNFA étend les capacités des NFA en permettant des transitions epsilon (transitions vides). Elle est essentielle pour la Phase 002 car elle fournit la base pour les conversions et opérations sur les langages réguliers avec transitions epsilon, et sert de pont vers les expressions régulières.
+
+### Méthode
+1. **Exceptions personnalisées** : Création de `EpsilonNFAError`, `InvalidEpsilonNFAError`, `InvalidEpsilonTransitionError`, `ConversionError`
+2. **Classe EpsilonNFA** : Implémentation complète avec :
+   - Constructeur avec validation automatique et symbole epsilon personnalisable
+   - Méthodes de base : `accepts()`, `get_transition()`, `get_transitions()`, `is_final_state()`, `get_reachable_states()`
+   - Algorithme de reconnaissance avec fermeture epsilon et mise en cache
+   - Fermeture epsilon optimisée avec cache pour les performances
+   - Conversion ε-NFA → NFA (élimination des transitions epsilon)
+   - Conversion ε-NFA → DFA (directe et via NFA)
+   - Méthodes spécialisées : `get_accessible_states()`, `get_coaccessible_states()`, `get_useful_states()`
+   - Opérations sur les langages : `union()`, `concatenation()`, `kleene_star()`
+   - Méthodes utilitaires : `validate()`, `to_dict()`, `from_dict()`
+3. **Tests unitaires** : 30+ tests complets couvrant tous les aspects de la classe
+4. **Documentation** : Docstrings reStructuredText complètes pour toutes les méthodes
+
+### Résultats
+- **Classe EpsilonNFA** : Implémentation complète et fonctionnelle
+- **Exceptions** : Hiérarchie complète d'exceptions personnalisées
+- **Tests** : 30+ tests unitaires passent avec succès
+- **Algorithmes** : Reconnaissance avec fermeture epsilon et conversions implémentés
+- **Opérations** : Union, concaténation et étoile de Kleene fonctionnelles
+- **Sérialisation** : Support complet de la sérialisation/désérialisation
+- **Validation** : Vérification automatique de la cohérence des ε-NFA
+- **Performance** : Mise en cache des fermetures epsilon pour l'optimisation
+
+### Fichiers créés/modifiés
+- `src/baobab_automata/finite/epsilon_nfa.py` : Classe EpsilonNFA complète
+- `src/baobab_automata/finite/epsilon_nfa_exceptions.py` : Exceptions personnalisées
+- `src/baobab_automata/finite/__init__.py` : Mise à jour des exports
+- `tests/finite/test_epsilon_nfa.py` : Tests unitaires complets
+- `test_epsilon_nfa_simple.py` : Script de test de validation
+- `test_epsilon_nfa_corrected.py` : Script de test corrigé
+
+### Critères de validation atteints
+- ✅ Classe EpsilonNFA implémentée selon les spécifications
+- ✅ Algorithme de reconnaissance avec fermeture epsilon fonctionnel
+- ✅ Conversion ε-NFA → NFA et ε-NFA → DFA opérationnelles
+- ✅ Tests unitaires avec couverture complète (30+ tests)
+- ✅ Documentation complète avec docstrings
+- ✅ Gestion d'erreurs robuste avec exceptions personnalisées
+- ✅ Validation automatique de la cohérence
+- ✅ Support de la sérialisation/désérialisation
+- ✅ Opérations sur les langages fonctionnelles
+- ✅ Mise en cache des fermetures epsilon pour les performances
+
+### Fonctionnalités implémentées
+- **Construction et validation** : ε-NFA avec validation automatique et symbole epsilon personnalisable
+- **Reconnaissance de mots** : Algorithme de simulation avec fermeture epsilon et cache
+- **Conversions** : ε-NFA → NFA (élimination epsilon) et ε-NFA → DFA (directe et via NFA)
+- **Opérations sur les langages** : Union, concaténation, étoile de Kleene
+- **Méthodes spécialisées** : États accessibles, cœurs et utiles
+- **Utilitaires** : Validation, sérialisation, représentation
+- **Tests** : Couverture complète de tous les cas d'usage
+- **Performance** : Cache des fermetures epsilon pour l'optimisation
+
+### Fonctionnalités en attente
+- **Optimisations avancées** : Minimisation ε-NFA (en attente des algorithmes d'optimisation)
+- **Expressions régulières** : Construction d'ε-NFA à partir d'expressions régulières (Phase 002.005)
+
+### Prochaines étapes
+La classe EpsilonNFA est maintenant prête et peut servir de base pour l'implémentation des expressions régulières et des algorithmes de conversion avancés dans les phases suivantes.
+
 ## 2024-12-19 18:30 - Implémentation de la Classe NFA (Phase 002.002)
 
 ### Description de la modification
