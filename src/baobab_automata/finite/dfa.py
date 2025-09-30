@@ -1,18 +1,17 @@
 """
 Implémentation d'un automate fini déterministe (DFA).
 
-Ce module contient la classe DFA qui implémente l'interface IAutomaton
-pour les automates finis déterministes.
+Ce module contient la classe DFA qui implémente l'interface AbstractFiniteAutomaton
+pour les automates finis déterministes selon les spécifications détaillées.
 """
 
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, Optional, Set, Tuple
 
-from ..interfaces.automaton import IAutomaton, AutomatonType
-from ..interfaces.state import IState
-from ..interfaces.transition import ITransition
+from .abstract_finite_automaton import AbstractFiniteAutomaton
+from .dfa_exceptions import DFAError, InvalidDFAError, InvalidStateError, InvalidTransitionError
 
 
-class DFA(IAutomaton):
+class DFA(AbstractFiniteAutomaton):
     """
     Implémentation d'un automate fini déterministe (DFA).
     
@@ -20,182 +19,452 @@ class DFA(IAutomaton):
     il existe exactement une transition possible.
     
     :param states: Ensemble des états de l'automate
-    :type states: Set[IState]
-    :param initial_states: Ensemble des états initiaux
-    :type initial_states: Set[IState]
-    :param final_states: Ensemble des états finaux
-    :type final_states: Set[IState]
+    :type states: Set[str]
     :param alphabet: Alphabet de l'automate
     :type alphabet: Set[str]
-    :param transitions: Ensemble des transitions
-    :type transitions: Set[ITransition]
+    :param transitions: Fonction de transition (état, symbole) -> état
+    :type transitions: Dict[Tuple[str, str], str]
+    :param initial_state: État initial
+    :type initial_state: str
+    :param final_states: Ensemble des états finaux
+    :type final_states: Set[str]
     """
     
     def __init__(
         self,
-        states: Set[IState],
-        initial_states: Set[IState],
-        final_states: Set[IState],
+        states: Set[str],
         alphabet: Set[str],
-        transitions: Set[ITransition]
-    ):
-        """Initialise un DFA."""
+        transitions: Dict[Tuple[str, str], str],
+        initial_state: str,
+        final_states: Set[str]
+    ) -> None:
+        """
+        Initialise un DFA.
+        
+        :param states: Ensemble des états de l'automate
+        :type states: Set[str]
+        :param alphabet: Alphabet de l'automate
+        :type alphabet: Set[str]
+        :param transitions: Fonction de transition (état, symbole) -> état
+        :type transitions: Dict[Tuple[str, str], str]
+        :param initial_state: État initial
+        :type initial_state: str
+        :param final_states: Ensemble des états finaux
+        :type final_states: Set[str]
+        :raises InvalidDFAError: Si le DFA est invalide
+        :raises InvalidStateError: Si un état est invalide
+        :raises InvalidTransitionError: Si une transition est invalide
+        """
         self._states = states.copy()
-        self._initial_states = initial_states.copy()
-        self._final_states = final_states.copy()
         self._alphabet = alphabet.copy()
         self._transitions = transitions.copy()
+        self._initial_state = initial_state
+        self._final_states = final_states.copy()
+        
+        # Validation du DFA
+        if not self.validate():
+            raise InvalidDFAError("Invalid DFA configuration")
     
     @property
-    def automaton_type(self) -> AutomatonType:
-        """Type de l'automate."""
-        return AutomatonType.DFA
-    
-    @property
-    def states(self) -> Set[IState]:
-        """Ensemble des états de l'automate."""
+    def states(self) -> Set[str]:
+        """
+        Ensemble des états de l'automate.
+        
+        :return: Ensemble des identifiants des états
+        :rtype: Set[str]
+        """
         return self._states.copy()
     
     @property
-    def initial_states(self) -> Set[IState]:
-        """Ensemble des états initiaux."""
-        return self._initial_states.copy()
-    
-    @property
-    def final_states(self) -> Set[IState]:
-        """Ensemble des états finaux."""
-        return self._final_states.copy()
-    
-    @property
     def alphabet(self) -> Set[str]:
-        """Alphabet de l'automate."""
+        """
+        Alphabet de l'automate.
+        
+        :return: Ensemble des symboles de l'alphabet
+        :rtype: Set[str]
+        """
         return self._alphabet.copy()
     
     @property
-    def transitions(self) -> Set[ITransition]:
-        """Ensemble des transitions de l'automate."""
-        return self._transitions.copy()
+    def initial_state(self) -> str:
+        """
+        État initial de l'automate.
+        
+        :return: Identifiant de l'état initial
+        :rtype: str
+        """
+        return self._initial_state
     
-    def add_state(self, state: IState) -> None:
-        """Ajoute un état à l'automate."""
-        self._states.add(state)
+    @property
+    def final_states(self) -> Set[str]:
+        """
+        Ensemble des états finaux.
+        
+        :return: Ensemble des identifiants des états finaux
+        :rtype: Set[str]
+        """
+        return self._final_states.copy()
     
-    def remove_state(self, state: IState) -> None:
-        """Supprime un état de l'automate."""
-        if state in self._states:
-            self._states.remove(state)
-            self._initial_states.discard(state)
-            self._final_states.discard(state)
-            # Supprimer les transitions associées
-            self._transitions = {
-                t for t in self._transitions
-                if t.source_state != state and t.target_state != state
-            }
+    def accepts(self, word: str) -> bool:
+        """
+        Vérifie si l'automate accepte un mot donné.
+        
+        :param word: Mot à tester
+        :type word: str
+        :return: True si le mot est accepté, False sinon
+        :rtype: bool
+        """
+        current_state = self._initial_state
+        
+        for symbol in word:
+            if symbol not in self._alphabet:
+                return False
+            
+            transition_key = (current_state, symbol)
+            if transition_key not in self._transitions:
+                return False
+            
+            current_state = self._transitions[transition_key]
+        
+        return current_state in self._final_states
     
-    def add_transition(self, transition: ITransition) -> None:
-        """Ajoute une transition à l'automate."""
-        self._transitions.add(transition)
+    def get_transition(self, state: str, symbol: str) -> Optional[str]:
+        """
+        Récupère l'état de destination pour une transition donnée.
+        
+        :param state: État source
+        :type state: str
+        :param symbol: Symbole de la transition
+        :type symbol: str
+        :return: État de destination ou None si la transition n'existe pas
+        :rtype: Optional[str]
+        """
+        transition_key = (state, symbol)
+        return self._transitions.get(transition_key)
     
-    def remove_transition(self, transition: ITransition) -> None:
-        """Supprime une transition de l'automate."""
-        self._transitions.discard(transition)
+    def is_final_state(self, state: str) -> bool:
+        """
+        Vérifie si un état est final.
+        
+        :param state: Identifiant de l'état
+        :type state: str
+        :return: True si l'état est final, False sinon
+        :rtype: bool
+        """
+        return state in self._final_states
     
-    def get_transitions_from(self, state: IState) -> Set[ITransition]:
-        """Récupère les transitions partant d'un état."""
-        return {
-            t for t in self._transitions
-            if t.source_state == state
+    def get_reachable_states(self) -> Set[str]:
+        """
+        Récupère tous les états accessibles depuis l'état initial.
+        
+        :return: Ensemble des états accessibles
+        :rtype: Set[str]
+        """
+        reachable = set()
+        to_visit = {self._initial_state}
+        
+        while to_visit:
+            current = to_visit.pop()
+            if current in reachable:
+                continue
+            
+            reachable.add(current)
+            
+            # Ajouter tous les états accessibles depuis l'état actuel
+            for symbol in self._alphabet:
+                transition_key = (current, symbol)
+                if transition_key in self._transitions:
+                    next_state = self._transitions[transition_key]
+                    if next_state not in reachable:
+                        to_visit.add(next_state)
+        
+        return reachable
+    
+    def validate(self) -> bool:
+        """
+        Valide la cohérence de l'automate.
+        
+        :return: True si l'automate est valide, False sinon
+        :rtype: bool
+        """
+        try:
+            # Vérifier que l'état initial est dans l'ensemble des états
+            if self._initial_state not in self._states:
+                return False
+            
+            # Vérifier que tous les états finaux sont dans l'ensemble des états
+            if not self._final_states.issubset(self._states):
+                return False
+            
+            # Vérifier que toutes les transitions sont valides
+            for (source, symbol), target in self._transitions.items():
+                if source not in self._states:
+                    return False
+                if target not in self._states:
+                    return False
+                if symbol not in self._alphabet:
+                    return False
+            
+            return True
+        except Exception:
+            return False
+    
+    def minimize(self) -> 'DFA':
+        """
+        Minimise le DFA en utilisant l'algorithme de Hopcroft.
+        
+        :return: DFA minimal équivalent
+        :rtype: DFA
+        """
+        # Algorithme de Hopcroft pour la minimisation
+        # Partition initiale : états finaux vs non-finaux
+        partition = [self._final_states, self._states - self._final_states]
+        
+        # Éliminer les ensembles vides
+        partition = [p for p in partition if p]
+        
+        # Raffiner la partition
+        changed = True
+        while changed:
+            changed = False
+            new_partition = []
+            
+            for group in partition:
+                # Diviser le groupe selon les transitions
+                subgroups = {}
+                for state in group:
+                    key = tuple(
+                        self._get_group_for_state(state, symbol, partition)
+                        for symbol in self._alphabet
+                    )
+                    if key not in subgroups:
+                        subgroups[key] = set()
+                    subgroups[key].add(state)
+                
+                # Ajouter les sous-groupes non vides
+                for subgroup in subgroups.values():
+                    if subgroup:
+                        new_partition.append(subgroup)
+                
+                if len(subgroups) > 1:
+                    changed = True
+            
+            partition = new_partition
+        
+        # Construire le DFA minimal
+        state_mapping = {}
+        for i, group in enumerate(partition):
+            for state in group:
+                state_mapping[state] = f"q{i}"
+        
+        # Nouveaux états
+        new_states = {state_mapping[state] for state in self._states}
+        
+        # Nouvel alphabet (identique)
+        new_alphabet = self._alphabet.copy()
+        
+        # Nouvelles transitions
+        new_transitions = {}
+        for (source, symbol), target in self._transitions.items():
+            new_source = state_mapping[source]
+            new_target = state_mapping[target]
+            new_transitions[(new_source, symbol)] = new_target
+        
+        # Nouvel état initial
+        new_initial = state_mapping[self._initial_state]
+        
+        # Nouveaux états finaux
+        new_final = {state_mapping[state] for state in self._final_states}
+        
+        return DFA(
+            states=new_states,
+            alphabet=new_alphabet,
+            transitions=new_transitions,
+            initial_state=new_initial,
+            final_states=new_final
+        )
+    
+    def _get_group_for_state(self, state: str, symbol: str, partition: list) -> int:
+        """Trouve l'index du groupe contenant l'état de destination."""
+        transition_key = (state, symbol)
+        if transition_key in self._transitions:
+            target = self._transitions[transition_key]
+            for i, group in enumerate(partition):
+                if target in group:
+                    return i
+        return -1
+    
+    def remove_unreachable_states(self) -> 'DFA':
+        """
+        Supprime les états inaccessibles du DFA.
+        
+        :return: DFA sans états inaccessibles
+        :rtype: DFA
+        """
+        reachable = self.get_reachable_states()
+        
+        # Nouveaux états (seulement les accessibles)
+        new_states = reachable
+        
+        # Nouveau alphabet (identique)
+        new_alphabet = self._alphabet.copy()
+        
+        # Nouvelles transitions (seulement celles entre états accessibles)
+        new_transitions = {
+            (source, symbol): target
+            for (source, symbol), target in self._transitions.items()
+            if source in reachable and target in reachable
         }
+        
+        # Nouvel état initial (identique)
+        new_initial = self._initial_state
+        
+        # Nouveaux états finaux (seulement ceux accessibles)
+        new_final = self._final_states.intersection(reachable)
+        
+        return DFA(
+            states=new_states,
+            alphabet=new_alphabet,
+            transitions=new_transitions,
+            initial_state=new_initial,
+            final_states=new_final
+        )
     
-    def get_transitions_to(self, state: IState) -> Set[ITransition]:
-        """Récupère les transitions arrivant à un état."""
-        return {
-            t for t in self._transitions
-            if t.target_state == state
-        }
+    def union(self, other: 'DFA') -> 'DFA':
+        """
+        Calcule l'union de deux DFA.
+        
+        :param other: Autre DFA
+        :type other: DFA
+        :return: DFA acceptant l'union des langages
+        :rtype: DFA
+        """
+        # Pour l'instant, implémentation simplifiée
+        # TODO: Implémenter l'union complète
+        raise NotImplementedError("Union operation not yet fully implemented")
     
-    def get_transitions(
-        self, source: IState, symbol: Optional[str]
-    ) -> Set[ITransition]:
-        """Récupère les transitions pour un état et un symbole donnés."""
-        return {
-            t for t in self._transitions
-            if t.source_state == source and t.symbol == symbol
-        }
+    def intersection(self, other: 'DFA') -> 'DFA':
+        """
+        Calcule l'intersection de deux DFA.
+        
+        :param other: Autre DFA
+        :type other: DFA
+        :return: DFA acceptant l'intersection des langages
+        :rtype: DFA
+        """
+        # Pour l'instant, implémentation simplifiée
+        # TODO: Implémenter l'intersection complète
+        raise NotImplementedError("Intersection operation not yet fully implemented")
     
-    def is_valid(self) -> bool:
-        """Vérifie si l'automate est valide."""
-        errors = self.validate()
-        return len(errors) == 0
+    def complement(self) -> 'DFA':
+        """
+        Calcule le complément du DFA.
+        
+        :return: DFA acceptant le complément du langage
+        :rtype: DFA
+        """
+        # Pour l'instant, implémentation simplifiée
+        # TODO: Implémenter le complément complet
+        raise NotImplementedError("Complement operation not yet fully implemented")
     
-    def validate(self) -> List[str]:
-        """Valide l'automate et retourne la liste des erreurs."""
-        errors = []
+    def concatenation(self, other: 'DFA') -> 'DFA':
+        """
+        Calcule la concaténation de deux DFA.
         
-        # Vérifier qu'il y a au moins un état initial
-        if not self._initial_states:
-            errors.append("DFA must have at least one initial state")
+        :param other: Autre DFA
+        :type other: DFA
+        :return: DFA acceptant la concaténation des langages
+        :rtype: DFA
+        """
+        # Pour l'instant, implémentation simplifiée
+        # TODO: Implémenter la concaténation complète
+        raise NotImplementedError("Concatenation operation not yet fully implemented")
+    
+    def kleene_star(self) -> 'DFA':
+        """
+        Calcule l'étoile de Kleene du DFA.
         
-        # Vérifier que tous les états initiaux sont dans l'ensemble des états
-        for state in self._initial_states:
-            if state not in self._states:
-                errors.append(f"Initial state {state} is not in states set")
+        :return: DFA acceptant l'étoile de Kleene du langage
+        :rtype: DFA
+        """
+        # Pour l'instant, implémentation simplifiée
+        # TODO: Implémenter l'étoile de Kleene complète
+        raise NotImplementedError("Kleene star operation not yet fully implemented")
+    
+    def to_nfa(self) -> 'NFA':
+        """
+        Convertit le DFA en NFA.
         
-        # Vérifier que tous les états finaux sont dans l'ensemble des états
-        for state in self._final_states:
-            if state not in self._states:
-                errors.append(f"Final state {state} is not in states set")
-        
-        # Vérifier que toutes les transitions utilisent des états valides
-        for transition in self._transitions:
-            if transition.source_state not in self._states:
-                errors.append(f"Transition source state {transition.source_state} is not in states set")
-            if transition.target_state not in self._states:
-                errors.append(f"Transition target state {transition.target_state} is not in states set")
-        
-        return errors
+        :return: NFA équivalent
+        :rtype: NFA
+        """
+        # Un DFA est un cas particulier de NFA
+        # Cette méthode sera implémentée quand la classe NFA sera créée
+        raise NotImplementedError("NFA class not yet implemented")
     
     def to_dict(self) -> Dict[str, Any]:
-        """Sérialise l'automate en dictionnaire."""
+        """
+        Sérialise l'automate en dictionnaire.
+        
+        :return: Dictionnaire représentant l'automate
+        :rtype: Dict[str, Any]
+        """
         return {
-            "automaton_type": self.automaton_type.value,
-            "states": [
-                {
-                    "identifier": state.identifier,
-                    "state_type": state.state_type.value,
-                    "metadata": dict(state.metadata)
-                }
-                for state in self._states
-            ],
-            "initial_states": [state.identifier for state in self._initial_states],
-            "final_states": [state.identifier for state in self._final_states],
+            "states": list(self._states),
             "alphabet": list(self._alphabet),
-            "transitions": [
-                {
-                    "source_state": transition.source_state.identifier,
-                    "target_state": transition.target_state.identifier,
-                    "symbol": transition.symbol,
-                    "transition_type": transition.transition_type.value,
-                    "conditions": dict(transition.conditions),
-                    "actions": dict(transition.actions)
-                }
-                for transition in self._transitions
-            ]
+            "transitions": {
+                f"{source},{symbol}": target
+                for (source, symbol), target in self._transitions.items()
+            },
+            "initial_state": self._initial_state,
+            "final_states": list(self._final_states)
         }
     
-    def from_dict(self, data: Dict[str, Any]) -> None:
-        """Désérialise l'automate depuis un dictionnaire."""
-        # Cette méthode sera implémentée plus tard
-        raise NotImplementedError("from_dict not yet implemented")
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'DFA':
+        """
+        Crée un DFA depuis un dictionnaire.
+        
+        :param data: Dictionnaire représentant l'automate
+        :type data: Dict[str, Any]
+        :return: Instance du DFA
+        :rtype: DFA
+        """
+        states = set(data["states"])
+        alphabet = set(data["alphabet"])
+        transitions = {
+            tuple(key.split(",")): target
+            for key, target in data["transitions"].items()
+        }
+        initial_state = data["initial_state"]
+        final_states = set(data["final_states"])
+        
+        return cls(
+            states=states,
+            alphabet=alphabet,
+            transitions=transitions,
+            initial_state=initial_state,
+            final_states=final_states
+        )
     
     def __str__(self) -> str:
-        """Représentation string de l'automate."""
+        """
+        Représentation string de l'automate.
+        
+        :return: Représentation string de l'automate
+        :rtype: str
+        """
         return f"DFA(states={len(self._states)}, transitions={len(self._transitions)})"
     
     def __repr__(self) -> str:
-        """Représentation détaillée de l'automate."""
+        """
+        Représentation détaillée de l'automate.
+        
+        :return: Représentation détaillée de l'automate
+        :rtype: str
+        """
         return (
-            f"DFA(states={self._states}, initial_states={self._initial_states}, "
-            f"final_states={self._final_states}, alphabet={self._alphabet}, "
+            f"DFA(states={self._states}, alphabet={self._alphabet}, "
+            f"initial_state='{self._initial_state}', final_states={self._final_states}, "
             f"transitions={self._transitions})"
         )
