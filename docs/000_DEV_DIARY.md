@@ -1,5 +1,71 @@
 # Journal de Développement - Baobab Automata
 
+## 2024-12-19 18:30 - Implémentation de la Classe NFA (Phase 002.002)
+
+### Description de la modification
+Implémentation complète de la classe NFA selon les spécifications détaillées 006_PHASE_002_002_NFA_IMPLEMENTATION.md.
+
+### Justification
+La classe NFA est essentielle pour la Phase 002 car elle étend les capacités du DFA en permettant des transitions multiples pour un même symbole. Elle fournit la base pour les conversions et opérations sur les langages réguliers.
+
+### Méthode
+1. **Exceptions personnalisées** : Création de `NFAError`, `InvalidNFAError`, `InvalidTransitionError`, `ConversionError`
+2. **Classe NFA** : Implémentation complète avec :
+   - Constructeur avec validation automatique
+   - Méthodes de base : `accepts()`, `get_transition()`, `get_transitions()`, `is_final_state()`, `get_reachable_states()`
+   - Algorithme de reconnaissance non-déterministe avec simulation
+   - Gestion des transitions epsilon avec fermeture epsilon
+   - Conversion NFA → DFA (algorithme des sous-ensembles)
+   - Méthodes spécialisées : `get_accessible_states()`, `get_coaccessible_states()`, `get_useful_states()`
+   - Opérations sur les langages : `union()`, `concatenation()`, `kleene_star()`
+   - Méthodes utilitaires : `validate()`, `to_dict()`, `from_dict()`
+3. **Tests unitaires** : 25 tests complets couvrant tous les aspects de la classe
+4. **Documentation** : Docstrings reStructuredText complètes pour toutes les méthodes
+
+### Résultats
+- **Classe NFA** : Implémentation complète et fonctionnelle
+- **Exceptions** : Hiérarchie complète d'exceptions personnalisées
+- **Tests** : 25 tests unitaires passent avec succès
+- **Algorithmes** : Reconnaissance non-déterministe et conversion DFA implémentés
+- **Opérations** : Union, concaténation et étoile de Kleene fonctionnelles
+- **Sérialisation** : Support complet de la sérialisation/désérialisation
+- **Validation** : Vérification automatique de la cohérence des NFA
+- **Transitions epsilon** : Gestion complète des transitions vides
+
+### Fichiers créés/modifiés
+- `src/baobab_automata/finite/nfa.py` : Classe NFA complète
+- `src/baobab_automata/finite/nfa_exceptions.py` : Exceptions personnalisées
+- `src/baobab_automata/finite/__init__.py` : Mise à jour des exports
+- `tests/finite/test_nfa.py` : Tests unitaires complets
+
+### Critères de validation atteints
+- ✅ Classe NFA implémentée selon les spécifications
+- ✅ Algorithme de reconnaissance non-déterministe fonctionnel
+- ✅ Conversion NFA → DFA opérationnelle (algorithme des sous-ensembles)
+- ✅ Tests unitaires avec couverture complète (25 tests)
+- ✅ Documentation complète avec docstrings
+- ✅ Gestion d'erreurs robuste avec exceptions personnalisées
+- ✅ Validation automatique de la cohérence
+- ✅ Support de la sérialisation/désérialisation
+- ✅ Opérations sur les langages fonctionnelles
+- ✅ Gestion des transitions epsilon
+
+### Fonctionnalités implémentées
+- **Construction et validation** : NFA avec validation automatique
+- **Reconnaissance de mots** : Algorithme de simulation non-déterministe avec fermeture epsilon
+- **Conversion DFA** : Algorithme des sous-ensembles pour conversion NFA → DFA
+- **Opérations sur les langages** : Union, concaténation, étoile de Kleene
+- **Méthodes spécialisées** : États accessibles, cœurs et utiles
+- **Utilitaires** : Validation, sérialisation, représentation
+- **Tests** : Couverture complète de tous les cas d'usage
+
+### Fonctionnalités en attente
+- **Conversion ε-NFA** : Méthode `to_epsilon_nfa()` (en attente de la classe ε-NFA)
+- **Optimisations avancées** : Minimisation NFA (en attente des algorithmes d'optimisation)
+
+### Prochaines étapes
+La classe NFA est maintenant prête et peut servir de base pour l'implémentation des ε-NFA et des algorithmes de conversion avancés dans les phases suivantes.
+
 ## 2024-12-19 16:45 - Implémentation de la Classe DFA (Phase 002.001)
 
 ### Description de la modification
