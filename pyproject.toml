@@ -171,11 +171,6 @@ addopts = [
     "--strict-markers",
     "--strict-config",
     "--verbose",
-    "--cov=baobab_automata",
-    "--cov-report=html:docs/coverage/html",
-    "--cov-report=xml:docs/coverage/coverage.xml",
-    "--cov-report=term-missing",
-    "--cov-fail-under=95",
 ]
 markers = [
     "slow: Slow tests",

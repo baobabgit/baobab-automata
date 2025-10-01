@@ -54,6 +54,17 @@ from .grammar_exceptions import (
     GrammarTimeoutError,
     GrammarMemoryError,
 )
+from .conversion_algorithms import PushdownConversionAlgorithms
+from .conversion_exceptions import (
+    ConversionError,
+    ConversionTimeoutError,
+    ConversionMemoryError,
+    ConversionValidationError,
+    ConversionOptimizationError,
+    ConversionEquivalenceError,
+    ConversionNotPossibleError,
+    ConversionConfigurationError,
+)
 
 __all__ = [
     "AbstractPushdownAutomaton",
@@ -99,4 +110,13 @@ __all__ = [
     "GrammarOptimizationError",
     "GrammarTimeoutError",
     "GrammarMemoryError",
+    "PushdownConversionAlgorithms",
+    "ConversionError",
+    "ConversionTimeoutError",
+    "ConversionMemoryError",
+    "ConversionValidationError",
+    "ConversionOptimizationError",
+    "ConversionEquivalenceError",
+    "ConversionNotPossibleError",
+    "ConversionConfigurationError",
 ]
