@@ -65,6 +65,19 @@ from .conversion_exceptions import (
     ConversionNotPossibleError,
     ConversionConfigurationError,
 )
+from .specialized_algorithms import SpecializedAlgorithms, ParseTree, AlgorithmStats
+from .specialized_exceptions import (
+    AlgorithmError,
+    AlgorithmTimeoutError,
+    AlgorithmMemoryError,
+    AlgorithmValidationError,
+    AlgorithmOptimizationError,
+    CYKError,
+    EarleyError,
+    LeftRecursionError,
+    EmptyProductionError,
+    NormalizationError,
+)
 
 __all__ = [
     "AbstractPushdownAutomaton",
@@ -119,4 +132,17 @@ __all__ = [
     "ConversionEquivalenceError",
     "ConversionNotPossibleError",
     "ConversionConfigurationError",
+    "SpecializedAlgorithms",
+    "ParseTree",
+    "AlgorithmStats",
+    "AlgorithmError",
+    "AlgorithmTimeoutError",
+    "AlgorithmMemoryError",
+    "AlgorithmValidationError",
+    "AlgorithmOptimizationError",
+    "CYKError",
+    "EarleyError",
+    "LeftRecursionError",
+    "EmptyProductionError",
+    "NormalizationError",
 ]
