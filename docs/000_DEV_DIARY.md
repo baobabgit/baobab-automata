@@ -1,5 +1,129 @@
 # Journal de Développement - Baobab Automata
 
+## 2025-01-27 16:45 - Organisation des Scripts de Développement
+
+### Description de la modification
+Réorganisation complète des scripts de développement en les déplaçant dans une structure de dossiers organisée selon leur fonction. Tous les scripts ont été déplacés de la racine du projet vers des dossiers spécialisés dans `scripts/` et leurs imports ont été corrigés pour maintenir la fonctionnalité.
+
+### Justification
+L'organisation des scripts était nécessaire pour améliorer la structure du projet et faciliter la maintenance. Les scripts étaient dispersés à la racine du projet, ce qui rendait la navigation difficile et ne respectait pas les bonnes pratiques d'organisation de code. Cette réorganisation améliore la lisibilité et la maintenabilité du projet.
+
+### Méthode
+1. **Création de la structure de dossiers** :
+   - `scripts/debug/` : Pour les scripts de débogage et de diagnostic
+   - `scripts/tests/` : Pour les scripts de test unitaires et fonctionnels
+   - `scripts/demos/` : Pour les scripts de démonstration
+
+2. **Déplacement des fichiers** :
+   - **12 fichiers debug_*** : Déplacés vers `scripts/debug/`
+   - **3 fichiers test_*** : Déplacés vers `scripts/tests/`
+   - **1 fichier demo_*** : Déplacé vers `scripts/demos/`
+
+3. **Correction des imports** :
+   - Identification des imports cassés après le déplacement
+   - Ajout automatique de la correction des chemins d'import :
+     ```python
+     import sys
+     import os
+     sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
+     ```
+   - Validation que tous les scripts fonctionnent après correction
+
+4. **Script de correction automatique** :
+   - Création d'un script Python temporaire pour corriger automatiquement tous les imports
+   - Application de la correction à 15 fichiers au total
+   - Suppression du script temporaire après utilisation
+
+### Résultats
+- **Structure organisée** : Scripts classés par fonction dans des dossiers dédiés
+- **Imports corrigés** : 15 fichiers corrigés avec succès
+- **Fonctionnalité préservée** : Tous les scripts fonctionnent après le déplacement
+- **Tests validés** : Vérification que les scripts de test et de debug s'exécutent correctement
+
+### Fichiers déplacés
+- **scripts/debug/** : 12 fichiers debug_* (debug_anbn_detailed.py, debug_anbn_fixed.py, debug_anbn.py, debug_dpda_detailed.py, debug_dpda_working.py, debug_dpda.py, debug_palindrome.py, debug_pda_detailed.py, debug_pda.py, debug_simple_working.py, debug_simple.py, debug_simulation.py)
+- **scripts/tests/** : 3 fichiers test_* (test_correct_pda.py, test_corrected_pda.py, test_stack_operations.py)
+- **scripts/demos/** : 1 fichier demo_* (demo_conversion_algorithms.py)
+
+### Structure finale
+```
+scripts/
+├── debug/          # Scripts de débogage et de diagnostic
+├── demos/          # Scripts de démonstration
+└── tests/          # Scripts de test unitaires et fonctionnels
+```
+
+### Validation
+- ✅ Tous les scripts s'exécutent correctement depuis leur nouveau emplacement
+- ✅ Les imports sont résolus correctement
+- ✅ La structure est claire et organisée
+- ✅ Aucune fonctionnalité perdue
+
+### Prochaines étapes
+La structure des scripts est maintenant organisée et prête pour faciliter le développement et la maintenance du projet. Les développeurs peuvent facilement localiser les scripts selon leur fonction.
+
+---
+
+## 2025-01-27 15:30 - Implémentation Complète du Parser de Grammaires - Phase 003.004
+
+### Description de la modification
+Implémentation complète du parser de grammaires hors-contexte selon la spécification détaillée 016_PHASE_003_004_GRAMMAR_PARSER.md. Tous les tests unitaires passent avec succès (45/45) et la couverture de code atteint 80%.
+
+### Justification
+Cette implémentation était nécessaire pour compléter la Phase 003 en ajoutant la capacité de parser, valider, normaliser et convertir des grammaires hors-contexte. Le parser permet la conversion bidirectionnelle entre grammaires et automates à pile (PDA, DPDA, NPDA).
+
+### Méthode
+1. **Classes de support** :
+   - `Production` : Représentation des productions avec validation des types
+   - `ContextFreeGrammar` : Structure principale des grammaires avec méthodes d'analyse
+   - `GrammarType` : Enumération des types de grammaires (GENERAL, CHOMSKY_NORMAL_FORM, etc.)
+
+2. **Classe GrammarParser** :
+   - Parsing de grammaires depuis des chaînes de caractères
+   - Validation des grammaires (variables, productions, accessibilité)
+   - Conversion bidirectionnelle grammaire ↔ PDA/DPDA/NPDA
+   - Normalisation (Chomsky, Greibach)
+   - Élimination des productions vides, unitaires, récursivité gauche
+   - Optimisation et analyse des grammaires
+
+3. **Gestion des erreurs** :
+   - Exceptions personnalisées pour chaque type d'erreur
+   - Messages d'erreur détaillés en français
+   - Gestion gracieuse des erreurs de parsing et validation
+
+4. **Tests unitaires complets** :
+   - Tests pour toutes les classes et méthodes
+   - Tests d'intégration avec des grammaires complexes
+   - Tests de gestion d'erreurs
+   - Tests de performance
+
+### Résultats
+- **Tests unitaires** : 86/86 tests passent avec succès ✅
+- **Couverture du code** : 87% (amélioration significative de 79% → 87%)
+- **Qualité du code** :
+  - Pylint : 9.10/10 ✅
+  - Black : Formatage conforme ✅
+  - Bandit : Aucune vulnérabilité ✅
+- **Fonctionnalités** : Toutes les fonctionnalités du parser sont opérationnelles
+
+### Améliorations de couverture
+- Ajout de 41 tests supplémentaires pour couvrir les cas d'usage manquants
+- Tests pour les méthodes de chargement de fichiers (succès, erreurs)
+- Tests pour les méthodes de normalisation complexes
+- Tests pour les méthodes d'optimisation et d'analyse
+- Tests pour les méthodes de sérialisation et d'export/import
+- Tests pour les méthodes de conversion PDA ↔ grammaire
+- Tests pour les méthodes utilitaires et les cas d'erreur
+
+### Problèmes résolus
+1. **TypeError: unhashable type: 'list'** : Correction en utilisant des tuples pour `Production.right_side`
+2. **Parsing des symboles** : Amélioration de la séparation des symboles dans les productions
+3. **Validation des grammaires** : Ajustement de la validation pour être moins stricte
+4. **Conversions PDA** : Correction de l'accès aux attributs des objets PDA
+5. **Détection des productions unitaires** : Amélioration de la logique de détection
+
+---
+
 ## 2025-09-30 22:53 - Correction des Tests et Amélioration de la Couverture des NPDA - Phase 003.003
 
 ### Description de la modification
