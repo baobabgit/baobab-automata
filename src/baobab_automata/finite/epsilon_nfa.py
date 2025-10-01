@@ -5,15 +5,17 @@ Ce module contient la classe EpsilonNFA qui implémente l'interface AbstractFini
 pour les automates finis non-déterministes avec transitions epsilon selon les spécifications détaillées.
 """
 
-from typing import Any, Dict, FrozenSet, Optional, Set, Tuple
+from typing import Any, Dict, FrozenSet, Optional, Set, Tuple, TYPE_CHECKING
 
 from .abstract_finite_automaton import AbstractFiniteAutomaton
 from .epsilon_nfa_exceptions import (
     ConversionError,
-    EpsilonNFAError,
     InvalidEpsilonNFAError,
-    InvalidEpsilonTransitionError,
 )
+
+if TYPE_CHECKING:
+    from .nfa import NFA
+    from .dfa import DFA
 
 
 class EpsilonNFA(AbstractFiniteAutomaton):
@@ -28,7 +30,7 @@ class EpsilonNFA(AbstractFiniteAutomaton):
     :type states: Set[str]
     :param alphabet: Alphabet de l'automate (sans epsilon)
     :type alphabet: Set[str]
-    :param transitions: Fonction de transition (état, symbole) -> ensemble d'états
+    :param transitions: Fonction de transition (état, symbole) vers un ensemble d'états
     :type transitions: Dict[Tuple[str, str], Set[str]]
     :param initial_state: État initial
     :type initial_state: str
@@ -54,7 +56,7 @@ class EpsilonNFA(AbstractFiniteAutomaton):
         :type states: Set[str]
         :param alphabet: Alphabet de l'automate (sans epsilon)
         :type alphabet: Set[str]
-        :param transitions: Fonction de transition (état, symbole) -> ensemble d'états
+        :param transitions: Fonction de transition (état, symbole) vers un ensemble d'états
         :type transitions: Dict[Tuple[str, str], Set[str]]
         :param initial_state: État initial
         :type initial_state: str
@@ -517,36 +519,42 @@ class EpsilonNFA(AbstractFiniteAutomaton):
 
         # Combiner les états (avec préfixes pour éviter les conflits)
         new_states = {new_initial}
-        new_states.update(f"enfa1_{state}" for state in self._states)
-        new_states.update(f"enfa2_{state}" for state in other._states)
+        new_states.update(f"enfa1_{state}" for state in self.states)
+        new_states.update(f"enfa2_{state}" for state in other.states)
 
         # Combiner les alphabets
-        new_alphabet = self._alphabet.union(other._alphabet)
+        new_alphabet = self.alphabet.union(other.alphabet)
 
         # Combiner les transitions
         new_transitions = {}
 
         # Transitions du premier ε-NFA
-        for (source, symbol), targets in self._transitions.items():
-            new_source = f"enfa1_{source}"
-            new_targets = {f"enfa1_{target}" for target in targets}
-            new_transitions[(new_source, symbol)] = new_targets
+        for source in self.states:
+            for symbol in self.alphabet.union({self._epsilon_symbol}):
+                targets = self.get_transitions(source, symbol)
+                if targets:
+                    new_source = f"enfa1_{source}"
+                    new_targets = {f"enfa1_{target}" for target in targets}
+                    new_transitions[(new_source, symbol)] = new_targets
 
         # Transitions du second ε-NFA
-        for (source, symbol), targets in other._transitions.items():
-            new_source = f"enfa2_{source}"
-            new_targets = {f"enfa2_{target}" for target in targets}
-            new_transitions[(new_source, symbol)] = new_targets
+        for source in other.states:
+            for symbol in other.alphabet.union({other.epsilon_symbol}):
+                targets = other.get_transitions(source, symbol)
+                if targets:
+                    new_source = f"enfa2_{source}"
+                    new_targets = {f"enfa2_{target}" for target in targets}
+                    new_transitions[(new_source, symbol)] = new_targets
 
         # Ajouter les transitions depuis le nouvel état initial
         new_transitions[(new_initial, self._epsilon_symbol)] = {
-            f"enfa1_{self._initial_state}",
-            f"enfa2_{other._initial_state}",
+            f"enfa1_{self.initial_state}",
+            f"enfa2_{other.initial_state}",
         }
 
         # Combiner les états finaux
-        new_final_states = {f"enfa1_{state}" for state in self._final_states}
-        new_final_states.update(f"enfa2_{state}" for state in other._final_states)
+        new_final_states = {f"enfa1_{state}" for state in self.final_states}
+        new_final_states.update(f"enfa2_{state}" for state in other.final_states)
 
         return EpsilonNFA(
             states=new_states,
@@ -567,39 +575,45 @@ class EpsilonNFA(AbstractFiniteAutomaton):
         :rtype: EpsilonNFA
         """
         # Combiner les états (avec préfixes pour éviter les conflits)
-        new_states = {f"enfa1_{state}" for state in self._states}
-        new_states.update(f"enfa2_{state}" for state in other._states)
+        new_states = {f"enfa1_{state}" for state in self.states}
+        new_states.update(f"enfa2_{state}" for state in other.states)
 
         # Combiner les alphabets
-        new_alphabet = self._alphabet.union(other._alphabet)
+        new_alphabet = self.alphabet.union(other.alphabet)
 
         # Combiner les transitions
         new_transitions = {}
 
         # Transitions du premier ε-NFA
-        for (source, symbol), targets in self._transitions.items():
-            new_source = f"enfa1_{source}"
-            new_targets = {f"enfa1_{target}" for target in targets}
-            new_transitions[(new_source, symbol)] = new_targets
+        for source in self.states:
+            for symbol in self.alphabet.union({self._epsilon_symbol}):
+                targets = self.get_transitions(source, symbol)
+                if targets:
+                    new_source = f"enfa1_{source}"
+                    new_targets = {f"enfa1_{target}" for target in targets}
+                    new_transitions[(new_source, symbol)] = new_targets
 
         # Transitions du second ε-NFA
-        for (source, symbol), targets in other._transitions.items():
-            new_source = f"enfa2_{source}"
-            new_targets = {f"enfa2_{target}" for target in targets}
-            new_transitions[(new_source, symbol)] = new_targets
+        for source in other.states:
+            for symbol in other.alphabet.union({other.epsilon_symbol}):
+                targets = other.get_transitions(source, symbol)
+                if targets:
+                    new_source = f"enfa2_{source}"
+                    new_targets = {f"enfa2_{target}" for target in targets}
+                    new_transitions[(new_source, symbol)] = new_targets
 
         # Connecter les états finaux du premier ε-NFA à l'état initial du second
-        for final_state in self._final_states:
+        for final_state in self.final_states:
             transition_key = (f"enfa1_{final_state}", self._epsilon_symbol)
             if transition_key not in new_transitions:
                 new_transitions[transition_key] = set()
-            new_transitions[transition_key].add(f"enfa2_{other._initial_state}")
+            new_transitions[transition_key].add(f"enfa2_{other.initial_state}")
 
         # Nouvel état initial (celui du premier ε-NFA)
-        new_initial = f"enfa1_{self._initial_state}"
+        new_initial = f"enfa1_{self.initial_state}"
 
         # Nouveaux états finaux (ceux du second ε-NFA)
-        new_final_states = {f"enfa2_{state}" for state in other._final_states}
+        new_final_states = {f"enfa2_{state}" for state in other.final_states}
 
         return EpsilonNFA(
             states=new_states,
@@ -683,7 +697,9 @@ class EpsilonNFA(AbstractFiniteAutomaton):
                     return False
 
             return True
-        except Exception:
+        except (AttributeError, TypeError, ValueError, KeyError):
+            # Capturer les erreurs spécifiques qui peuvent survenir
+            # lors de la validation de l'automate
             return False
 
     def to_dict(self) -> Dict[str, Any]:

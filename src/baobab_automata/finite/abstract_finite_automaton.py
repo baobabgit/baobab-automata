@@ -26,7 +26,6 @@ class AbstractFiniteAutomaton(ABC):
         :return: Ensemble des identifiants des états
         :rtype: Set[str]
         """
-        pass
 
     @property
     @abstractmethod
@@ -37,7 +36,6 @@ class AbstractFiniteAutomaton(ABC):
         :return: Ensemble des symboles de l'alphabet
         :rtype: Set[str]
         """
-        pass
 
     @property
     @abstractmethod
@@ -48,7 +46,6 @@ class AbstractFiniteAutomaton(ABC):
         :return: Identifiant de l'état initial
         :rtype: str
         """
-        pass
 
     @property
     @abstractmethod
@@ -59,7 +56,6 @@ class AbstractFiniteAutomaton(ABC):
         :return: Ensemble des identifiants des états finaux
         :rtype: Set[str]
         """
-        pass
 
     @abstractmethod
     def accepts(self, word: str) -> bool:
@@ -71,7 +67,6 @@ class AbstractFiniteAutomaton(ABC):
         :return: True si le mot est accepté, False sinon
         :rtype: bool
         """
-        pass
 
     @abstractmethod
     def get_transition(self, state: str, symbol: str) -> Optional[str]:
@@ -85,7 +80,6 @@ class AbstractFiniteAutomaton(ABC):
         :return: État de destination ou None si la transition n'existe pas
         :rtype: Optional[str]
         """
-        pass
 
     @abstractmethod
     def is_final_state(self, state: str) -> bool:
@@ -97,7 +91,6 @@ class AbstractFiniteAutomaton(ABC):
         :return: True si l'état est final, False sinon
         :rtype: bool
         """
-        pass
 
     @abstractmethod
     def get_reachable_states(self) -> Set[str]:
@@ -107,7 +100,6 @@ class AbstractFiniteAutomaton(ABC):
         :return: Ensemble des états accessibles
         :rtype: Set[str]
         """
-        pass
 
     @abstractmethod
     def validate(self) -> bool:
@@ -117,7 +109,6 @@ class AbstractFiniteAutomaton(ABC):
         :return: True si l'automate est valide, False sinon
         :rtype: bool
         """
-        pass
 
     @abstractmethod
     def to_dict(self) -> Dict[str, Any]:
@@ -127,7 +118,6 @@ class AbstractFiniteAutomaton(ABC):
         :return: Dictionnaire représentant l'automate
         :rtype: Dict[str, Any]
         """
-        pass
 
     @classmethod
     @abstractmethod
@@ -140,4 +130,3 @@ class AbstractFiniteAutomaton(ABC):
         :return: Instance de l'automate
         :rtype: AbstractFiniteAutomaton
         """
-        pass

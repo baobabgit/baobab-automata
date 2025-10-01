@@ -57,7 +57,6 @@ class IState(ABC):
         :return: Identifiant unique de l'état
         :rtype: str
         """
-        pass
 
     @property
     @abstractmethod
@@ -66,9 +65,8 @@ class IState(ABC):
         Type de l'état.
 
         :return: Type de l'état selon l'énumération StateType
-        :rtype: StateType
+        :rtype StateType:
         """
-        pass
 
     @property
     @abstractmethod

@@ -5,7 +5,7 @@ Ce module fournit des outils pour analyser les dépendances entre les composants
 de la phase 2 et optimiser l'ordre de développement.
 """
 
-from typing import Dict, List, Any, Optional, Set
+from typing import Dict, List, Any
 from dataclasses import dataclass
 from enum import Enum
 import time
@@ -60,8 +60,6 @@ class DevelopmentPhase:
 
 class DependencyAnalysisError(Exception):
     """Exception levée lors d'erreurs dans l'analyse des dépendances."""
-
-    pass
 
 
 class DependencyAnalyzer:
@@ -195,7 +193,7 @@ class DependencyAnalyzer:
         except Exception as e:
             raise DependencyAnalysisError(
                 f"Erreur lors de l'initialisation des composants: {e}"
-            )
+            ) from e
 
     def _initialize_dependencies(self) -> None:
         """Initialise les dépendances entre composants."""
@@ -309,7 +307,7 @@ class DependencyAnalyzer:
         except Exception as e:
             raise DependencyAnalysisError(
                 f"Erreur lors de l'initialisation des dépendances: {e}"
-            )
+            ) from e
 
     def _initialize_phases(self) -> None:
         """Initialise les phases de développement."""
@@ -340,7 +338,7 @@ class DependencyAnalyzer:
         except Exception as e:
             raise DependencyAnalysisError(
                 f"Erreur lors de l'initialisation des phases: {e}"
-            )
+            ) from e
 
     def analyze_dependencies(self) -> Dict[str, Any]:
         """Analyse les dépendances et retourne un rapport complet."""
@@ -379,7 +377,7 @@ class DependencyAnalyzer:
         except Exception as e:
             raise DependencyAnalysisError(
                 f"Erreur lors de l'analyse des dépendances: {e}"
-            )
+            ) from e
 
     def get_optimal_development_order(self) -> List[DevelopmentPhase]:
         """Retourne l'ordre optimal de développement des phases."""
@@ -399,7 +397,7 @@ class DependencyAnalyzer:
         except Exception as e:
             raise DependencyAnalysisError(
                 f"Erreur lors du calcul de l'ordre optimal: {e}"
-            )
+            ) from e
 
     def get_parallel_components(self) -> Dict[str, List[str]]:
         """Identifie les composants qui peuvent être développés en parallèle."""
@@ -415,7 +413,7 @@ class DependencyAnalyzer:
         except Exception as e:
             raise DependencyAnalysisError(
                 f"Erreur lors de l'identification des composants parallèles: {e}"
-            )
+            ) from e
 
     def get_component_dependencies(self, component: str) -> List[ComponentDependency]:
         """Retourne les dépendances d'un composant."""
@@ -457,7 +455,7 @@ class DependencyAnalyzer:
         except Exception as e:
             raise DependencyAnalysisError(
                 f"Erreur lors de la génération de la feuille de route: {e}"
-            )
+            ) from e
 
     def _build_dependency_graph(self) -> Dict[str, List[str]]:
         """Construit le graphe des dépendances."""

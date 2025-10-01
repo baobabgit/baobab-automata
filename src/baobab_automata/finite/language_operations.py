@@ -27,9 +27,9 @@ class LanguageOperations:
     la complémentation, la concaténation, l'étoile de Kleene,
     les homomorphismes et d'autres opérations spécialisées.
 
-    :param optimization_enabled: Active les optimisations (défaut: True)
+    :param optimization_enabled: Active les optimisations (défaut : True)
     :type optimization_enabled: bool
-    :param max_states: Limite du nombre d'états pour les opérations (défaut: 1000)
+    :param max_states: Limite du nombre d'états pour les opérations (défaut : 1000)
     :type max_states: int
     """
 
@@ -96,13 +96,12 @@ class LanguageOperations:
         alphabet = automaton1.alphabet | automaton2.alphabet | {"epsilon"}
 
         # Construction des transitions
-        transitions = {}
-
-        # Transitions epsilon depuis le nouvel état initial
-        transitions[(new_initial, "epsilon")] = {
+        transitions = {(new_initial, "epsilon"): {
             f"1_{automaton1.initial_state}",
             f"2_{automaton2.initial_state}",
-        }
+        }}
+
+        # Transitions epsilon depuis le nouvel état initial
 
         # Transitions du premier automate
         for state in automaton1.states:
@@ -198,7 +197,7 @@ class LanguageOperations:
         """
         Calcule le complément d'un langage régulier.
 
-        Le complément L' accepte tous les mots non acceptés par L.
+        Le complément L'accepte tous les mots non acceptés par L.
 
         :param automaton: Automate à complémenter
         :type automaton: AbstractFiniteAutomaton
@@ -215,7 +214,7 @@ class LanguageOperations:
         # Conversion vers DFA si nécessaire
         if not isinstance(automaton, DFA):
             # Pour simplifier, on suppose que l'automate peut être converti en DFA
-            # Dans une implémentation complète, on utiliserait les algorithmes de conversion
+            # Dans une implémentation complète, on utiliserait les algorithmes de conversion.
             raise OperationValidationError(
                 "Automaton must be deterministic for complement"
             )
@@ -355,10 +354,8 @@ class LanguageOperations:
         alphabet = automaton.alphabet | {"epsilon"}
 
         # Construction des transitions
-        transitions = {}
-
         # Transition epsilon du nouvel état initial vers l'ancien état initial
-        transitions[(new_initial, "epsilon")] = {f"k_{automaton.initial_state}"}
+        transitions = {(new_initial, "epsilon"): {f"k_{automaton.initial_state}"}}
 
         # Transitions de l'automate original
         for state in automaton.states:
@@ -689,7 +686,7 @@ class LanguageOperations:
         Calcule la différence de deux langages réguliers.
 
         La différence L1 - L2 accepte tous les mots de L1 qui ne sont pas dans L2.
-        Équivalence: L1 - L2 = L1 ∩ L2'
+        Équivalence : L1 - L2 = L1 ∩ L2'
 
         :param automaton1: Premier automate
         :type automaton1: AbstractFiniteAutomaton
@@ -715,7 +712,7 @@ class LanguageOperations:
 
         La différence symétrique L1 Δ L2 accepte tous les mots qui sont dans
         L1 ou L2 mais pas dans les deux.
-        Équivalence: L1 Δ L2 = (L1 ∪ L2) - (L1 ∩ L2)
+        Équivalence : L1 Δ L2 = (L1 ∪ L2) - (L1 ∩ L2)
 
         :param automaton1: Premier automate
         :type automaton1: AbstractFiniteAutomaton
@@ -745,7 +742,7 @@ class LanguageOperations:
         :type n: int
         :return: Automate acceptant la puissance n-ième du langage
         :rtype: AbstractFiniteAutomaton
-        :raises OperationValidationError: Si n est négatif
+        :raises OperationValidationError: Si 'n' est négatif
         """
         # Validation des paramètres
         if not isinstance(automaton, AbstractFiniteAutomaton):

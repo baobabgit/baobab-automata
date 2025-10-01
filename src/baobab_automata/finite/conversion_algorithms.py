@@ -6,7 +6,7 @@ et expressions régulières selon les spécifications détaillées.
 """
 
 import time
-from typing import Any, Dict, Optional, Set, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple
 
 from .abstract_finite_automaton import AbstractFiniteAutomaton
 from .dfa import DFA
@@ -17,25 +17,17 @@ from .nfa import NFA
 class ConversionError(Exception):
     """Exception de base pour les erreurs de conversion."""
 
-    pass
-
 
 class ConversionTimeoutError(ConversionError):
     """Timeout lors de la conversion."""
-
-    pass
 
 
 class ConversionMemoryError(ConversionError):
     """Erreur de mémoire lors de la conversion."""
 
-    pass
-
 
 class ConversionValidationError(ConversionError):
     """Erreur de validation de la conversion."""
-
-    pass
 
 
 class ConversionStats:
@@ -108,9 +100,9 @@ class ConversionAlgorithms:
     Cette classe implémente tous les algorithmes de conversion entre DFA, NFA,
     ε-NFA et expressions régulières avec optimisations et mise en cache.
 
-    :param optimization_enabled: Active les optimisations (défaut: True)
+    :param optimization_enabled: Active les optimisations (défaut : True)
     :type optimization_enabled: bool
-    :param max_states: Limite du nombre d'états pour les conversions (défaut: 1000)
+    :param max_states: Limite du nombre d'états pour les conversions (défaut : 1000)
     :type max_states: int
     """
 
@@ -212,8 +204,9 @@ class ConversionAlgorithms:
         """
         return self._stats.get_stats()
 
+    @staticmethod
     def _get_cache_key(
-        self, automaton: AbstractFiniteAutomaton, target_type: str
+        automaton: AbstractFiniteAutomaton, target_type: str
     ) -> str:
         """
         Génère une clé de cache pour un automate et un type cible.
@@ -241,13 +234,10 @@ class ConversionAlgorithms:
         if cache_key in self._cache:
             self._cache_hits += 1
             return self._cache[cache_key]
-        else:
-            self._cache_misses += 1
-            return None
+        self._cache_misses += 1
+        return None
 
-    def _store_in_cache(
-        self, cache_key: str, automaton: AbstractFiniteAutomaton
-    ) -> None:
+    def _store_in_cache(self, cache_key: str, automaton: AbstractFiniteAutomaton) -> None:
         """
         Stocke un automate dans le cache.
 
@@ -274,9 +264,10 @@ class ConversionAlgorithms:
                 f"Automaton has too many states ({len(automaton.states)} > {self._max_states})"
             )
 
-    def _check_timeout(self, start_time: float, max_time: float = 5.0) -> None:
+    @staticmethod
+    def _check_timeout(start_time: float, max_time: float = 5.0) -> None:
         """
-        Vérifie si une conversion a dépassé le temps limite.
+        Vérifie si une conversion à dépasser le temps limite.
 
         :param start_time: Temps de début de la conversion
         :type start_time: float
@@ -287,8 +278,9 @@ class ConversionAlgorithms:
         if time.time() - start_time > max_time:
             raise ConversionTimeoutError(f"Conversion timeout after {max_time} seconds")
 
+    @staticmethod
     def validate_conversion(
-        self, original: AbstractFiniteAutomaton, converted: AbstractFiniteAutomaton
+        original: AbstractFiniteAutomaton, converted: AbstractFiniteAutomaton
     ) -> bool:
         """
         Valide qu'une conversion préserve l'équivalence des langages.
@@ -334,7 +326,9 @@ class ConversionAlgorithms:
 
             return True
 
-        except Exception:
+        except (AttributeError, TypeError, ValueError, KeyError):
+            # Capturer les erreurs spécifiques qui peuvent survenir
+            # lors de l'accès aux propriétés ou méthodes des automates
             return False
 
     def optimize_automaton(
@@ -354,18 +348,19 @@ class ConversionAlgorithms:
         try:
             if isinstance(automaton, DFA):
                 return automaton.remove_unreachable_states()
-            elif isinstance(automaton, NFA):
+            if isinstance(automaton, NFA):
                 # Pour NFA, on peut implémenter une optimisation similaire
                 # Pour l'instant, retourner l'automate tel quel
                 return automaton
-            elif isinstance(automaton, EpsilonNFA):
+            if isinstance(automaton, EpsilonNFA):
                 # Pour ε-NFA, on peut implémenter une optimisation similaire
                 # Pour l'instant, retourner l'automate tel quel
                 return automaton
-            else:
-                return automaton
-        except Exception:
+
+            return automaton
+        except (AttributeError, TypeError, ValueError, NotImplementedError):
             # En cas d'erreur, retourner l'automate original
+            # Capturer les erreurs spécifiques qui peuvent survenir
             return automaton
 
     # ============================================================================
@@ -402,9 +397,9 @@ class ConversionAlgorithms:
                     # Calculer l'union des transitions du NFA
                     next_states = set()
                     for nfa_state in current_dfa_state:
-                        transition_key = (nfa_state, symbol)
-                        if transition_key in nfa._transitions:
-                            next_states.update(nfa._transitions[transition_key])
+                        # Utiliser la méthode publique get_transitions
+                        transitions = nfa.get_transitions(nfa_state, symbol)
+                        next_states.update(transitions)
 
                     if next_states:
                         next_dfa_state = frozenset(next_states)
@@ -519,11 +514,9 @@ class ConversionAlgorithms:
                     # Calculer les transitions directes
                     direct_transitions = set()
                     for closure_state in epsilon_closures[state]:
-                        transition_key = (closure_state, symbol)
-                        if transition_key in epsilon_nfa._transitions:
-                            direct_transitions.update(
-                                epsilon_nfa._transitions[transition_key]
-                            )
+                        # Utiliser la méthode publique get_transitions
+                        transitions = epsilon_nfa.get_transitions(closure_state, symbol)
+                        direct_transitions.update(transitions)
 
                     # Calculer les transitions via epsilon
                     epsilon_transitions = set()
@@ -629,9 +622,9 @@ class ConversionAlgorithms:
                     # Calculer l'union des transitions du ε-NFA
                     next_states = set()
                     for epsilon_nfa_state in current_dfa_state:
-                        transition_key = (epsilon_nfa_state, symbol)
-                        if transition_key in epsilon_nfa._transitions:
-                            next_states.update(epsilon_nfa._transitions[transition_key])
+                        # Utiliser la méthode publique get_transitions
+                        transitions = epsilon_nfa.get_transitions(epsilon_nfa_state, symbol)
+                        next_states.update(transitions)
 
                     if next_states:
                         # Appliquer la fermeture epsilon
@@ -905,7 +898,7 @@ class ConversionAlgorithms:
                 initial_state="q0",
                 final_states={"q3"},
             )
-        elif regex == "a+":
+        if regex == "a+":
             # Plus de Kleene
             return EpsilonNFA(
                 states={"q0", "q1", "q2", "q3"},
@@ -919,19 +912,19 @@ class ConversionAlgorithms:
                 initial_state="q0",
                 final_states={"q3"},
             )
-        else:
-            # Par défaut, créer un automate simple
-            alphabet = set(c for c in regex if c.isalnum())
-            if not alphabet:
-                alphabet = {"a"}  # Alphabet par défaut
 
-            return EpsilonNFA(
-                states={"q0", "q1"},
-                alphabet=alphabet,
-                transitions={("q0", list(alphabet)[0]): {"q1"}},
-                initial_state="q0",
-                final_states={"q1"},
-            )
+        # Par défaut, créer un automate simple
+        alphabet = set(c for c in regex if c.isalnum())
+        if not alphabet:
+            alphabet = {"a"}  # Alphabet par défaut
+
+        return EpsilonNFA(
+            states={"q0", "q1"},
+            alphabet=alphabet,
+            transitions={("q0", list(alphabet)[0]): {"q1"}},
+            initial_state="q0",
+            final_states={"q1"},
+        )
 
     # ============================================================================
     # CONVERSIONS AUTOMATE → EXPRESSION RÉGULIÈRE
@@ -1021,24 +1014,31 @@ class ConversionAlgorithms:
         n = len(states)
 
         # Créer une matrice pour stocker les expressions régulières
-        R = [[[None for _ in range(n)] for _ in range(n)] for _ in range(n + 1)]
+        # Structure 3D : r[k][i][j] = expression régulière de 'i' vers j via k états
+        r: List[List[List[Optional[str]]]] = [
+            [[None for _ in range(n)] for _ in range(n)] for _ in range(n + 1)
+        ]
 
         # Initialiser R[0]
         for i in range(n):
             for j in range(n):
                 if i == j:
-                    R[0][i][j] = "ε"
+                    r[0][i][j] = "ε"
                 else:
-                    R[0][i][j] = "∅"
+                    r[0][i][j] = "∅"
 
         # Remplir les transitions directes
-        for (source, symbol), target in dfa._transitions.items():
-            i = states.index(source)
-            j = states.index(target)
-            if R[0][i][j] == "∅":
-                R[0][i][j] = symbol
-            else:
-                R[0][i][j] = f"({R[0][i][j]}|{symbol})"
+        # Obtenir toutes les transitions en utilisant les méthodes publiques
+        for source in dfa.states:
+            for symbol in dfa.alphabet:
+                target = dfa.get_transition(source, symbol)
+                if target is not None:
+                    i = states.index(source)
+                    j = states.index(target)
+                    if r[0][i][j] == "∅":
+                        r[0][i][j] = symbol
+                    else:
+                        r[0][i][j] = f"({r[0][i][j]}|{symbol})"
 
         # Algorithme de Kleene
         for k in range(1, n + 1):
@@ -1046,18 +1046,18 @@ class ConversionAlgorithms:
                 for j in range(n):
                     # R[k][i][j] = R[k-1][i][j] | R[k-1][i][k-1] R[k-1][k-1][k-1]* R[k-1][k-1][j]
                     if k <= n:
-                        R[k][i][j] = ConversionAlgorithms._combine_regex(
-                            R[k - 1][i][j],
+                        r[k][i][j] = ConversionAlgorithms._combine_regex(
+                            r[k - 1][i][j],
                             ConversionAlgorithms._concatenate_regex(
-                                R[k - 1][i][k - 1],
+                                r[k - 1][i][k - 1],
                                 ConversionAlgorithms._kleene_star_regex(
-                                    R[k - 1][k - 1][k - 1]
+                                    r[k - 1][k - 1][k - 1]
                                 ),
-                                R[k - 1][k - 1][j],
+                                r[k - 1][k - 1][j],
                             ),
                         )
                     else:
-                        R[k][i][j] = R[k - 1][i][j]
+                        r[k][i][j] = r[k - 1][i][j]
 
         # Trouver l'état initial et les états finaux
         initial_idx = states.index(dfa.initial_state)
@@ -1069,16 +1069,16 @@ class ConversionAlgorithms:
 
         expressions = []
         for final_idx in final_indices:
-            if R[n][initial_idx][final_idx] is not None:
-                expressions.append(R[n][initial_idx][final_idx])
+            if r[n][initial_idx][final_idx] is not None:
+                expressions.append(r[n][initial_idx][final_idx])
 
         if not expressions:
             return "∅"
 
         if len(expressions) == 1:
             return expressions[0]
-        else:
-            return f"({'|'.join(expressions)})"
+
+        return f"({'|'.join(expressions)})"
 
     @staticmethod
     def _combine_regex(r1: str, r2: str) -> str:
@@ -1094,7 +1094,7 @@ class ConversionAlgorithms:
     @staticmethod
     def _concatenate_regex(r1: str, r2: str, r3: str) -> str:
         """Concatène trois expressions régulières."""
-        if r1 == "∅" or r2 == "∅" or r3 == "∅":
+        if any(x == "∅" for x in (r1, r2, r3)):
             return "∅"
 
         result = r1
@@ -1108,7 +1108,7 @@ class ConversionAlgorithms:
     @staticmethod
     def _kleene_star_regex(r: str) -> str:
         """Applique l'étoile de Kleene à une expression régulière."""
-        if r == "∅" or r == "ε":
+        if r in ("∅", "ε"):
             return "ε"
         if r.endswith("*"):
             return r

@@ -8,12 +8,10 @@ pour les automates finis déterministes selon les spécifications détaillées.
 from typing import Any, Dict, Optional, Set, Tuple
 
 from .abstract_finite_automaton import AbstractFiniteAutomaton
-from .dfa_exceptions import (
-    DFAError,
-    InvalidDFAError,
-    InvalidStateError,
-    InvalidTransitionError,
-)
+from .language_operations import LanguageOperations
+from .nfa import NFA
+
+from .dfa_exceptions import InvalidDFAError
 
 
 class DFA(AbstractFiniteAutomaton):
@@ -27,7 +25,7 @@ class DFA(AbstractFiniteAutomaton):
     :type states: Set[str]
     :param alphabet: Alphabet de l'automate
     :type alphabet: Set[str]
-    :param transitions: Fonction de transition (état, symbole) -> état
+    :param transitions: Fonction de transition (état, symbole) vers un état
     :type transitions: Dict[Tuple[str, str], str]
     :param initial_state: État initial
     :type initial_state: str
@@ -50,7 +48,7 @@ class DFA(AbstractFiniteAutomaton):
         :type states: Set[str]
         :param alphabet: Alphabet de l'automate
         :type alphabet: Set[str]
-        :param transitions: Fonction de transition (état, symbole) -> état
+        :param transitions: Fonction de transition (état, symbole) vers un état
         :type transitions: Dict[Tuple[str, str], str]
         :param initial_state: État initial
         :type initial_state: str
@@ -211,7 +209,9 @@ class DFA(AbstractFiniteAutomaton):
                     return False
 
             return True
-        except Exception:
+        except (AttributeError, TypeError, ValueError, KeyError):
+            # Capturer les erreurs spécifiques qui peuvent survenir
+            # lors de la validation de l'automate
             return False
 
     def minimize(self) -> "DFA":
@@ -311,7 +311,7 @@ class DFA(AbstractFiniteAutomaton):
         # Nouveaux états (seulement les accessibles)
         new_states = reachable
 
-        # Nouveau alphabet (identique)
+        # Nouvel alphabet (identique)
         new_alphabet = self._alphabet.copy()
 
         # Nouvelles transitions (seulement celles entre états accessibles)
@@ -344,9 +344,10 @@ class DFA(AbstractFiniteAutomaton):
         :return: DFA acceptant l'union des langages
         :rtype: DFA
         """
-        # Pour l'instant, implémentation simplifiée
-        # TODO: Implémenter l'union complète
-        raise NotImplementedError("Union operation not yet fully implemented")
+        operations = LanguageOperations()
+        result = operations.union(self, other)
+        assert isinstance(result, DFA), "Union of DFA should return DFA"
+        return result
 
     def intersection(self, other: "DFA") -> "DFA":
         """
@@ -357,20 +358,27 @@ class DFA(AbstractFiniteAutomaton):
         :return: DFA acceptant l'intersection des langages
         :rtype: DFA
         """
-        # Pour l'instant, implémentation simplifiée
-        # TODO: Implémenter l'intersection complète
-        raise NotImplementedError("Intersection operation not yet fully implemented")
+        operations = LanguageOperations()
+        result = operations.intersection(self, other)
+        assert isinstance(result, DFA), "Intersection of DFA should return DFA"
+        return result
 
     def complement(self) -> "DFA":
         """
-        Calcule le complément du DFA.
+        Calcule le complément du DFA (optimisé).
 
         :return: DFA acceptant le complément du langage
         :rtype: DFA
         """
-        # Pour l'instant, implémentation simplifiée
-        # TODO: Implémenter le complément complet
-        raise NotImplementedError("Complement operation not yet fully implemented")
+        # Optimisation directe pour DFA : inverser les états finaux
+        new_final_states = self._states - self._final_states
+        return DFA(
+            states=self._states,
+            alphabet=self._alphabet,
+            transitions=self._transitions,
+            initial_state=self._initial_state,
+            final_states=new_final_states
+        )
 
     def concatenation(self, other: "DFA") -> "DFA":
         """
@@ -381,9 +389,10 @@ class DFA(AbstractFiniteAutomaton):
         :return: DFA acceptant la concaténation des langages
         :rtype: DFA
         """
-        # Pour l'instant, implémentation simplifiée
-        # TODO: Implémenter la concaténation complète
-        raise NotImplementedError("Concatenation operation not yet fully implemented")
+        operations = LanguageOperations()
+        result = operations.concatenation(self, other)
+        assert isinstance(result, DFA), "Concatenation of DFA should return DFA"
+        return result
 
     def kleene_star(self) -> "DFA":
         """
@@ -392,9 +401,10 @@ class DFA(AbstractFiniteAutomaton):
         :return: DFA acceptant l'étoile de Kleene du langage
         :rtype: DFA
         """
-        # Pour l'instant, implémentation simplifiée
-        # TODO: Implémenter l'étoile de Kleene complète
-        raise NotImplementedError("Kleene star operation not yet fully implemented")
+        operations = LanguageOperations()
+        result = operations.kleene_star(self)
+        assert isinstance(result, DFA), "Kleene star of DFA should return DFA"
+        return result
 
     def to_nfa(self) -> "NFA":
         """
@@ -404,8 +414,18 @@ class DFA(AbstractFiniteAutomaton):
         :rtype: NFA
         """
         # Un DFA est un cas particulier de NFA
-        # Cette méthode sera implémentée quand la classe NFA sera créée
-        raise NotImplementedError("NFA class not yet implemented")
+        # Conversion directe : chaque transition DFA devient une transition NFA
+        nfa_transitions = {}
+        for (source, symbol), target in self._transitions.items():
+            nfa_transitions[(source, symbol)] = {target}
+
+        return NFA(
+            states=self._states,
+            alphabet=self._alphabet,
+            transitions=nfa_transitions,
+            initial_state=self._initial_state,
+            final_states=self._final_states
+        )
 
     def to_dict(self) -> Dict[str, Any]:
         """
@@ -438,7 +458,8 @@ class DFA(AbstractFiniteAutomaton):
         states = set(data["states"])
         alphabet = set(data["alphabet"])
         transitions = {
-            tuple(key.split(",")): target for key, target in data["transitions"].items()
+            (key.split(",")[0], key.split(",")[1]): target
+            for key, target in data["transitions"].items()
         }
         initial_state = data["initial_state"]
         final_states = set(data["final_states"])
