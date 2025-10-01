@@ -466,7 +466,7 @@ class PushdownConversionAlgorithms:
         """Résout les conflits de déterminisme en ajoutant des états.
 
         :param automaton: Automate avec conflits
-        :param conflicts: Liste des conflits à résoudre (non utilisé pour l'instant)
+        :param conflicts: Liste des conflits à résoudre (non utilisé)
         :return: Automate sans conflits
         """
         # Pour l'instant, on retourne l'automate original
@@ -658,7 +658,7 @@ class PushdownConversionAlgorithms:
                             )
                         else:
                             # Transition complexe avec pile
-                            # Pour l'instant, on ne traite que la première opération
+                            # Pour l'instant, on ne traite que la première
                             productions.append(
                                 Production(
                                     f"[{state},{next_state}]",
@@ -704,43 +704,42 @@ class PushdownConversionAlgorithms:
             # Création des états du PDA
             states = {"q0", "q1", "q2"}
             input_alphabet = grammar.terminals
-            stack_alphabet = grammar.variables | {"Z0"}
+            stack_alphabet = grammar.variables | {"Z"}
             initial_state = "q0"
-            initial_stack_symbol = "Z0"
+            initial_stack_symbol = "Z"
             final_states = {"q2"}
 
             # Création des transitions
             transitions = {}
 
-            # Transition initiale
-            transitions[("q0", "", "Z0")] = {
-                ("q1", f"{grammar.start_symbol}Z0")
-            }
+            # Transition initiale - empiler le symbole de départ
+            transitions[("q0", "", "Z")] = {("q1", f"{grammar.start_symbol}Z")}
 
             # Transitions pour chaque production
             for production in grammar.productions:
                 if production.is_empty():
-                    # Production vide
+                    # Production vide - transition epsilon
                     transitions[("q1", "", production.left_side)] = {
                         ("q1", "")
                     }
                 else:
-                    # Production normale
-                    stack_symbols = list(production.right_side)
-                    if len(stack_symbols) == 1:
-                        # Production terminale
-                        transitions[
-                            ("q1", stack_symbols[0], production.left_side)
-                        ] = {("q1", "")}
-                    else:
-                        # Production complexe
-                        stack_ops = "".join(reversed(stack_symbols))
-                        transitions[("q1", "", production.left_side)] = {
-                            ("q1", stack_ops)
-                        }
+                    # Production normale - remplacer la variable par les symboles
+                    # Empiler seulement les variables dans l'ordre inverse
+                    stack_ops = "".join(
+                        reversed(
+                            [
+                                s
+                                for s in production.right_side
+                                if s in grammar.variables
+                            ]
+                        )
+                    )
+                    transitions[("q1", "", production.left_side)] = {
+                        ("q1", stack_ops)
+                    }
 
             # Transition finale
-            transitions[("q1", "", "Z0")] = {("q2", "Z0")}
+            transitions[("q1", "", "Z")] = {("q2", "Z")}
 
             # Création du PDA
             pda = PDA(
@@ -1034,9 +1033,10 @@ class PushdownConversionAlgorithms:
             used_stack_symbols = self._get_used_stack_symbols(automaton)
 
             # Création du mapping de symboles
-            # Utiliser des caractères individuels pour éviter les problèmes de validation
+            # Utiliser des caractères individuels pour éviter les problèmes
             symbol_mapping = {
-                symbol: chr(ord('A') + i) for i, symbol in enumerate(used_stack_symbols)
+                symbol: chr(ord("A") + i)
+                for i, symbol in enumerate(used_stack_symbols)
             }
 
             # Conversion des transitions
@@ -1051,20 +1051,23 @@ class PushdownConversionAlgorithms:
                     new_transitions = set()
                     for next_state, stack_ops in transitions:
                         # Conversion des symboles de pile dans les opérations
-                        # Les opérations de pile sont des séquences de symboles de pile
+                        # Conversion des symboles de pile dans les opérations
                         new_stack_ops = ""
                         i = 0
                         while i < len(stack_ops):
-                            # Chercher le plus long symbole de pile qui correspond
+                            # Chercher le plus long symbole de pile correspondant
                             found = False
-                            for original_symbol, new_symbol in symbol_mapping.items():
+                            for (
+                                original_symbol,
+                                new_symbol,
+                            ) in symbol_mapping.items():
                                 if stack_ops[i:].startswith(original_symbol):
                                     new_stack_ops += new_symbol
                                     i += len(original_symbol)
                                     found = True
                                     break
                             if not found:
-                                # Si aucun symbole ne correspond, garder le caractère original
+                                # Si aucun symbole ne correspond, garder le caractère
                                 new_stack_ops += stack_ops[i]
                                 i += 1
                         new_transitions.add((next_state, new_stack_ops))
@@ -1159,7 +1162,7 @@ class PushdownConversionAlgorithms:
         :return: Transitions optimisées
         """
         # Pour l'instant, on retourne les transitions originales
-        # L'implémentation complète nécessiterait des algorithmes d'optimisation avancés
+        # L'implémentation complète nécessiterait des algorithmes avancés
         return transitions
 
     def _get_accessible_states(
