@@ -211,10 +211,10 @@ class ASTNode:
         if self.is_binary():
             if len(self.children) < 2:
                 return ""
-            
+
             left_str = self.children[0].to_string()
             right_str = self.children[1].to_string()
-            
+
             if self.type == NodeType.UNION:
                 return f"({left_str}|{right_str})"
             elif self.type == NodeType.CONCATENATION:

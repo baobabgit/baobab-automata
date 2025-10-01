@@ -61,9 +61,7 @@ class Mapping:
             if symbol in self._mapping:
                 result.add(self._mapping[symbol])
             else:
-                result.add(
-                    symbol
-                )  # Garder le symbole original s'il n'est pas mappé
+                result.add(symbol)  # Garder le symbole original s'il n'est pas mappé
         return result
 
     def inverse(self) -> "Mapping":

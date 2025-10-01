@@ -131,7 +131,9 @@ class OptimizationAlgorithms:
             raise OptimizationError(f"Erreur lors de la minimisation DFA: {e}") from e
 
     def minimize_dfa_incremental(
-        self, dfa: DFA, changes: List["TransitionChange"]  # pylint: disable=unused-argument
+        self,
+        dfa: DFA,
+        changes: List["TransitionChange"],  # pylint: disable=unused-argument
     ) -> DFA:
         """
         Minimise un DFA de manière incrémentale.
@@ -158,9 +160,7 @@ class OptimizationAlgorithms:
             improvement = (
                 (len(dfa.states) - len(minimal_dfa.states)) / len(dfa.states) * 100
             )
-            self._stats.add_optimization(
-                "minimize_dfa_incremental", 0.0, improvement
-            )
+            self._stats.add_optimization("minimize_dfa_incremental", 0.0, improvement)
 
             return minimal_dfa
 
@@ -491,7 +491,9 @@ class OptimizationAlgorithms:
         except Exception as e:
             if isinstance(e, OptimizationError):
                 raise
-            raise OptimizationError(f"Erreur lors de la fusion des transitions: {e}") from e
+            raise OptimizationError(
+                f"Erreur lors de la fusion des transitions: {e}"
+            ) from e
 
     def optimize_performance(
         self, automaton: AbstractFiniteAutomaton
@@ -541,7 +543,9 @@ class OptimizationAlgorithms:
         except Exception as e:
             if isinstance(e, OptimizationError):
                 raise
-            raise OptimizationError(f"Erreur lors de l'optimisation de la mémoire: {e}") from e
+            raise OptimizationError(
+                f"Erreur lors de l'optimisation de la mémoire: {e}"
+            ) from e
 
     def optimize_for_conversion(
         self, automaton: AbstractFiniteAutomaton, target_type: str
@@ -589,9 +593,7 @@ class OptimizationAlgorithms:
         try:
             # Pour l'instant, retourner l'automate original
             # Cette méthode sera implémentée plus tard avec des optimisations spécifiques
-            self._stats.add_optimization(
-                "reduce_epsilon_transitions", 0.0, 0.0
-            )
+            self._stats.add_optimization("reduce_epsilon_transitions", 0.0, 0.0)
 
             return epsilon_nfa
 
@@ -617,9 +619,7 @@ class OptimizationAlgorithms:
         try:
             # Pour l'instant, retourner l'automate original
             # Cette méthode sera implémentée plus tard avec des optimisations spécifiques
-            self._stats.add_optimization(
-                "optimize_data_structures", 0.0, 0.0
-            )
+            self._stats.add_optimization("optimize_data_structures", 0.0, 0.0)
 
             return automaton
 
@@ -1150,5 +1150,3 @@ class OptimizationStats:
     def reset(self) -> None:
         """Remet à zéro les statistiques."""
         self._optimizations.clear()
-
-

@@ -160,6 +160,4 @@ class State(IState):
         :return: Représentation détaillée de l'état
         :rtype: str
         """
-        return (
-            f"State(identifier='{self._identifier}', type={self._state_type})"
-        )
+        return f"State(identifier='{self._identifier}', type={self._state_type})"

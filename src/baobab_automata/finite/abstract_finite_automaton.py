@@ -12,7 +12,7 @@ from typing import Any, Dict, Optional, Set
 class AbstractFiniteAutomaton(ABC):
     """
     Interface abstraite pour tous les automates finis.
-    
+
     Cette interface définit le contrat commun pour tous les types
     d'automates finis (DFA, NFA, ε-NFA) dans la bibliothèque.
     """
@@ -22,7 +22,7 @@ class AbstractFiniteAutomaton(ABC):
     def states(self) -> Set[str]:
         """
         Ensemble des états de l'automate.
-        
+
         :return: Ensemble des identifiants des états
         :rtype: Set[str]
         """
@@ -33,7 +33,7 @@ class AbstractFiniteAutomaton(ABC):
     def alphabet(self) -> Set[str]:
         """
         Alphabet de l'automate.
-        
+
         :return: Ensemble des symboles de l'alphabet
         :rtype: Set[str]
         """
@@ -44,7 +44,7 @@ class AbstractFiniteAutomaton(ABC):
     def initial_state(self) -> str:
         """
         État initial de l'automate.
-        
+
         :return: Identifiant de l'état initial
         :rtype: str
         """
@@ -55,7 +55,7 @@ class AbstractFiniteAutomaton(ABC):
     def final_states(self) -> Set[str]:
         """
         Ensemble des états finaux.
-        
+
         :return: Ensemble des identifiants des états finaux
         :rtype: Set[str]
         """
@@ -65,7 +65,7 @@ class AbstractFiniteAutomaton(ABC):
     def accepts(self, word: str) -> bool:
         """
         Vérifie si l'automate accepte un mot donné.
-        
+
         :param word: Mot à tester
         :type word: str
         :return: True si le mot est accepté, False sinon
@@ -77,7 +77,7 @@ class AbstractFiniteAutomaton(ABC):
     def get_transition(self, state: str, symbol: str) -> Optional[str]:
         """
         Récupère l'état de destination pour une transition donnée.
-        
+
         :param state: État source
         :type state: str
         :param symbol: Symbole de la transition
@@ -91,7 +91,7 @@ class AbstractFiniteAutomaton(ABC):
     def is_final_state(self, state: str) -> bool:
         """
         Vérifie si un état est final.
-        
+
         :param state: Identifiant de l'état
         :type state: str
         :return: True si l'état est final, False sinon
@@ -103,7 +103,7 @@ class AbstractFiniteAutomaton(ABC):
     def get_reachable_states(self) -> Set[str]:
         """
         Récupère tous les états accessibles depuis l'état initial.
-        
+
         :return: Ensemble des états accessibles
         :rtype: Set[str]
         """
@@ -113,7 +113,7 @@ class AbstractFiniteAutomaton(ABC):
     def validate(self) -> bool:
         """
         Valide la cohérence de l'automate.
-        
+
         :return: True si l'automate est valide, False sinon
         :rtype: bool
         """
@@ -123,7 +123,7 @@ class AbstractFiniteAutomaton(ABC):
     def to_dict(self) -> Dict[str, Any]:
         """
         Sérialise l'automate en dictionnaire.
-        
+
         :return: Dictionnaire représentant l'automate
         :rtype: Dict[str, Any]
         """
@@ -131,10 +131,10 @@ class AbstractFiniteAutomaton(ABC):
 
     @classmethod
     @abstractmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'AbstractFiniteAutomaton':
+    def from_dict(cls, data: Dict[str, Any]) -> "AbstractFiniteAutomaton":
         """
         Crée un automate depuis un dictionnaire.
-        
+
         :param data: Dictionnaire représentant l'automate
         :type data: Dict[str, Any]
         :return: Instance de l'automate

@@ -42,10 +42,10 @@ class RegexParser:
         """
         # Alphabet par défaut : lettres minuscules et chiffres
         self.alphabet = alphabet or set("abcdefghijklmnopqrstuvwxyz0123456789")
-        
+
         # Opérateurs supportés
         self.operators = {".", "|", "*", "+", "?", "(", ")"}
-        
+
         # Priorité des opérateurs (plus élevé = plus prioritaire)
         self.precedence = {
             "*": 3,
@@ -54,7 +54,7 @@ class RegexParser:
             ".": 2,
             "|": 1,
         }
-        
+
         # Cache des expressions parsées
         self.cache: Dict[str, AbstractFiniteAutomaton] = {}
 
@@ -79,19 +79,19 @@ class RegexParser:
         try:
             # Tokeniser l'expression
             tokens = self._tokenize(regex)
-            
+
             # Parser l'expression
             ast = self._parse_expression(tokens)
-            
+
             # Construire l'automate
             automaton = self._build_automaton(ast)
-            
+
             # Optimiser l'automate
             automaton = self._optimize_automaton(automaton)
-            
+
             # Mettre en cache
             self.cache[regex] = automaton
-            
+
             return automaton
 
         except Exception as e:
@@ -111,14 +111,14 @@ class RegexParser:
         """
         tokens = []
         i = 0
-        
+
         while i < len(regex):
             char = regex[i]
-            
+
             if char.isspace():
                 i += 1
                 continue
-                
+
             if char in self.alphabet:
                 tokens.append(Token(TokenType.LITERAL, char, i))
             elif char == "|":
@@ -151,12 +151,10 @@ class RegexParser:
                         "Caractère d'échappement incomplet", i, regex
                     )
             else:
-                raise RegexSyntaxError(
-                    f"Caractère non supporté: '{char}'", i, regex
-                )
-            
+                raise RegexSyntaxError(f"Caractère non supporté: '{char}'", i, regex)
+
             i += 1
-        
+
         tokens.append(Token(TokenType.EOF, "", len(regex)))
         return tokens
 
@@ -172,23 +170,25 @@ class RegexParser:
         """
         if not tokens or tokens[0].type == TokenType.EOF:
             raise RegexParseError("Expression vide", parse_step="expression")
-        
+
         self._token_index = 0
         self._tokens = tokens
-        
+
         try:
             ast = self._parse_union()
             if self._current_token().type != TokenType.EOF:
                 raise RegexParseError(
                     "Caractères supplémentaires après l'expression",
                     self._current_token().position,
-                    parse_step="expression"
+                    parse_step="expression",
                 )
             return ast
         except Exception as e:
             if isinstance(e, RegexParseError):
                 raise
-            raise RegexParseError(f"Erreur de parsing: {str(e)}", parse_step="expression")
+            raise RegexParseError(
+                f"Erreur de parsing: {str(e)}", parse_step="expression"
+            )
 
     def _current_token(self) -> Token:
         """Récupère le token courant."""
@@ -203,20 +203,21 @@ class RegexParser:
     def _parse_union(self) -> ASTNode:
         """Parse une expression d'union (|)."""
         left = self._parse_concatenation()
-        
+
         while self._current_token().type == TokenType.UNION:
             self._advance()
             right = self._parse_concatenation()
             left = ASTNode(NodeType.UNION, children=[left, right])
-        
+
         return left
 
     def _parse_concatenation(self) -> ASTNode:
         """Parse une expression de concaténation."""
         left = self._parse_factor()
-        
+
         while (
-            self._current_token().type in {
+            self._current_token().type
+            in {
                 TokenType.LITERAL,
                 TokenType.DIGIT,
                 TokenType.WORD,
@@ -227,51 +228,49 @@ class RegexParser:
         ):
             right = self._parse_factor()
             left = ASTNode(NodeType.CONCATENATION, children=[left, right])
-        
+
         return left
 
     def _parse_factor(self) -> ASTNode:
         """Parse un facteur (élément avec opérateurs unaires)."""
         primary = self._parse_primary()
-        
+
         while self._current_token().is_unary_operator():
             token = self._current_token()
             self._advance()
-            
+
             if token.type == TokenType.KLEENE_STAR:
                 primary = ASTNode(NodeType.KLEENE_STAR, children=[primary])
             elif token.type == TokenType.KLEENE_PLUS:
                 primary = ASTNode(NodeType.KLEENE_PLUS, children=[primary])
             elif token.type == TokenType.OPTIONAL:
                 primary = ASTNode(NodeType.OPTIONAL, children=[primary])
-        
+
         return primary
 
     def _parse_primary(self) -> ASTNode:
         """Parse un élément primaire (littéral ou groupe)."""
         token = self._current_token()
-        
+
         if token.type == TokenType.LEFT_PAREN:
             self._advance()
             expr = self._parse_union()
             if self._current_token().type != TokenType.RIGHT_PAREN:
                 raise RegexParseError(
-                    "Parenthèse fermante attendue",
-                    token.position,
-                    parse_step="primary"
+                    "Parenthèse fermante attendue", token.position, parse_step="primary"
                 )
             self._advance()
             return ASTNode(NodeType.GROUP, children=[expr])
-        
+
         elif token.is_literal():
             self._advance()
             return ASTNode(NodeType.LITERAL, value=token.value)
-        
+
         else:
             raise RegexParseError(
                 f"Token inattendu: {token.type.value}",
                 token.position,
-                parse_step="primary"
+                parse_step="primary",
             )
 
     def _build_automaton(self, node: ASTNode) -> AbstractFiniteAutomaton:
@@ -285,21 +284,21 @@ class RegexParser:
         """
         if node.is_terminal():
             return self._build_literal_automaton(node)
-        
+
         if node.is_unary():
             return self._build_unary_automaton(node)
-        
+
         if node.is_binary():
             return self._build_binary_automaton(node)
-        
+
         if node.type == NodeType.GROUP:
             return self._build_automaton(node.children[0])
-        
+
         # Gérer les types non supportés
-        node_type_str = getattr(node.type, 'value', str(node.type))
+        node_type_str = getattr(node.type, "value", str(node.type))
         raise RegexConversionError(
             f"Type de nœud non supporté: {node_type_str}",
-            conversion_step="build_automaton"
+            conversion_step="build_automaton",
         )
 
     def _build_literal_automaton(self, node: ASTNode) -> AbstractFiniteAutomaton:
@@ -313,13 +312,13 @@ class RegexParser:
         else:
             raise RegexConversionError(
                 f"Type de littéral non supporté: {node.type.value}",
-                conversion_step="build_literal_automaton"
+                conversion_step="build_literal_automaton",
             )
 
     def _build_unary_automaton(self, node: ASTNode) -> AbstractFiniteAutomaton:
         """Construit un automate pour un opérateur unaire."""
         child_automaton = self._build_automaton(node.children[0])
-        
+
         if node.type == NodeType.KLEENE_STAR:
             return self._kleene_star(child_automaton)
         elif node.type == NodeType.KLEENE_PLUS:
@@ -329,14 +328,14 @@ class RegexParser:
         else:
             raise RegexConversionError(
                 f"Type d'opérateur unaire non supporté: {node.type.value}",
-                conversion_step="build_unary_automaton"
+                conversion_step="build_unary_automaton",
             )
 
     def _build_binary_automaton(self, node: ASTNode) -> AbstractFiniteAutomaton:
         """Construit un automate pour un opérateur binaire."""
         left_automaton = self._build_automaton(node.children[0])
         right_automaton = self._build_automaton(node.children[1])
-        
+
         if node.type == NodeType.UNION:
             return self._union(left_automaton, right_automaton)
         elif node.type == NodeType.CONCATENATION:
@@ -344,7 +343,7 @@ class RegexParser:
         else:
             raise RegexConversionError(
                 f"Type d'opérateur binaire non supporté: {node.type.value}",
-                conversion_step="build_binary_automaton"
+                conversion_step="build_binary_automaton",
             )
 
     def _create_simple_dfa(self, symbol: str) -> DFA:
@@ -354,7 +353,7 @@ class RegexParser:
         initial_state = "q0"
         final_states = {"q1"}
         transitions = {("q0", symbol): "q1"}
-        
+
         return DFA(states, alphabet, transitions, initial_state, final_states)
 
     def _create_epsilon_automaton(self) -> EpsilonNFA:
@@ -364,7 +363,7 @@ class RegexParser:
         initial_state = "q0"
         final_states = {"q0"}
         transitions = {}
-        
+
         return EpsilonNFA(states, alphabet, transitions, initial_state, final_states)
 
     def _create_empty_automaton(self) -> DFA:
@@ -374,19 +373,23 @@ class RegexParser:
         initial_state = "q0"
         final_states = set()
         transitions = {}
-        
+
         return DFA(states, alphabet, transitions, initial_state, final_states)
 
-    def _kleene_star(self, automaton: AbstractFiniteAutomaton) -> AbstractFiniteAutomaton:
+    def _kleene_star(
+        self, automaton: AbstractFiniteAutomaton
+    ) -> AbstractFiniteAutomaton:
         """Applique l'étoile de Kleene à un automate."""
         # Conversion en ε-NFA pour faciliter les opérations
         if not isinstance(automaton, EpsilonNFA):
             automaton = self._to_epsilon_nfa(automaton)
-        
+
         # Implémentation simplifiée - à améliorer
         return automaton
 
-    def _kleene_plus(self, automaton: AbstractFiniteAutomaton) -> AbstractFiniteAutomaton:
+    def _kleene_plus(
+        self, automaton: AbstractFiniteAutomaton
+    ) -> AbstractFiniteAutomaton:
         """Applique le plus de Kleene à un automate."""
         # a+ = a.a*
         concatenated = self._concatenation(automaton, self._kleene_star(automaton))
@@ -398,21 +401,25 @@ class RegexParser:
         epsilon_auto = self._create_epsilon_automaton()
         return self._union(automaton, epsilon_auto)
 
-    def _union(self, left: AbstractFiniteAutomaton, right: AbstractFiniteAutomaton) -> AbstractFiniteAutomaton:
+    def _union(
+        self, left: AbstractFiniteAutomaton, right: AbstractFiniteAutomaton
+    ) -> AbstractFiniteAutomaton:
         """Calcule l'union de deux automates."""
         # Conversion en ε-NFA pour faciliter les opérations
         left_nfa = self._to_epsilon_nfa(left)
         right_nfa = self._to_epsilon_nfa(right)
-        
+
         # Implémentation simplifiée - à améliorer
         return left_nfa
 
-    def _concatenation(self, left: AbstractFiniteAutomaton, right: AbstractFiniteAutomaton) -> AbstractFiniteAutomaton:
+    def _concatenation(
+        self, left: AbstractFiniteAutomaton, right: AbstractFiniteAutomaton
+    ) -> AbstractFiniteAutomaton:
         """Calcule la concaténation de deux automates."""
         # Conversion en ε-NFA pour faciliter les opérations
         left_nfa = self._to_epsilon_nfa(left)
         right_nfa = self._to_epsilon_nfa(right)
-        
+
         # Implémentation simplifiée - à améliorer
         return left_nfa
 
@@ -420,17 +427,19 @@ class RegexParser:
         """Convertit un automate en ε-NFA."""
         if isinstance(automaton, EpsilonNFA):
             return automaton
-        
+
         # Conversion simplifiée - à améliorer
         states = automaton.states
         alphabet = automaton.alphabet
         initial_state = automaton.initial_state
         final_states = automaton.final_states
         transitions = {}
-        
+
         return EpsilonNFA(states, alphabet, transitions, initial_state, final_states)
 
-    def _optimize_automaton(self, automaton: AbstractFiniteAutomaton) -> AbstractFiniteAutomaton:
+    def _optimize_automaton(
+        self, automaton: AbstractFiniteAutomaton
+    ) -> AbstractFiniteAutomaton:
         """
         Optimise un automate.
 
@@ -461,7 +470,7 @@ class RegexParser:
             raise RegexConversionError(
                 f"Erreur lors de la conversion: {str(e)}",
                 automaton_type=type(automaton).__name__,
-                conversion_direction="automate→regex"
+                conversion_direction="automate→regex",
             )
 
     def validate(self, regex: str) -> bool:
@@ -489,11 +498,11 @@ class RegexParser:
         :rtype: str
         """
         # Supprimer les espaces
-        normalized = re.sub(r'\s+', '', regex)
-        
+        normalized = re.sub(r"\s+", "", regex)
+
         # Ajouter des concaténations implicites
         # À implémenter complètement
-        
+
         return normalized
 
     def to_dict(self) -> Dict[str, Any]:

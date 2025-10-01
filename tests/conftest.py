@@ -1,4 +1,5 @@
 """Configuration globale des tests pour Baobab Automata."""
+
 import pytest
 import tempfile
 import shutil
@@ -12,12 +13,14 @@ from baobab_automata.interfaces.automaton import IAutomaton, AutomatonType
 from baobab_automata.implementations.state import State
 from baobab_automata.implementations.transition import Transition
 
+
 @pytest.fixture(scope="session")
 def temp_dir() -> Generator[Path, None, None]:
     """Crée un répertoire temporaire pour les tests."""
     temp_path = Path(tempfile.mkdtemp())
     yield temp_path
     shutil.rmtree(temp_path)
+
 
 @pytest.fixture
 def sample_states() -> Dict[str, IState]:
@@ -29,6 +32,7 @@ def sample_states() -> Dict[str, IState]:
         "accepting": State("q3", StateType.ACCEPTING),
     }
 
+
 @pytest.fixture
 def sample_transitions(sample_states: Dict[str, IState]) -> Dict[str, ITransition]:
     """Crée des transitions d'exemple pour les tests."""
@@ -37,20 +41,22 @@ def sample_transitions(sample_states: Dict[str, IState]) -> Dict[str, ITransitio
             _source_state=sample_states["initial"],
             _target_state=sample_states["intermediate"],
             _symbol="a",
-            _transition_type=TransitionType.SYMBOL
+            _transition_type=TransitionType.SYMBOL,
         ),
         "epsilon": Transition(
             _source_state=sample_states["intermediate"],
             _target_state=sample_states["final"],
             _symbol=None,
-            _transition_type=TransitionType.EPSILON
+            _transition_type=TransitionType.EPSILON,
         ),
     }
+
 
 @pytest.fixture
 def sample_alphabet() -> set:
     """Crée un alphabet d'exemple pour les tests."""
     return {"a", "b", "c"}
+
 
 @pytest.fixture
 def mock_automaton() -> Mock:

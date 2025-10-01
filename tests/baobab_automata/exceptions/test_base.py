@@ -58,9 +58,7 @@ class TestInvalidAutomatonError:
     def test_init_with_validation_errors(self):
         """Test de l'initialisation avec des erreurs de validation."""
         errors = ["Error 1", "Error 2"]
-        error = InvalidAutomatonError(
-            "Invalid automaton", validation_errors=errors
-        )
+        error = InvalidAutomatonError("Invalid automaton", validation_errors=errors)
         assert error.message == "Invalid automaton"
         assert error.validation_errors == errors
         assert error.details["validation_errors"] == errors
@@ -145,9 +143,7 @@ class TestConversionError:
 
     def test_init_with_types_and_step(self):
         """Test de l'initialisation avec des types et une étape."""
-        error = ConversionError(
-            "Conversion failed", "DFA", "NFA", "determinization"
-        )
+        error = ConversionError("Conversion failed", "DFA", "NFA", "determinization")
         assert error.message == "Conversion failed"
         assert error.source_type == "DFA"
         assert error.target_type == "NFA"
