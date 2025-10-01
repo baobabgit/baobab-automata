@@ -403,3 +403,4 @@ pyrightconfig.json
 
 docs/coverage/
 # End of https://www.toptal.com/developers/gitignore/api/python,pycharm,pycharm+all,pycharm+iml
+uv.lock
