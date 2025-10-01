@@ -78,6 +78,16 @@ from .specialized_exceptions import (
     EmptyProductionError,
     NormalizationError,
 )
+from .optimization_algorithms import PushdownOptimizationAlgorithms, OptimizationStats, OptimizationResult
+from .optimization_exceptions import (
+    OptimizationError,
+    OptimizationTimeoutError,
+    OptimizationMemoryError,
+    OptimizationValidationError,
+    OptimizationEquivalenceError,
+    OptimizationConfigurationError,
+    OptimizationCacheError,
+)
 
 __all__ = [
     "AbstractPushdownAutomaton",
@@ -145,4 +155,14 @@ __all__ = [
     "LeftRecursionError",
     "EmptyProductionError",
     "NormalizationError",
+    "PushdownOptimizationAlgorithms",
+    "OptimizationStats",
+    "OptimizationResult",
+    "OptimizationError",
+    "OptimizationTimeoutError",
+    "OptimizationMemoryError",
+    "OptimizationValidationError",
+    "OptimizationEquivalenceError",
+    "OptimizationConfigurationError",
+    "OptimizationCacheError",
 ]

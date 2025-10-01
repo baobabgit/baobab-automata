@@ -784,7 +784,7 @@ class SpecializedAlgorithms:
                 f"Erreur lors de la création depuis le dictionnaire: {str(e)}"
             ) from e
 
-            def _very_simple_earley_parse(self, grammar: ContextFreeGrammar, word: str) -> bool:
+    def _very_simple_earley_parse(self, grammar: ContextFreeGrammar, word: str) -> bool:
         """Parse très simple pour l'algorithme Earley.
         
         :param grammar: Grammaire hors-contexte
