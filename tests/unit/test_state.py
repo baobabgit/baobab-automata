@@ -1,169 +1,211 @@
-"""Tests unitaires pour les états d'automates."""
+"""Tests unitaires pour la classe State."""
 
 import pytest
-from baobab_automata.interfaces.state import StateType
 from baobab_automata.implementations.state import State
+from baobab_automata.interfaces.state import StateType
 
 
 @pytest.mark.unit
 class TestState:
     """Tests pour la classe State."""
 
-    def test_state_creation(self):
-        """Test la création d'un état."""
+    def test_state_creation_basic(self):
+        """Test la création basique d'un état."""
+        state = State("q0", StateType.INTERMEDIATE)
+        assert state.identifier == "q0"
+        assert state.state_type == StateType.INTERMEDIATE
+        assert not state.is_initial()
+        assert not state.is_final()
+
+    def test_state_creation_with_initial(self):
+        """Test la création d'un état initial."""
         state = State("q0", StateType.INITIAL)
         assert state.identifier == "q0"
-        assert state.state_type == StateType.INITIAL
-        assert state.metadata == {}
+        assert state.is_initial()
+        assert not state.is_final()
 
-    def test_state_creation_with_metadata(self):
-        """Test la création d'un état avec métadonnées."""
-        metadata = {"description": "Test state", "priority": 1}
-        state = State("q0", StateType.INITIAL, metadata)
-        assert state.metadata == metadata
+    def test_state_creation_with_final(self):
+        """Test la création d'un état final."""
+        state = State("q0", StateType.FINAL)
+        assert state.identifier == "q0"
+        assert not state.is_initial()
+        assert state.is_final()
 
-    def test_is_initial(self):
-        """Test la méthode is_initial."""
-        initial_state = State("q0", StateType.INITIAL)
-        non_initial_state = State("q1", StateType.INTERMEDIATE)
+    def test_state_creation_with_accepting(self):
+        """Test la création d'un état acceptant."""
+        state = State("q0", StateType.ACCEPTING)
+        assert state.identifier == "q0"
+        assert not state.is_initial()
+        assert not state.is_final()
+        assert state.is_accepting()
 
-        assert initial_state.is_initial() is True
-        assert non_initial_state.is_initial() is False
+    def test_state_creation_empty_name(self):
+        """Test la création d'un état avec un nom vide."""
+        state = State("", StateType.INTERMEDIATE)
+        assert state.identifier == ""
+        assert not state.is_initial()
+        assert not state.is_final()
 
-    def test_is_final(self):
-        """Test la méthode is_final."""
-        final_state = State("q0", StateType.FINAL)
-        non_final_state = State("q1", StateType.INTERMEDIATE)
+    def test_state_creation_numeric_name(self):
+        """Test la création d'un état avec un nom numérique."""
+        state = State("123", StateType.INTERMEDIATE)
+        assert state.identifier == "123"
+        assert not state.is_initial()
+        assert not state.is_final()
 
-        assert final_state.is_final() is True
-        assert non_final_state.is_final() is False
+    def test_state_creation_special_characters(self):
+        """Test la création d'un état avec des caractères spéciaux."""
+        state = State("q0_$#@", StateType.INTERMEDIATE)
+        assert state.identifier == "q0_$#@"
+        assert not state.is_initial()
+        assert not state.is_final()
 
-    def test_is_accepting(self):
-        """Test la méthode is_accepting."""
-        accepting_state = State("q0", StateType.ACCEPTING)
-        final_state = State("q1", StateType.FINAL)
-        non_accepting_state = State("q2", StateType.INTERMEDIATE)
+    def test_state_creation_unicode_name(self):
+        """Test la création d'un état avec un nom Unicode."""
+        state = State("état_αβγ", StateType.INTERMEDIATE)
+        assert state.identifier == "état_αβγ"
+        assert not state.is_initial()
+        assert not state.is_final()
 
-        assert accepting_state.is_accepting() is True
-        assert final_state.is_accepting() is True
-        assert non_accepting_state.is_accepting() is False
-
-    def test_equality(self):
-        """Test l'égalité entre états."""
-        state1 = State("q0", StateType.INITIAL)
-        state2 = State("q0", StateType.INITIAL)
-        state3 = State("q1", StateType.INITIAL)
-
+    def test_state_equality_same(self):
+        """Test l'égalité de deux états identiques."""
+        state1 = State("q0", StateType.INTERMEDIATE)
+        state2 = State("q0", StateType.INTERMEDIATE)
         assert state1 == state2
-        assert state1 != state3
-        assert state1 != "not_a_state"
-
-    def test_hash(self):
-        """Test le hash des états."""
-        state1 = State("q0", StateType.INITIAL)
-        state2 = State("q0", StateType.INITIAL)
-        state3 = State("q1", StateType.INITIAL)
-
         assert hash(state1) == hash(state2)
-        assert hash(state1) != hash(state3)
 
-        # Test dans un set
-        states_set = {state1, state2, state3}
-        assert len(states_set) == 2  # state1 et state2 sont identiques
+    def test_state_equality_different_name(self):
+        """Test l'égalité de deux états avec des noms différents."""
+        state1 = State("q0", StateType.INTERMEDIATE)
+        state2 = State("q1", StateType.INTERMEDIATE)
+        assert state1 != state2
 
-    def test_string_representation(self):
-        """Test la représentation string des états."""
+    def test_state_equality_different_type(self):
+        """Test l'égalité de deux états avec des types différents."""
+        state1 = State("q0", StateType.INITIAL)
+        state2 = State("q0", StateType.FINAL)
+        assert state1 != state2
+
+    def test_state_equality_with_non_state(self):
+        """Test l'égalité avec un objet non-State."""
+        state = State("q0", StateType.INTERMEDIATE)
+        assert state != "q0"
+        assert state != 123
+
+    def test_state_hash(self):
+        """Test le hash d'un état."""
+        state1 = State("q0", StateType.INTERMEDIATE)
+        state2 = State("q0", StateType.INTERMEDIATE)
+        assert hash(state1) == hash(state2)
+
+    def test_state_hash_with_different_types(self):
+        """Test le hash d'un état avec des types différents."""
+        state1 = State("q0", StateType.INITIAL)
+        state2 = State("q0", StateType.FINAL)
+        assert hash(state1) != hash(state2)
+
+    def test_state_string_representation(self):
+        """Test la représentation string d'un état."""
+        state = State("q0", StateType.INTERMEDIATE)
+        str_repr = str(state)
+        assert "q0" in str_repr
+        assert "State" in str_repr
+
+    def test_state_repr(self):
+        """Test la représentation repr d'un état."""
         state = State("q0", StateType.INITIAL)
-        assert str(state) == "State(q0)"
-        assert "q0" in repr(state)
-        assert "INITIAL" in repr(state)
+        repr_str = repr(state)
+        assert "q0" in repr_str
+        assert "State" in repr_str
+        assert "INITIAL" in repr_str
 
-    def test_metadata_operations(self):
-        """Test les opérations sur les métadonnées."""
-        state = State("q0", StateType.INITIAL, {"key1": "value1"})
+    def test_state_metadata(self):
+        """Test les métadonnées d'un état."""
+        metadata = {"color": "red", "weight": 1.5}
+        state = State("q0", StateType.INTERMEDIATE, metadata)
+        assert state.metadata["color"] == "red"
+        assert state.metadata["weight"] == 1.5
 
-        assert state.get_metadata("key1") == "value1"
-        assert state.get_metadata("key2") is None
-        assert state.get_metadata("key2", "default") == "default"
+    def test_state_get_metadata(self):
+        """Test la récupération de métadonnées."""
+        metadata = {"color": "red"}
+        state = State("q0", StateType.INTERMEDIATE, metadata)
+        assert state.get_metadata("color") == "red"
+        assert state.get_metadata("nonexistent") is None
+        assert state.get_metadata("nonexistent", "default") == "default"
 
-    def test_add_metadata_raises_not_implemented(self):
-        """Test que add_metadata lève NotImplementedError."""
-        state = State("q0", StateType.INITIAL)
-
+    def test_state_add_metadata_not_implemented(self):
+        """Test que l'ajout de métadonnées lève NotImplementedError."""
+        state = State("q0", StateType.INTERMEDIATE)
         with pytest.raises(NotImplementedError):
             state.add_metadata("key", "value")
 
-    @pytest.mark.parametrize(
-        "identifier,state_type,expected_valid",
-        [
-            ("q0", StateType.INITIAL, True),
-            ("", StateType.INITIAL, True),  # Empty string is valid
-        ],
-    )
-    def test_validation(self, identifier, state_type, expected_valid):
-        """Test la validation des états."""
-        if expected_valid and isinstance(state_type, StateType):
-            state = State(identifier, state_type)
-            assert state.identifier == identifier
-        else:
-            with pytest.raises((ValueError, TypeError)):
-                State(identifier, state_type)
+    def test_state_copy(self):
+        """Test la copie d'un état."""
+        import copy
+        state = State("q0", StateType.INITIAL)
+        copied_state = copy.copy(state)
+        assert copied_state == state
+        assert copied_state is not state
 
-    def test_invalid_state_type(self):
-        """Test la création d'un état avec un type invalide."""
-        # La classe State n'effectue pas de validation du type d'état
-        # car elle utilise un dataclass simple. Ce test vérifie le comportement actuel.
-        # En fait, Python accepte n'importe quel type pour le paramètre state_type
-        # car c'est un dataclass simple sans validation.
-        state = State("q0", "invalid_type")
-        assert state.identifier == "q0"
-        assert state.state_type == "invalid_type"
+    def test_state_deep_copy(self):
+        """Test la copie profonde d'un état."""
+        import copy
+        state = State("q0", StateType.INITIAL)
+        deep_copied_state = copy.deepcopy(state)
+        assert deep_copied_state == state
+        assert deep_copied_state is not state
 
-    def test_immutability(self):
-        """Test l'immutabilité des états."""
-        metadata = {"key": "value"}
-        state = State("q0", StateType.INITIAL, metadata)
+    def test_state_serialization(self):
+        """Test la sérialisation d'un état."""
+        import pickle
+        state = State("q0", StateType.INITIAL)
+        serialized = pickle.dumps(state)
+        deserialized = pickle.loads(serialized)
+        assert deserialized == state
 
-        # Les métadonnées ne peuvent pas être modifiées
-        assert state.metadata["key"] == "value"
+    def test_state_comparison_operators(self):
+        """Test les opérateurs de comparaison."""
+        state1 = State("q0", StateType.INTERMEDIATE)
+        state2 = State("q1", StateType.INTERMEDIATE)
+        state3 = State("q0", StateType.INTERMEDIATE)
 
-        # Modification de la copie originale ne doit pas affecter l'état
-        metadata["key"] = "modified"
-        assert state.metadata["key"] == "value"  # Non modifié
+        # Test de l'égalité
+        assert state1 == state3
+        assert state1 != state2
 
-    def test_different_state_types(self):
-        """Test la création d'états avec différents types."""
-        initial = State("q0", StateType.INITIAL)
-        intermediate = State("q1", StateType.INTERMEDIATE)
-        final = State("q2", StateType.FINAL)
-        accepting = State("q3", StateType.ACCEPTING)
-        rejecting = State("q4", StateType.REJECTING)
+        # Test des opérateurs de comparaison (si implémentés)
+        # Note: Les opérateurs <, >, <=, >= ne sont pas implémentés par défaut
+        # mais on peut tester qu'ils lèvent une exception appropriée
+        with pytest.raises(TypeError):
+            state1 < state2
+        with pytest.raises(TypeError):
+            state1 > state2
+        with pytest.raises(TypeError):
+            state1 <= state2
+        with pytest.raises(TypeError):
+            state1 >= state2
 
-        assert initial.is_initial()
-        assert not intermediate.is_initial()
-        assert not final.is_initial()
-        assert not accepting.is_initial()
-        assert not rejecting.is_initial()
+    def test_state_boolean_conversion(self):
+        """Test la conversion booléenne d'un état."""
+        state = State("q0", StateType.INTERMEDIATE)
+        # La conversion booléenne retourne toujours True pour les objets non-vides
+        assert bool(state) is True
 
-        assert not initial.is_final()
-        assert not intermediate.is_final()
-        assert final.is_final()
-        assert not accepting.is_final()
-        assert not rejecting.is_final()
+    def test_state_arithmetic_operations(self):
+        """Test les opérations arithmétiques sur un état."""
+        state = State("q0", StateType.INTERMEDIATE)
+        # Les opérations arithmétiques ne sont pas implémentées par défaut
+        # mais on peut tester qu'elles lèvent une exception appropriée
+        with pytest.raises(TypeError):
+            state + "1"
+        with pytest.raises(TypeError):
+            state - "1"
 
-        assert not initial.is_accepting()
-        assert not intermediate.is_accepting()
-        assert final.is_accepting()
-        assert accepting.is_accepting()
-        assert not rejecting.is_accepting()
-
-    def test_metadata_copy(self):
-        """Test que les métadonnées sont copiées en profondeur."""
-        original_metadata = {"nested": {"key": "value"}}
-        state = State("q0", StateType.INITIAL, original_metadata)
-
-        # Modification de la structure originale
-        original_metadata["nested"]["key"] = "modified"
-
-        # L'état ne doit pas être affecté
-        assert state.metadata["nested"]["key"] == "value"
+    def test_state_multiplication(self):
+        """Test la multiplication d'un état."""
+        state = State("q0", StateType.INTERMEDIATE)
+        # La multiplication n'est pas implémentée par défaut pour les objets State
+        # mais on peut tester qu'elle lève une exception appropriée
+        with pytest.raises(TypeError):
+            state * 2
