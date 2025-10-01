@@ -6,6 +6,7 @@ incluant les tests de validation, de reconnaissance, et d'opérations.
 """
 
 import pytest
+
 # Imports pour les tests
 
 from baobab_automata.pushdown.dpda import DPDA

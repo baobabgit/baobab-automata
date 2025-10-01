@@ -128,9 +128,7 @@ class ITransition(ABC):
         pass
 
     @abstractmethod
-    def is_applicable(
-        self, symbol: Optional[str], context: Dict[str, Any]
-    ) -> bool:
+    def is_applicable(self, symbol: Optional[str], context: Dict[str, Any]) -> bool:
         """
         Vérifie si la transition est applicable.
 

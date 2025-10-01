@@ -10,13 +10,13 @@ from .dependency_analysis import (
     ComponentDependency,
     DevelopmentPhase,
     ComponentStatus,
-    DependencyAnalysisError
+    DependencyAnalysisError,
 )
 
 __all__ = [
     "DependencyAnalyzer",
-    "ComponentDependency", 
+    "ComponentDependency",
     "DevelopmentPhase",
     "ComponentStatus",
-    "DependencyAnalysisError"
+    "DependencyAnalysisError",
 ]

@@ -36,7 +36,7 @@ class TestToken:
         token1 = Token(TokenType.LITERAL, "a", 0)
         token2 = Token(TokenType.LITERAL, "a", 0)
         token3 = Token(TokenType.LITERAL, "b", 0)
-        
+
         assert token1 == token2
         assert token1 != token3
 
@@ -44,7 +44,7 @@ class TestToken:
         """Test la détection d'opérateurs."""
         union_token = Token(TokenType.UNION, "|", 0)
         literal_token = Token(TokenType.LITERAL, "a", 0)
-        
+
         assert union_token.is_operator()
         assert not literal_token.is_operator()
 
@@ -52,7 +52,7 @@ class TestToken:
         """Test la détection de littéraux."""
         literal_token = Token(TokenType.LITERAL, "a", 0)
         union_token = Token(TokenType.UNION, "|", 0)
-        
+
         assert literal_token.is_literal()
         assert not union_token.is_literal()
 
@@ -60,7 +60,7 @@ class TestToken:
         """Test la détection de parenthèses."""
         left_paren = Token(TokenType.LEFT_PAREN, "(", 0)
         literal_token = Token(TokenType.LITERAL, "a", 0)
-        
+
         assert left_paren.is_parenthesis()
         assert not literal_token.is_parenthesis()
 
@@ -80,7 +80,7 @@ class TestASTNode:
         child1 = ASTNode(NodeType.LITERAL, "a")
         child2 = ASTNode(NodeType.LITERAL, "b")
         node = ASTNode(NodeType.UNION, children=[child1, child2])
-        
+
         assert node.type == NodeType.UNION
         assert len(node.children) == 2
         assert node.children[0] == child1
@@ -90,7 +90,7 @@ class TestASTNode:
         """Test la détection de feuilles."""
         leaf = ASTNode(NodeType.LITERAL, "a")
         internal = ASTNode(NodeType.UNION, children=[leaf])
-        
+
         assert leaf.is_leaf()
         assert not internal.is_leaf()
 
@@ -98,7 +98,7 @@ class TestASTNode:
         """Test la détection d'opérateurs unaires."""
         unary = ASTNode(NodeType.KLEENE_STAR)
         binary = ASTNode(NodeType.UNION)
-        
+
         assert unary.is_unary()
         assert not binary.is_unary()
 
@@ -106,7 +106,7 @@ class TestASTNode:
         """Test la détection d'opérateurs binaires."""
         binary = ASTNode(NodeType.UNION)
         unary = ASTNode(NodeType.KLEENE_STAR)
-        
+
         assert binary.is_binary()
         assert not unary.is_binary()
 
@@ -115,7 +115,7 @@ class TestASTNode:
         # Test littéral
         literal = ASTNode(NodeType.LITERAL, "a")
         assert literal.to_string() == "a"
-        
+
         # Test union
         left = ASTNode(NodeType.LITERAL, "a")
         right = ASTNode(NodeType.LITERAL, "b")
@@ -266,7 +266,7 @@ class TestRegexParser:
         assert "alphabet" in data
         assert "operators" in data
         assert "precedence" in data
-        
+
         new_parser = RegexParser.from_dict(data)
         assert new_parser.alphabet == self.parser.alphabet
         assert new_parser.operators == self.parser.operators
@@ -276,13 +276,13 @@ class TestRegexParser:
         """Test le fonctionnement du cache."""
         # Premier parsing
         automaton1 = self.parser.parse("a|b")
-        
+
         # Deuxième parsing (doit utiliser le cache)
         automaton2 = self.parser.parse("a|b")
-        
+
         # Vérifier que le cache contient l'expression
         assert "a|b" in self.parser.cache
-        
+
         # Vider le cache
         self.parser.clear_cache()
         assert len(self.parser.cache) == 0
@@ -336,23 +336,24 @@ class TestRegexParser:
 
     def test_build_automaton_unsupported_node(self):
         """Test la construction d'automate avec un nœud non supporté."""
+
         # Créer un nœud avec un type non supporté en utilisant un mock
         class UnsupportedNode:
             def __init__(self):
                 self.type = "unsupported"
                 self.value = "test"
                 self.children = []
-            
+
             def is_terminal(self):
                 return False
-            
+
             def is_unary(self):
                 return False
-            
+
             def is_binary(self):
                 return False
-        
+
         node = UnsupportedNode()
-        
+
         with pytest.raises(RegexConversionError):
             self.parser._build_automaton(node)

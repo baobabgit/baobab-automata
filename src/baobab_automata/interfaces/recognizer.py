@@ -24,9 +24,7 @@ class IRecognizer(ABC):
     """
 
     @abstractmethod
-    def recognize(
-        self, word: str, context: Optional[Dict[str, Any]] = None
-    ) -> bool:
+    def recognize(self, word: str, context: Optional[Dict[str, Any]] = None) -> bool:
         """
         Reconnaît si un mot appartient au langage de l'automate.
 

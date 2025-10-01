@@ -49,10 +49,8 @@ class Transition(ITransition):
         if self._conditions is None:
             object.__setattr__(self, "_conditions", {})
         else:
-            object.__setattr__(
-                self, "_conditions", copy.deepcopy(self._conditions)
-            )
-        
+            object.__setattr__(self, "_conditions", copy.deepcopy(self._conditions))
+
         if self._actions is None:
             object.__setattr__(self, "_actions", {})
         else:
@@ -88,9 +86,7 @@ class Transition(ITransition):
         """Actions de la transition."""
         return MappingProxyType(self._actions)
 
-    def is_applicable(
-        self, symbol: Optional[str], context: Dict[str, Any]
-    ) -> bool:
+    def is_applicable(self, symbol: Optional[str], context: Dict[str, Any]) -> bool:
         """
         Vérifie si la transition est applicable.
 

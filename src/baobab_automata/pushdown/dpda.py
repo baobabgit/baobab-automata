@@ -140,7 +140,9 @@ class DPDA(AbstractPushdownAutomaton):
         try:
             return self._simulate_word_deterministic(word)
         except Exception as e:
-            raise DPDAError(f"Erreur lors de la reconnaissance du mot '{word}': {e}") from e
+            raise DPDAError(
+                f"Erreur lors de la reconnaissance du mot '{word}': {e}"
+            ) from e
 
     def _simulate_word_deterministic(self, word: str) -> bool:
         """Simule la reconnaissance d'un mot de manière déterministe.

@@ -82,9 +82,7 @@ class LanguageOperations:
 
         # Vérification de la compatibilité des alphabets
         if automaton1.alphabet != automaton2.alphabet:
-            raise IncompatibleAutomataError(
-                "Automata have different alphabets"
-            )
+            raise IncompatibleAutomataError("Automata have different alphabets")
 
         # Création d'un nouvel état initial
         new_initial = "union_initial"
@@ -127,9 +125,7 @@ class LanguageOperations:
         for state in automaton2.final_states:
             final_states.add(f"2_{state}")
 
-        return NFA(
-            all_states, alphabet, transitions, new_initial, final_states
-        )
+        return NFA(all_states, alphabet, transitions, new_initial, final_states)
 
     @staticmethod
     def intersection(
@@ -161,9 +157,7 @@ class LanguageOperations:
 
         # Vérification de la compatibilité des alphabets
         if automaton1.alphabet != automaton2.alphabet:
-            raise IncompatibleAutomataError(
-                "Automata have different alphabets"
-            )
+            raise IncompatibleAutomataError("Automata have different alphabets")
 
         # Création du produit cartésien des états
         product_states = set()
@@ -175,9 +169,7 @@ class LanguageOperations:
         alphabet = automaton1.alphabet & automaton2.alphabet
 
         # État initial
-        initial_state = (
-            f"({automaton1.initial_state},{automaton2.initial_state})"
-        )
+        initial_state = f"({automaton1.initial_state},{automaton2.initial_state})"
 
         # Construction des transitions
         transitions = {}
@@ -197,9 +189,7 @@ class LanguageOperations:
             for state2 in automaton2.final_states:
                 final_states.add(f"({state1},{state2})")
 
-        return NFA(
-            product_states, alphabet, transitions, initial_state, final_states
-        )
+        return NFA(product_states, alphabet, transitions, initial_state, final_states)
 
     @staticmethod
     def complement(
@@ -332,9 +322,7 @@ class LanguageOperations:
         # États finaux (seulement ceux du deuxième automate)
         final_states = {f"2_{state}" for state in automaton2.final_states}
 
-        return NFA(
-            all_states, alphabet, transitions, initial_state, final_states
-        )
+        return NFA(all_states, alphabet, transitions, initial_state, final_states)
 
     @staticmethod
     def kleene_star(
@@ -390,9 +378,7 @@ class LanguageOperations:
         for state in automaton.final_states:
             final_states.add(f"k_{state}")
 
-        return NFA(
-            all_states, alphabet, transitions, new_initial, final_states
-        )
+        return NFA(all_states, alphabet, transitions, new_initial, final_states)
 
     # ==================== MÉTHODES UTILITAIRES ====================
 
@@ -504,9 +490,7 @@ class LanguageOperations:
 
         # Si la nouvelle taille est plus petite, on supprime les entrées les plus anciennes
         if len(self._cache) > size:
-            keys_to_remove = list(self._cache.keys())[
-                : len(self._cache) - size
-            ]
+            keys_to_remove = list(self._cache.keys())[: len(self._cache) - size]
             for key in keys_to_remove:
                 del self._cache[key]
 
@@ -550,9 +534,7 @@ class LanguageOperations:
                 "automaton must be an AbstractFiniteAutomaton"
             )
         if not isinstance(mapping, Mapping):
-            raise OperationValidationError(
-                "mapping must be a Mapping instance"
-            )
+            raise OperationValidationError("mapping must be a Mapping instance")
 
         # Nouvel alphabet transformé
         new_alphabet = mapping.apply_to_set(automaton.alphabet)
@@ -603,9 +585,7 @@ class LanguageOperations:
                 "automaton must be an AbstractFiniteAutomaton"
             )
         if not isinstance(mapping, Mapping):
-            raise OperationValidationError(
-                "mapping must be a Mapping instance"
-            )
+            raise OperationValidationError("mapping must be a Mapping instance")
 
         # Nouvel alphabet (domaine du mapping)
         new_alphabet = mapping.get_domain()
@@ -664,9 +644,7 @@ class LanguageOperations:
 
         # Vérification de la compatibilité des alphabets
         if automaton1.alphabet != automaton2.alphabet:
-            raise IncompatibleAutomataError(
-                "Automata have different alphabets"
-            )
+            raise IncompatibleAutomataError("Automata have different alphabets")
 
         # Création du produit cartésien des états
         product_states = set()
@@ -678,9 +656,7 @@ class LanguageOperations:
         alphabet = automaton1.alphabet & automaton2.alphabet
 
         # État initial
-        initial_state = (
-            f"({automaton1.initial_state},{automaton2.initial_state})"
-        )
+        initial_state = f"({automaton1.initial_state},{automaton2.initial_state})"
 
         # Construction des transitions
         transitions = {}
@@ -700,9 +676,7 @@ class LanguageOperations:
             for state2 in automaton2.final_states:
                 final_states.add(f"({state1},{state2})")
 
-        return NFA(
-            product_states, alphabet, transitions, initial_state, final_states
-        )
+        return NFA(product_states, alphabet, transitions, initial_state, final_states)
 
     # ==================== OPÉRATIONS SPÉCIALISÉES ====================
 
@@ -753,17 +727,13 @@ class LanguageOperations:
         """
         # Calculer l'union et l'intersection
         union_result = LanguageOperations.union(automaton1, automaton2)
-        intersection_result = LanguageOperations.intersection(
-            automaton1, automaton2
-        )
+        intersection_result = LanguageOperations.intersection(automaton1, automaton2)
 
         # Calculer la différence de l'union et de l'intersection
         return LanguageOperations.difference(union_result, intersection_result)
 
     @staticmethod
-    def power(
-        automaton: AbstractFiniteAutomaton, n: int
-    ) -> AbstractFiniteAutomaton:
+    def power(automaton: AbstractFiniteAutomaton, n: int) -> AbstractFiniteAutomaton:
         """
         Calcule la puissance n-ième d'un langage régulier.
 

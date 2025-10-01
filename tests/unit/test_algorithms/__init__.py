@@ -6,14 +6,14 @@ from .test_dependency_analysis import (
     TestDependencyAnalyzer,
     TestComponentStatus,
     TestDependencyAnalysisError,
-    TestIntegration
+    TestIntegration,
 )
 
 __all__ = [
     "TestComponentDependency",
-    "TestDevelopmentPhase", 
+    "TestDevelopmentPhase",
     "TestDependencyAnalyzer",
     "TestComponentStatus",
     "TestDependencyAnalysisError",
-    "TestIntegration"
+    "TestIntegration",
 ]

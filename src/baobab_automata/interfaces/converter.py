@@ -39,9 +39,7 @@ class IConverter(ABC):
         pass
 
     @abstractmethod
-    def convert(
-        self, automaton: IAutomaton, target_type: AutomatonType
-    ) -> IAutomaton:
+    def convert(self, automaton: IAutomaton, target_type: AutomatonType) -> IAutomaton:
         """
         Convertit un automate vers un autre type.
 
@@ -56,9 +54,7 @@ class IConverter(ABC):
         pass
 
     @abstractmethod
-    def get_conversion_options(
-        self, source_type: AutomatonType
-    ) -> List[AutomatonType]:
+    def get_conversion_options(self, source_type: AutomatonType) -> List[AutomatonType]:
         """
         Retourne les types d'automates vers lesquels on peut convertir.
 

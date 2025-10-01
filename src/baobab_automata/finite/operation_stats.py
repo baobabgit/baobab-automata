@@ -90,14 +90,10 @@ class OperationStats:
         :raises ValueError: Si start_timing n'a pas été appelé
         """
         if self._start_time is None:
-            raise ValueError(
-                "start_timing() must be called before stop_timing()"
-            )
+            raise ValueError("start_timing() must be called before stop_timing()")
 
         time_taken = time.time() - self._start_time
-        self.add_operation(
-            operation, time_taken, states, transitions, memory_used
-        )
+        self.add_operation(operation, time_taken, states, transitions, memory_used)
         self._start_time = None
 
     def get_stats(self) -> Dict[str, Any]:
@@ -139,9 +135,7 @@ class OperationStats:
             operations_by_type[op_type]["count"] += 1
             operations_by_type[op_type]["total_time"] += op["time"]
             operations_by_type[op_type]["total_states"] += op["states"]
-            operations_by_type[op_type]["total_transitions"] += op[
-                "transitions"
-            ]
+            operations_by_type[op_type]["total_transitions"] += op["transitions"]
 
         # Calcul des moyennes par type
         for op_type in operations_by_type:
@@ -174,9 +168,7 @@ class OperationStats:
         """
         return self._operations.copy()
 
-    def get_operations_by_type(
-        self, operation_type: str
-    ) -> List[Dict[str, Any]]:
+    def get_operations_by_type(self, operation_type: str) -> List[Dict[str, Any]]:
         """
         Récupère toutes les opérations d'un type donné.
 
@@ -185,9 +177,7 @@ class OperationStats:
         :return: Liste des opérations du type spécifié
         :rtype: List[Dict[str, Any]]
         """
-        return [
-            op for op in self._operations if op["operation"] == operation_type
-        ]
+        return [op for op in self._operations if op["operation"] == operation_type]
 
     def reset(self) -> None:
         """
@@ -226,9 +216,7 @@ class OperationStats:
         for op in data["history"]:
             required_keys = ["operation", "time", "states", "transitions"]
             if not all(key in op for key in required_keys):
-                raise ValueError(
-                    f"Invalid operation data: missing required keys"
-                )
+                raise ValueError(f"Invalid operation data: missing required keys")
 
             self.add_operation(
                 op["operation"],
