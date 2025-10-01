@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 #!/usr/bin/env python3
 """Test du PDA avec la définition corrigée."""
 

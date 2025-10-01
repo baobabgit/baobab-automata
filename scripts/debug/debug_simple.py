@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Script de débogage simple."""
 
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 from src.baobab_automata.pushdown.dpda import DPDA
 
 def test_simple():
