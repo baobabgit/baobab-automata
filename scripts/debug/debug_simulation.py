@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 #!/usr/bin/env python3
 """Debug détaillé de la simulation PDA."""
 

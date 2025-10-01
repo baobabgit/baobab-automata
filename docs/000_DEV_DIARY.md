@@ -1,5 +1,69 @@
 # Journal de Développement - Baobab Automata
 
+## 2025-01-27 16:45 - Organisation des Scripts de Développement
+
+### Description de la modification
+Réorganisation complète des scripts de développement en les déplaçant dans une structure de dossiers organisée selon leur fonction. Tous les scripts ont été déplacés de la racine du projet vers des dossiers spécialisés dans `scripts/` et leurs imports ont été corrigés pour maintenir la fonctionnalité.
+
+### Justification
+L'organisation des scripts était nécessaire pour améliorer la structure du projet et faciliter la maintenance. Les scripts étaient dispersés à la racine du projet, ce qui rendait la navigation difficile et ne respectait pas les bonnes pratiques d'organisation de code. Cette réorganisation améliore la lisibilité et la maintenabilité du projet.
+
+### Méthode
+1. **Création de la structure de dossiers** :
+   - `scripts/debug/` : Pour les scripts de débogage et de diagnostic
+   - `scripts/tests/` : Pour les scripts de test unitaires et fonctionnels
+   - `scripts/demos/` : Pour les scripts de démonstration
+
+2. **Déplacement des fichiers** :
+   - **12 fichiers debug_*** : Déplacés vers `scripts/debug/`
+   - **3 fichiers test_*** : Déplacés vers `scripts/tests/`
+   - **1 fichier demo_*** : Déplacé vers `scripts/demos/`
+
+3. **Correction des imports** :
+   - Identification des imports cassés après le déplacement
+   - Ajout automatique de la correction des chemins d'import :
+     ```python
+     import sys
+     import os
+     sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
+     ```
+   - Validation que tous les scripts fonctionnent après correction
+
+4. **Script de correction automatique** :
+   - Création d'un script Python temporaire pour corriger automatiquement tous les imports
+   - Application de la correction à 15 fichiers au total
+   - Suppression du script temporaire après utilisation
+
+### Résultats
+- **Structure organisée** : Scripts classés par fonction dans des dossiers dédiés
+- **Imports corrigés** : 15 fichiers corrigés avec succès
+- **Fonctionnalité préservée** : Tous les scripts fonctionnent après le déplacement
+- **Tests validés** : Vérification que les scripts de test et de debug s'exécutent correctement
+
+### Fichiers déplacés
+- **scripts/debug/** : 12 fichiers debug_* (debug_anbn_detailed.py, debug_anbn_fixed.py, debug_anbn.py, debug_dpda_detailed.py, debug_dpda_working.py, debug_dpda.py, debug_palindrome.py, debug_pda_detailed.py, debug_pda.py, debug_simple_working.py, debug_simple.py, debug_simulation.py)
+- **scripts/tests/** : 3 fichiers test_* (test_correct_pda.py, test_corrected_pda.py, test_stack_operations.py)
+- **scripts/demos/** : 1 fichier demo_* (demo_conversion_algorithms.py)
+
+### Structure finale
+```
+scripts/
+├── debug/          # Scripts de débogage et de diagnostic
+├── demos/          # Scripts de démonstration
+└── tests/          # Scripts de test unitaires et fonctionnels
+```
+
+### Validation
+- ✅ Tous les scripts s'exécutent correctement depuis leur nouveau emplacement
+- ✅ Les imports sont résolus correctement
+- ✅ La structure est claire et organisée
+- ✅ Aucune fonctionnalité perdue
+
+### Prochaines étapes
+La structure des scripts est maintenant organisée et prête pour faciliter le développement et la maintenance du projet. Les développeurs peuvent facilement localiser les scripts selon leur fonction.
+
+---
+
 ## 2025-01-27 15:30 - Implémentation Complète du Parser de Grammaires - Phase 003.004
 
 ### Description de la modification

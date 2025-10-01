@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 #!/usr/bin/env python3
 """Script de debug pour tester la reconnaissance de mots par PDA."""
 
