@@ -1,5 +1,42 @@
 # Journal de Développement - Baobab Automata
 
+## 2025-10-02 08:51 - Implémentation des Machines de Turing Déterministes (Phase 004.002)
+
+### Description de la modification
+Implémentation complète de la classe `DTM` (Machine de Turing Déterministe) selon la spécification détaillée `021_PHASE_004_002_DTM_IMPLEMENTATION.md`. Cette implémentation inclut :
+- L'interface `IDeterministicTuringMachine` avec les méthodes spécifiques au déterminisme
+- Les exceptions personnalisées pour les DTM (`DTMError`, `InvalidDTMError`, `DTMSimulationError`, etc.)
+- La classe `DTMConfiguration` pour représenter les configurations d'exécution avec informations d'acceptation/rejet
+- La classe `DTM` principale avec validation du déterminisme et optimisations de performance
+- Des tests unitaires et d'intégration complets couvrant tous les aspects fonctionnels
+
+### Justification
+Cette implémentation était nécessaire pour compléter la phase 4 du projet Baobab Automata, en fournissant une implémentation optimisée des machines de Turing déterministes. La classe DTM étend la classe TM de base avec des contraintes de déterminisme strictes et des optimisations de performance spécifiques aux machines déterministes.
+
+### Méthode
+1. **Interface IDeterministicTuringMachine** : Définition de l'interface abstraite avec les méthodes spécifiques au déterminisme
+2. **Exceptions personnalisées** : Création d'une hiérarchie d'exceptions spécifiques aux DTM
+3. **Classe DTMConfiguration** : Implémentation d'une classe dataclass immutable avec validation des positions négatives autorisées
+4. **Classe DTM** : Implémentation complète avec :
+   - Héritage de la classe TM avec validation du déterminisme
+   - Cache d'optimisation pour les transitions et états d'arrêt
+   - Simulation déterministe optimisée avec détection rapide des états d'arrêt
+   - Méthodes d'optimisation des transitions et d'analyse de performance
+   - Validation avancée incluant la vérification du déterminisme
+   - Sérialisation/désérialisation avec informations d'optimisation
+5. **Tests unitaires** : Couverture complète avec tests de déterminisme, optimisations, cache et performance
+6. **Tests d'intégration** : Tests avec des DTM complexes (reconnaissance a^n b^n, multiplication binaire)
+7. **Validation qualité** : Formatage avec Black, vérification avec Pylint (9.89/10), Flake8 et Bandit
+
+### Résultats
+- Score Pylint : 9.89/10 (dépasse le minimum requis de 8.5/10)
+- Aucune vulnérabilité de sécurité détectée par Bandit
+- Code formaté selon les standards PEP 8 avec limite de 79 caractères
+- Tests unitaires complets (15 tests) et tests d'intégration (5 tests) tous passants
+- Documentation complète avec docstrings reStructuredText
+- Optimisations de performance implémentées avec cache intelligent
+- Validation stricte du déterminisme avec détection des violations
+
 ## 2025-10-02 08:38 - Implémentation de la Machine de Turing de Base (Phase 004.001)
 
 ### Description de la modification

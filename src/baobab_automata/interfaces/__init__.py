@@ -11,6 +11,7 @@ from .automaton import IAutomaton, AutomatonType
 from .recognizer import IRecognizer
 from .converter import IConverter
 from .turing_machine import ITuringMachine, TapeDirection, TMState
+from .deterministic_turing_machine import IDeterministicTuringMachine, DTMState
 
 __all__ = [
     "IState",
@@ -24,4 +25,6 @@ __all__ = [
     "ITuringMachine",
     "TapeDirection",
     "TMState",
+    "IDeterministicTuringMachine",
+    "DTMState",
 ]
