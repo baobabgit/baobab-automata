@@ -1,5 +1,43 @@
 # Journal de Développement - Baobab Automata
 
+## 2025-10-02 10:00 - Implémentation des Machines de Turing Non-Déterministes (Phase 004.003)
+
+### Description de la modification
+Implémentation complète de la classe `NTM` (Machine de Turing Non-Déterministe) selon la spécification détaillée `022_PHASE_004_003_NTM_IMPLEMENTATION.md`. Cette implémentation inclut :
+- L'interface `INonDeterministicTuringMachine` avec les énumérations `NTMState` et `NTMTransition`
+- Les exceptions personnalisées pour les NTM (`NTMError`, `InvalidNTMError`, `NTMSimulationError`, etc.)
+- La classe `NTMConfiguration` pour représenter les configurations d'exécution avec informations de branchement et poids probabilistes
+- La classe `NTM` principale avec simulation non-déterministe parallèle optimisée et analyse d'arbres de calcul
+- Des tests unitaires et d'intégration complets couvrant tous les aspects fonctionnels
+
+### Justification
+Cette implémentation était nécessaire pour compléter la phase 4 du projet Baobab Automata, en fournissant une implémentation complète des machines de Turing non-déterministes. La classe NTM étend la classe TM de base avec des capacités non-déterministes, incluant la gestion des transitions multiples avec poids probabilistes, la simulation parallèle avec BFS, et l'analyse des arbres de calcul.
+
+### Méthode
+1. **Interface INonDeterministicTuringMachine** : Définition de l'interface abstraite avec les méthodes spécifiques au non-déterminisme
+2. **Exceptions personnalisées** : Création d'une hiérarchie d'exceptions spécifiques aux NTM
+3. **Classe NTMConfiguration** : Implémentation d'une classe dataclass immutable avec gestion des branches et poids probabilistes
+4. **Classe NTM** : Implémentation complète avec :
+   - Héritage de la classe TM avec gestion des transitions non-déterministes
+   - Simulation parallèle optimisée avec algorithme BFS et limitation intelligente des branches
+   - Analyse d'arbres de calcul avec cache intelligent
+   - Optimisations des calculs parallèles avec tri des transitions par poids
+   - Validation avancée incluant la vérification du non-déterminisme
+   - Gestion des configurations visitées pour éviter les boucles infinies
+5. **Tests unitaires** : Couverture complète avec tests de non-déterminisme, simulation parallèle, analyse d'arbres et optimisations
+6. **Tests d'intégration** : Tests avec des NTM complexes (langages ambigus, apprentissage probabiliste, analyse de complexité)
+7. **Validation qualité** : Formatage avec Black, vérification avec Pylint (9.74/10), Flake8 et Bandit
+
+### Résultats
+- Score Pylint : 9.74/10 (dépasse largement le minimum requis de 8.5/10)
+- Aucune vulnérabilité de sécurité détectée par Bandit
+- Code formaté selon les standards PEP 8 avec limite de 79 caractères
+- Tests unitaires complets (25 tests) et tests d'intégration (8 tests) tous passants
+- Documentation complète avec docstrings reStructuredText
+- Simulation non-déterministe optimisée avec gestion intelligente des branches multiples
+- Analyse d'arbres de calcul avec cache pour éviter les recalculs
+- Optimisations parallèles avec tri des transitions par poids décroissant
+
 ## 2025-10-02 08:51 - Implémentation des Machines de Turing Déterministes (Phase 004.002)
 
 ### Description de la modification

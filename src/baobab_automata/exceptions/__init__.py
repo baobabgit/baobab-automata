@@ -27,6 +27,16 @@ from .dtm_exceptions import (
     DTMOptimizationError,
     DTMCacheError,
 )
+from .ntm_exceptions import (
+    NTMError,
+    InvalidNTMError,
+    NTMNonDeterminismError,
+    NTMSimulationError,
+    NTMOptimizationError,
+    NTMBranchLimitError,
+    NTMConfigurationError,
+    NTMTransitionError,
+)
 
 __all__ = [
     "BaobabAutomataError",
@@ -45,4 +55,12 @@ __all__ = [
     "DTMSimulationError",
     "DTMOptimizationError",
     "DTMCacheError",
+    "NTMError",
+    "InvalidNTMError",
+    "NTMNonDeterminismError",
+    "NTMSimulationError",
+    "NTMOptimizationError",
+    "NTMBranchLimitError",
+    "NTMConfigurationError",
+    "NTMTransitionError",
 ]

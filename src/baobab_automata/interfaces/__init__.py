@@ -12,6 +12,11 @@ from .recognizer import IRecognizer
 from .converter import IConverter
 from .turing_machine import ITuringMachine, TapeDirection, TMState
 from .deterministic_turing_machine import IDeterministicTuringMachine, DTMState
+from .non_deterministic_turing_machine import (
+    INonDeterministicTuringMachine,
+    NTMState,
+    NTMTransition,
+)
 
 __all__ = [
     "IState",
@@ -27,4 +32,7 @@ __all__ = [
     "TMState",
     "IDeterministicTuringMachine",
     "DTMState",
+    "INonDeterministicTuringMachine",
+    "NTMState",
+    "NTMTransition",
 ]
