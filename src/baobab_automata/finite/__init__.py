@@ -65,6 +65,17 @@ from .regex_parser import RegexParser
 from .regex_token import Token, TokenType
 from .transition_change import TransitionChange
 
+# Import des composants de balancing
+from .balancing import (
+    BalancingEngine,
+    BalancingMetrics,
+    BalancingResult,
+    IBalancingStrategy,
+    MemoryBalancingStrategy,
+    PerformanceBalancingStrategy,
+    StructuralBalancingStrategy,
+)
+
 __all__ = [
     "AbstractFiniteAutomaton",
     "ASTNode",
@@ -113,4 +124,12 @@ __all__ = [
     "Token",
     "TokenType",
     "TransitionChange",
+    # Composants de balancing
+    "BalancingEngine",
+    "BalancingMetrics",
+    "BalancingResult",
+    "IBalancingStrategy",
+    "MemoryBalancingStrategy",
+    "PerformanceBalancingStrategy",
+    "StructuralBalancingStrategy",
 ]
