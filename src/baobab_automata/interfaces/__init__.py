@@ -10,6 +10,7 @@ from .transition import ITransition, TransitionType
 from .automaton import IAutomaton, AutomatonType
 from .recognizer import IRecognizer
 from .converter import IConverter
+from .turing_machine import ITuringMachine, TapeDirection, TMState
 
 __all__ = [
     "IState",
@@ -20,4 +21,7 @@ __all__ = [
     "AutomatonType",
     "IRecognizer",
     "IConverter",
+    "ITuringMachine",
+    "TapeDirection",
+    "TMState",
 ]

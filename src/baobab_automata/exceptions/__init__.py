@@ -13,6 +13,12 @@ from .base import (
     ConversionError,
     RecognitionError,
 )
+from .tm_exceptions import (
+    TMError,
+    InvalidTMError,
+    TMSimulationError,
+    TMTimeoutError,
+)
 
 __all__ = [
     "BaobabAutomataError",
@@ -21,4 +27,8 @@ __all__ = [
     "InvalidTransitionError",
     "ConversionError",
     "RecognitionError",
+    "TMError",
+    "InvalidTMError",
+    "TMSimulationError",
+    "TMTimeoutError",
 ]
