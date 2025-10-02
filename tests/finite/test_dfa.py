@@ -222,8 +222,9 @@ class TestDFA(unittest.TestCase):
         dfa1 = self._create_simple_dfa()
         dfa2 = self._create_another_dfa()
 
-        # L'union n'est pas encore implémentée
-        with self.assertRaises(NotImplementedError):
+        # L'union est implémentée mais les alphabets sont différents
+        from baobab_automata.finite.language_operations_exceptions import IncompatibleAutomataError
+        with self.assertRaises(IncompatibleAutomataError):
             dfa1.union(dfa2)
 
     def test_intersection(self):
@@ -231,34 +232,41 @@ class TestDFA(unittest.TestCase):
         dfa1 = self._create_simple_dfa()
         dfa2 = self._create_another_dfa()
 
-        # L'intersection n'est pas encore implémentée
-        with self.assertRaises(NotImplementedError):
+        # L'intersection est implémentée mais les alphabets sont différents
+        from baobab_automata.finite.language_operations_exceptions import IncompatibleAutomataError
+        with self.assertRaises(IncompatibleAutomataError):
             dfa1.intersection(dfa2)
 
     def test_complement(self):
         """Test du complément d'un DFA."""
         dfa = self._create_simple_dfa()
 
-        # Le complément n'est pas encore implémenté
-        with self.assertRaises(NotImplementedError):
-            dfa.complement()
+        # Le complément est implémenté
+        result = dfa.complement()
+        self.assertIsNotNone(result)
+        # Le complément doit être un DFA
+        self.assertIsInstance(result, DFA)
 
     def test_concatenation(self):
         """Test de la concaténation de deux DFA."""
         dfa1 = self._create_simple_dfa()
         dfa2 = self._create_another_dfa()
 
-        # La concaténation n'est pas encore implémentée
-        with self.assertRaises(NotImplementedError):
-            dfa1.concatenation(dfa2)
+        # La concaténation est implémentée et retourne un NFA
+        from baobab_automata.finite.nfa import NFA
+        result = dfa1.concatenation(dfa2)
+        self.assertIsInstance(result, NFA)
+        self.assertIsNotNone(result)
 
     def test_kleene_star(self):
         """Test de l'étoile de Kleene d'un DFA."""
         dfa = self._create_simple_dfa()
 
-        # L'étoile de Kleene n'est pas encore implémentée
-        with self.assertRaises(NotImplementedError):
-            dfa.kleene_star()
+        # L'étoile de Kleene est implémentée et retourne un NFA
+        from baobab_automata.finite.nfa import NFA
+        result = dfa.kleene_star()
+        self.assertIsInstance(result, NFA)
+        self.assertIsNotNone(result)
 
     def test_to_dict(self):
         """Test de sérialisation en dictionnaire."""
@@ -314,11 +322,13 @@ class TestDFA(unittest.TestCase):
         assert "transitions=" in repr_str
 
     def test_to_nfa_not_implemented(self):
-        """Test que la conversion vers NFA n'est pas encore implémentée."""
+        """Test que la conversion vers NFA est implémentée."""
         dfa = self._create_simple_dfa()
 
-        with self.assertRaises(NotImplementedError):
-            dfa.to_nfa()
+        # La conversion vers NFA est implémentée
+        nfa = dfa.to_nfa()
+        self.assertIsNotNone(nfa)
+        # Un DFA est toujours un NFA, donc la conversion doit fonctionner
 
     def _create_simple_dfa(self) -> DFA:
         """Crée un DFA simple pour les tests."""
