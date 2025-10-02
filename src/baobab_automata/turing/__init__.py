@@ -34,6 +34,20 @@ from .conversion import (
     OptimizationError,
 )
 
+# Import des éléments d'analyse de complexité
+from .complexity import (
+    ComplexityAnalyzer,
+    IComplexityAnalyzer,
+    ComplexityClass,
+    DecidabilityStatus,
+    ComplexityMetrics,
+    AnalysisResult,
+    ComplexityAnalysisError,
+    InvalidComplexityAnalyzerError,
+    ComplexityAnalysisTimeoutError,
+    ResourceMonitoringError,
+)
+
 __all__ = [
     "TM",
     "TMConfiguration",
@@ -58,4 +72,14 @@ __all__ = [
     "ConversionTimeoutError",
     "EquivalenceVerificationError",
     "OptimizationError",
+    "ComplexityAnalyzer",
+    "IComplexityAnalyzer",
+    "ComplexityClass",
+    "DecidabilityStatus",
+    "ComplexityMetrics",
+    "AnalysisResult",
+    "ComplexityAnalysisError",
+    "InvalidComplexityAnalyzerError",
+    "ComplexityAnalysisTimeoutError",
+    "ResourceMonitoringError",
 ]
