@@ -401,6 +401,10 @@ poetry.toml
 # LSP config files
 pyrightconfig.json
 
+# Additional project-specific ignores
+.idea/
+.benchmarks/
+
 docs/coverage/
 # End of https://www.toptal.com/developers/gitignore/api/python,pycharm,pycharm+all,pycharm+iml
 uv.lock
