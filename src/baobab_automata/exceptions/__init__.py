@@ -37,6 +37,15 @@ from .ntm_exceptions import (
     NTMConfigurationError,
     NTMTransitionError,
 )
+from .multitape_tm_exceptions import (
+    MultiTapeTMError,
+    InvalidMultiTapeTMError,
+    MultiTapeTMConsistencyError,
+    MultiTapeTMSimulationError,
+    MultiTapeTMConversionError,
+    MultiTapeTMOptimizationError,
+    MultiTapeTMSynchronizationError,
+)
 
 __all__ = [
     "BaobabAutomataError",
@@ -63,4 +72,11 @@ __all__ = [
     "NTMBranchLimitError",
     "NTMConfigurationError",
     "NTMTransitionError",
+    "MultiTapeTMError",
+    "InvalidMultiTapeTMError",
+    "MultiTapeTMConsistencyError",
+    "MultiTapeTMSimulationError",
+    "MultiTapeTMConversionError",
+    "MultiTapeTMOptimizationError",
+    "MultiTapeTMSynchronizationError",
 ]
