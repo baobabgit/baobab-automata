@@ -72,8 +72,6 @@ __all__ = [
     "NTMBranchLimitError",
     "NTMConfigurationError",
     "NTMTransitionError",
-<<<<<<< Current (Your changes)
-=======
     "MultiTapeTMError",
     "InvalidMultiTapeTMError",
     "MultiTapeTMConsistencyError",
@@ -81,5 +79,4 @@ __all__ = [
     "MultiTapeTMConversionError",
     "MultiTapeTMOptimizationError",
     "MultiTapeTMSynchronizationError",
->>>>>>> Incoming (Background Agent changes)
 ]

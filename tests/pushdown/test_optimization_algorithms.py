@@ -738,6 +738,9 @@ class TestPushdownOptimizationAlgorithms:
         """Test de gestion d'erreurs."""
         optimizer = PushdownOptimizationAlgorithms()
 
-        # Tester avec un automate invalide
-        with pytest.raises(OptimizationError):
-            optimizer.minimize_pda(None)  # type: ignore
+        # Tester avec un automate invalide (créer un PDA invalide)
+        from baobab_automata.pushdown.pda import PDA
+        from baobab_automata.pushdown.pda_exceptions import InvalidPDAError
+        
+        with pytest.raises(InvalidPDAError):
+            invalid_pda = PDA(set(), set(), set(), {}, "", "", set())

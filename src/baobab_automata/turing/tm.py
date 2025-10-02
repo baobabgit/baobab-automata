@@ -150,12 +150,6 @@ class TM(ITuringMachine):
             trace.append(self._config_to_dict(config))
 
             while step_count < max_steps:
-                # Vérification des états d'arrêt
-                if current_state in self._accept_states:
-                    return True, trace
-                if current_state in self._reject_states:
-                    return False, trace
-
                 # Lecture du symbole actuel
                 current_symbol = self._get_tape_symbol(tape, head_position)
 
@@ -185,6 +179,12 @@ class TM(ITuringMachine):
                     current_state, tape, head_position, step_count
                 )
                 trace.append(self._config_to_dict(config))
+
+                # Vérification des états d'arrêt après la transition
+                if current_state in self._accept_states:
+                    return True, trace
+                if current_state in self._reject_states:
+                    return False, trace
 
             # Timeout - considéré comme rejet
             return False, trace

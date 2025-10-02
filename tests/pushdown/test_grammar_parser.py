@@ -738,7 +738,7 @@ class TestGrammarParser:
         import tempfile
         import os
 
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False, encoding="utf-8") as f:
             f.write("S -> aSb | ε\n")
             temp_file = f.name
 
@@ -764,7 +764,7 @@ class TestGrammarParser:
         import tempfile
         import os
 
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False, encoding="utf-8") as f:
             f.write("S -> aSb | ε\n")
             temp_file = f.name
 

@@ -20,6 +20,7 @@ from baobab_automata.exceptions.ntm_exceptions import (
     NTMNonDeterminismError,
     NTMSimulationError,
 )
+from baobab_automata.exceptions.tm_exceptions import InvalidTMError
 
 
 class TestNTM(unittest.TestCase):
@@ -160,7 +161,7 @@ class TestNTM(unittest.TestCase):
     def test_ntm_validation_errors(self):
         """Test de validation avec erreurs."""
         # NTM avec poids négatif devrait échouer à la construction
-        with self.assertRaises(InvalidNTMError):
+        with self.assertRaises(InvalidTMError):
             NTM(
                 states={"q0", "q1"},
                 alphabet={"a"},
@@ -177,7 +178,7 @@ class TestNTM(unittest.TestCase):
 
     def test_ntm_validation_unknown_state(self):
         """Test de validation avec état inconnu."""
-        with self.assertRaises(InvalidNTMError):
+        with self.assertRaises(InvalidTMError):
             NTM(
                 states={"q0", "q1"},
                 alphabet={"a"},
@@ -195,7 +196,7 @@ class TestNTM(unittest.TestCase):
 
     def test_ntm_validation_unknown_symbol(self):
         """Test de validation avec symbole inconnu."""
-        with self.assertRaises(InvalidNTMError):
+        with self.assertRaises(InvalidTMError):
             NTM(
                 states={"q0", "q1"},
                 alphabet={"a"},

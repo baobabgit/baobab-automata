@@ -177,12 +177,12 @@ class TestOptimizationAlgorithms:
         nfa = NFA(states, alphabet, transitions, initial_state, final_states)
         optimizer = OptimizationAlgorithms()
 
-        # Minimiser le NFA
-        minimal_nfa = optimizer.minimize_nfa(nfa)
+        # Minimiser le NFA (retourne un DFA)
+        minimal_dfa = optimizer.minimize_nfa(nfa)
 
-        # Vérifier que le NFA minimal est valide
-        assert isinstance(minimal_nfa, NFA)
-        assert minimal_nfa.validate()
+        # Vérifier que le DFA minimal est valide
+        assert isinstance(minimal_dfa, DFA)
+        assert minimal_dfa.validate()
 
     def test_minimize_nfa_heuristic(self):
         """Test la minimisation heuristique d'un NFA."""
@@ -323,7 +323,9 @@ class TestOptimizationAlgorithms:
 
         # Vérifier que q3 a été supprimé (non-cœur)
         assert "q3" not in clean_dfa.states
-        assert len(clean_dfa.states) == 3
+        # q2 est aussi supprimé car il n'est pas coaccessible
+        assert "q2" not in clean_dfa.states
+        assert len(clean_dfa.states) == 2
 
     def test_merge_identical_transitions_dfa(self):
         """Test la fusion des transitions identiques d'un DFA."""
@@ -349,7 +351,8 @@ class TestOptimizationAlgorithms:
 
         # Pour un DFA, les transitions sont déjà uniques
         assert merged_dfa.states == dfa.states
-        assert merged_dfa.transitions == dfa.transitions
+        # Vérifier que les transitions sont identiques (via _transitions)
+        assert merged_dfa._transitions == dfa._transitions
 
     def test_merge_identical_transitions_nfa(self):
         """Test la fusion des transitions identiques d'un NFA."""

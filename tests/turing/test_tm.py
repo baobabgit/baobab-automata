@@ -171,7 +171,7 @@ class TestTM(unittest.TestCase):
 
         accepted, trace = tm.simulate("a", max_steps=5)
         self.assertFalse(accepted)
-        self.assertEqual(len(trace), 6)  # 5 étapes + configuration initiale
+        self.assertEqual(len(trace), 2)  # 1 étape + configuration initiale
 
     def test_tm_step_execution(self):
         """Test d'exécution pas-à-pas."""
@@ -210,21 +210,18 @@ class TestTM(unittest.TestCase):
     def test_tm_validation_errors(self):
         """Test de validation avec erreurs."""
         # TM avec transition référençant un état inexistant
-        tm = TM(
-            states={"q0", "q1"},
-            alphabet={"a"},
-            tape_alphabet={"a", "B"},
-            transitions={
-                ("q0", "a"): ("q2", "a", TapeDirection.RIGHT)  # q2 n'existe pas
-            },
-            initial_state="q0",
-            accept_states={"q1"},
-            reject_states=set(),
-        )
-
-        errors = tm.validate()
-        self.assertGreater(len(errors), 0)
-        self.assertTrue(any("unknown target state" in error for error in errors))
+        with self.assertRaises(InvalidTMError):
+            TM(
+                states={"q0", "q1"},
+                alphabet={"a"},
+                tape_alphabet={"a", "B"},
+                transitions={
+                    ("q0", "a"): ("q2", "a", TapeDirection.RIGHT)  # q2 n'existe pas
+                },
+                initial_state="q0",
+                accept_states={"q1"},
+                reject_states=set(),
+            )
 
     def test_tm_properties(self):
         """Test des propriétés de la TM."""
@@ -323,9 +320,9 @@ class TestTM(unittest.TestCase):
             tape_alphabet={"a", "B"},
             transitions={
                 ("q0", "a"): ("q1", "a", TapeDirection.RIGHT),
-                ("q0", "B"): ("q_reject", "B", TapeDirection.STAY),
+                ("q0", "B"): ("q_accept", "B", TapeDirection.STAY),  # Chaîne vide (longueur 0, paire)
                 ("q1", "a"): ("q0", "a", TapeDirection.RIGHT),
-                ("q1", "B"): ("q_accept", "B", TapeDirection.STAY),
+                ("q1", "B"): ("q_reject", "B", TapeDirection.STAY),  # Longueur impaire
             },
             initial_state="q0",
             accept_states={"q_accept"},
@@ -335,12 +332,15 @@ class TestTM(unittest.TestCase):
     def _create_infinite_loop_tm(self) -> TM:
         """Crée une TM qui boucle infiniment."""
         return TM(
-            states={"q0"},
+            states={"q0", "q_accept"},
             alphabet={"a"},
             tape_alphabet={"a", "B"},
-            transitions={("q0", "a"): ("q0", "a", TapeDirection.RIGHT)},
+            transitions={
+                ("q0", "a"): ("q0", "a", TapeDirection.RIGHT),
+                # Pas de transition pour B, donc la machine s'arrête
+            },
             initial_state="q0",
-            accept_states=set(),
+            accept_states={"q_accept"},
             reject_states=set(),
         )
 

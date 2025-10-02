@@ -192,6 +192,7 @@ class OptimizationAlgorithms:
                 return cached_result
 
         try:
+            start_time = time.time()
             # Éliminer les états inaccessibles et cœurs
             clean_dfa = self.remove_unreachable_states(dfa)
             clean_dfa = self.remove_coaccessible_states(clean_dfa)
@@ -305,6 +306,7 @@ class OptimizationAlgorithms:
             raise OptimizationError("La tolérance doit être entre 0 et 1")
 
         try:
+            start_time = time.time()
             # Appliquer des heuristiques d'optimisation
             optimized_nfa = self.minimize_nfa_heuristic(nfa)
 
@@ -345,6 +347,7 @@ class OptimizationAlgorithms:
             raise OptimizationError("L'automate doit être un NFA")
 
         try:
+            start_time = time.time()
             # Éliminer les états inaccessibles
             clean_nfa = self.remove_unreachable_states(nfa)
 
@@ -834,7 +837,7 @@ class OptimizationAlgorithms:
         # Filtrer les transitions
         new_transitions = {
             (state, symbol): target
-            for (state, symbol), target in dfa.transitions.items()
+            for (state, symbol), target in dfa._transitions.items()
             if state in reachable_states and target in reachable_states
         }
 
@@ -855,7 +858,7 @@ class OptimizationAlgorithms:
         """Élimine les états inaccessibles d'un NFA."""
         # Filtrer les transitions
         new_transitions = {}
-        for (state, symbol), targets in nfa.transitions.items():
+        for (state, symbol), targets in nfa._transitions.items():
             if state in reachable_states:
                 new_targets = targets & reachable_states
                 if new_targets:
@@ -878,7 +881,7 @@ class OptimizationAlgorithms:
         """Élimine les états inaccessibles d'un ε-NFA."""
         # Filtrer les transitions
         new_transitions = {}
-        for (state, symbol), targets in epsilon_nfa.transitions.items():
+        for (state, symbol), targets in epsilon_nfa._transitions.items():
             if state in reachable_states:
                 new_targets = targets & reachable_states
                 if new_targets:
@@ -903,7 +906,7 @@ class OptimizationAlgorithms:
         # Filtrer les transitions
         new_transitions = {
             (state, symbol): target
-            for (state, symbol), target in dfa.transitions.items()
+            for (state, symbol), target in dfa._transitions.items()
             if state in coaccessible_states and target in coaccessible_states
         }
 
@@ -924,7 +927,7 @@ class OptimizationAlgorithms:
         """Élimine les états non-cœurs d'un NFA."""
         # Filtrer les transitions
         new_transitions = {}
-        for (state, symbol), targets in nfa.transitions.items():
+        for (state, symbol), targets in nfa._transitions.items():
             if state in coaccessible_states:
                 new_targets = targets & coaccessible_states
                 if new_targets:
@@ -947,7 +950,7 @@ class OptimizationAlgorithms:
         """Élimine les états non-cœurs d'un ε-NFA."""
         # Filtrer les transitions
         new_transitions = {}
-        for (state, symbol), targets in epsilon_nfa.transitions.items():
+        for (state, symbol), targets in epsilon_nfa._transitions.items():
             if state in coaccessible_states:
                 new_targets = targets & coaccessible_states
                 if new_targets:
@@ -974,7 +977,7 @@ class OptimizationAlgorithms:
         """Fusionne les transitions identiques d'un NFA."""
         # Fusionner les transitions identiques
         merged_transitions = {}
-        for (state, symbol), targets in nfa.transitions.items():
+        for (state, symbol), targets in nfa._transitions.items():
             key = (state, symbol)
             if key in merged_transitions:
                 merged_transitions[key] |= targets
@@ -995,7 +998,7 @@ class OptimizationAlgorithms:
         """Fusionne les transitions identiques d'un ε-NFA."""
         # Fusionner les transitions identiques
         merged_transitions = {}
-        for (state, symbol), targets in epsilon_nfa.transitions.items():
+        for (state, symbol), targets in epsilon_nfa._transitions.items():
             key = (state, symbol)
             if key in merged_transitions:
                 merged_transitions[key] |= targets

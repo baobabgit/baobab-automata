@@ -40,10 +40,7 @@ __all__ = [
     "INonDeterministicTuringMachine",
     "NTMState",
     "NTMTransition",
-<<<<<<< Current (Your changes)
-=======
     "IMultiTapeTuringMachine",
     "MultiTapeState",
     "TapeHead",
->>>>>>> Incoming (Background Agent changes)
 ]
