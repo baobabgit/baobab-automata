@@ -1,5 +1,38 @@
 # Journal de Développement - Baobab Automata
 
+## 2025-10-02 08:38 - Implémentation de la Machine de Turing de Base (Phase 004.001)
+
+### Description de la modification
+Implémentation complète de la classe `TM` (Machine de Turing de base) selon la spécification détaillée `020_PHASE_004_001_TM_IMPLEMENTATION.md`. Cette implémentation inclut :
+- L'interface `ITuringMachine` avec les énumérations `TapeDirection` et `TMState`
+- Les exceptions personnalisées pour les machines de Turing (`TMError`, `InvalidTMError`, `TMSimulationError`, etc.)
+- La classe `TMConfiguration` pour représenter les configurations d'exécution
+- La classe `TM` principale avec toutes ses méthodes de simulation, validation et sérialisation
+- Des tests unitaires complets couvrant tous les aspects fonctionnels
+
+### Justification
+Cette implémentation était nécessaire pour démarrer la phase 4 du projet Baobab Automata, en fournissant la base pour toutes les machines de Turing (DTM, NTM, Multi-tape). La classe TM implémentée respecte parfaitement les spécifications théoriques des machines de Turing et fournit une base solide pour les implémentations futures.
+
+### Méthode
+1. **Interface ITuringMachine** : Définition de l'interface abstraite avec toutes les méthodes requises
+2. **Exceptions personnalisées** : Création d'une hiérarchie d'exceptions spécifiques aux machines de Turing
+3. **Classe TMConfiguration** : Implémentation d'une classe dataclass immutable pour représenter les configurations
+4. **Classe TM** : Implémentation complète avec :
+   - Constructeur avec validation des paramètres
+   - Méthode de simulation complète avec gestion des états d'arrêt
+   - Méthodes utilitaires pour la gestion de la bande et des transitions
+   - Validation automatique de la cohérence de la machine
+   - Sérialisation/désérialisation en dictionnaire
+5. **Tests unitaires** : Couverture complète avec tests de construction, simulation, validation et cas d'usage complexes (a^n b^n)
+6. **Validation qualité** : Formatage avec Black, vérification avec Pylint (9.95/10), Flake8 et Bandit
+
+### Résultats
+- Score Pylint : 9.95/10 (dépasse le minimum requis de 8.5/10)
+- Aucune vulnérabilité de sécurité détectée par Bandit
+- Code formaté selon les standards PEP 8
+- Tests unitaires complets avec exemples complexes
+- Documentation complète avec docstrings reStructuredText
+
 ## 2025-01-27 21:45 - Implémentation des Algorithmes d'Optimisation des Automates à Pile (Phase 003.007)
 
 ### Description de la modification
