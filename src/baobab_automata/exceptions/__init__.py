@@ -19,6 +19,14 @@ from .tm_exceptions import (
     TMSimulationError,
     TMTimeoutError,
 )
+from .dtm_exceptions import (
+    DTMError,
+    InvalidDTMError,
+    DTMDeterminismError,
+    DTMSimulationError,
+    DTMOptimizationError,
+    DTMCacheError,
+)
 
 __all__ = [
     "BaobabAutomataError",
@@ -31,4 +39,10 @@ __all__ = [
     "InvalidTMError",
     "TMSimulationError",
     "TMTimeoutError",
+    "DTMError",
+    "InvalidDTMError",
+    "DTMDeterminismError",
+    "DTMSimulationError",
+    "DTMOptimizationError",
+    "DTMCacheError",
 ]
