@@ -1,32 +1,26 @@
 """
-Module turing - Machines de Turing.
+Module conversion - Algorithmes de conversion des machines de Turing.
 
-Ce module implémente les machines de Turing déterministes (DTM),
-non-déterministes (NTM) et multi-rubans, ainsi que les algorithmes
-de conversion entre ces différents types.
+Ce module implémente les algorithmes de conversion entre différents types
+de machines de Turing (TM, DTM, NTM, MultiTapeTM) avec validation d'équivalence
+et optimisations.
 """
 
-from .tm import TM
-from .tm_configuration import TMConfiguration
-from .dtm import DTM
-from .dtm_configuration import DTMConfiguration
-from .ntm import NTM
-from .ntm_configuration import NTMConfiguration
-from .multitape_tm import MultiTapeTM
-from .multitape_configuration import MultiTapeConfiguration
-
-# Import des éléments de conversion
-from .conversion import (
+from .conversion_types import (
     ConversionType,
     ConversionResult,
     IConversionAlgorithm,
-    ConversionEngine,
+)
+from .conversion_engine import ConversionEngine
+from .converters import (
     NTMToDTMConverter,
     MultiTapeToSingleConverter,
     StateReductionConverter,
     SymbolMinimizationConverter,
     DTMToTMConverter,
     TMToDTMConverter,
+)
+from .exceptions import (
     ConversionError,
     InvalidConversionEngineError,
     ConversionTimeoutError,
@@ -35,14 +29,6 @@ from .conversion import (
 )
 
 __all__ = [
-    "TM",
-    "TMConfiguration",
-    "DTM",
-    "DTMConfiguration",
-    "NTM",
-    "NTMConfiguration",
-    "MultiTapeTM",
-    "MultiTapeConfiguration",
     "ConversionType",
     "ConversionResult",
     "IConversionAlgorithm",
