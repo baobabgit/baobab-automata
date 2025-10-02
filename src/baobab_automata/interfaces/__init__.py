@@ -17,6 +17,11 @@ from .non_deterministic_turing_machine import (
     NTMState,
     NTMTransition,
 )
+from .multitape_turing_machine import (
+    IMultiTapeTuringMachine,
+    MultiTapeState,
+    TapeHead,
+)
 
 __all__ = [
     "IState",
@@ -35,4 +40,10 @@ __all__ = [
     "INonDeterministicTuringMachine",
     "NTMState",
     "NTMTransition",
+<<<<<<< Current (Your changes)
+=======
+    "IMultiTapeTuringMachine",
+    "MultiTapeState",
+    "TapeHead",
+>>>>>>> Incoming (Background Agent changes)
 ]
