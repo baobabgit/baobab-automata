@@ -7,11 +7,11 @@ from pathlib import Path
 from typing import Generator, Dict, Any
 from unittest.mock import Mock
 
-from baobab_automata.interfaces.state import IState, StateType
-from baobab_automata.interfaces.transition import ITransition, TransitionType
-from baobab_automata.interfaces.automaton import IAutomaton, AutomatonType
-from baobab_automata.implementations.state import State
-from baobab_automata.implementations.transition import Transition
+from baobab_automata.core.interfaces.state import IState, StateType
+from baobab_automata.core.interfaces.transition import ITransition, TransitionType
+from baobab_automata.core.interfaces.automaton import IAutomaton, AutomatonType
+from baobab_automata.core.implementations.state import State
+from baobab_automata.core.implementations.transition import Transition
 
 
 @pytest.fixture(scope="session")

@@ -2,7 +2,7 @@
 
 import pytest
 import time
-from baobab_automata.finite.operation_stats import OperationStats
+from baobab_automata.automata.finite.operation_stats import OperationStats
 
 
 @pytest.mark.unit

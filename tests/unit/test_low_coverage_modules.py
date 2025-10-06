@@ -1,12 +1,12 @@
 """Tests unitaires pour les modules avec faible couverture."""
 
 import pytest
-from baobab_automata.finite.optimization_algorithms import OptimizationAlgorithms
-from baobab_automata.finite.conversion_algorithms import ConversionAlgorithms
-from baobab_automata.pushdown.grammar_parser import GrammarParser
-from baobab_automata.pushdown.specialized_algorithms import SpecializedAlgorithms
-from baobab_automata.pushdown.optimization_algorithms import PushdownOptimizationAlgorithms
-from baobab_automata.pushdown.conversion_algorithms import PushdownConversionAlgorithms
+from baobab_automata.automata.finite.optimization_algorithms import OptimizationAlgorithms
+from baobab_automata.automata.finite.conversion_algorithms import ConversionAlgorithms
+from baobab_automata.automata.pushdown.grammar_parser import GrammarParser
+from baobab_automata.automata.pushdown.specialized_algorithms import SpecializedAlgorithms
+from baobab_automata.automata.pushdown.optimization_algorithms import PushdownOptimizationAlgorithms
+from baobab_automata.automata.pushdown.conversion_algorithms import PushdownConversionAlgorithms
 
 
 @pytest.mark.unit

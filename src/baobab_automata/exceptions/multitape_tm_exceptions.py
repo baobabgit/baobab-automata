@@ -6,7 +6,7 @@ multi-bandes, permettant une gestion d'erreurs fine et spécifique.
 """
 
 from typing import List, Optional
-from ..exceptions.tm_exceptions import TMError
+from .tm_exceptions import TMError
 
 
 class MultiTapeTMError(TMError):

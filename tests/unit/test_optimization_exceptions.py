@@ -1,7 +1,7 @@
 """Tests unitaires pour les exceptions d'optimisation."""
 
 import pytest
-from baobab_automata.finite.optimization_exceptions import (
+from baobab_automata.automata.finite.optimization_exceptions import (
     OptimizationError,
     OptimizationTimeoutError,
     OptimizationMemoryError,

@@ -1,14 +1,14 @@
 """Tests unitaires simples pour les modules pushdown."""
 
 import pytest
-from baobab_automata.pushdown.dpda import DPDA
-from baobab_automata.pushdown.npda import NPDA
-from baobab_automata.pushdown.pda import PDA
-from baobab_automata.pushdown.grammar_parser import GrammarParser
-from baobab_automata.pushdown.specialized_algorithms import SpecializedAlgorithms
-from baobab_automata.pushdown.optimization_algorithms import PushdownOptimizationAlgorithms
-from baobab_automata.pushdown.conversion_algorithms import PushdownConversionAlgorithms
-from baobab_automata.pushdown.pda_operations import PDAOperations
+from baobab_automata.automata.pushdown.dpda import DPDA
+from baobab_automata.automata.pushdown.npda import NPDA
+from baobab_automata.automata.pushdown.pda import PDA
+from baobab_automata.automata.pushdown.grammar_parser import GrammarParser
+from baobab_automata.automata.pushdown.specialized_algorithms import SpecializedAlgorithms
+from baobab_automata.automata.pushdown.optimization_algorithms import PushdownOptimizationAlgorithms
+from baobab_automata.automata.pushdown.conversion_algorithms import PushdownConversionAlgorithms
+from baobab_automata.automata.pushdown.pda_operations import PDAOperations
 
 
 @pytest.mark.unit

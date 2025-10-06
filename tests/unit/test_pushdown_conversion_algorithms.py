@@ -1,7 +1,7 @@
 """Tests pour les algorithmes de conversion pushdown."""
 
 import pytest
-from baobab_automata.pushdown.conversion_algorithms import PushdownConversionAlgorithms
+from baobab_automata.automata.pushdown.conversion_algorithms import PushdownConversionAlgorithms
 
 
 @pytest.mark.unit
