@@ -27,3 +27,5 @@ class SpecializedAlgorithms:
         """Parse une chaîne avec l'algorithme CYK."""
         # Implémentation simplifiée
         return True
+
+
