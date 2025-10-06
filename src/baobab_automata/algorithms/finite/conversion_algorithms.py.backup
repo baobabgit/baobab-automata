@@ -913,32 +913,7 @@ class ConversionAlgorithms:
                 final_states={"q3"},
             )
 
-        # Pour les chaînes de caractères simples (sans opérateurs regex)
-        # Vérifier si c'est une chaîne simple (pas d'opérateurs regex)
-        if not any(op in regex for op in "*+?|()[]{}"):
-            # Chaîne simple - créer un automate séquentiel
-            alphabet = set(c for c in regex if c.isalnum() or c in " \t\n\r")
-            if not alphabet:
-                alphabet = {"a"}  # Alphabet par défaut
-            
-            # Créer un état pour chaque caractère + état initial et final
-            states = {f"q{i}" for i in range(len(regex) + 1)}
-            transitions = {}
-            
-            # Créer les transitions séquentielles
-            for i, char in enumerate(regex):
-                if char.isalnum() or char in " \t\n\r":
-                    transitions[(f"q{i}", char)] = {f"q{i+1}"}
-            
-            return EpsilonNFA(
-                states=states,
-                alphabet=alphabet,
-                transitions=transitions,
-                initial_state="q0",
-                final_states={f"q{len(regex)}"},
-            )
-
-        # Par défaut, créer un automate simple (fallback)
+        # Par défaut, créer un automate simple
         alphabet = set(c for c in regex if c.isalnum())
         if not alphabet:
             alphabet = {"a"}  # Alphabet par défaut
