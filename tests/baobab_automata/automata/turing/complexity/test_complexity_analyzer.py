@@ -3,18 +3,18 @@
 import unittest
 from unittest.mock import Mock
 
-from baobab_automata.automata.turing.complexity.complexity_analyzer import (
+from baobab_automata.algorithms.turing.complexity_analyzer import (
     ComplexityAnalyzer,
 )
-from baobab_automata.automata.turing.complexity.types import (
+from baobab_automata.algorithms.turing.types import (
     ComplexityClass,
     DecidabilityStatus,
 )
-from baobab_automata.automata.turing.complexity.exceptions import (
+from baobab_automata.algorithms.turing.exceptions import (
     InvalidComplexityAnalyzerError,
 )
-from baobab_automata.automata.turing.dtm import DTM
-from baobab_automata.core.interfaces.turing_machine import TapeDirection
+from baobab_automata.turing.dtm import DTM
+from baobab_automata.interfaces.turing_machine import TapeDirection
 
 
 class TestComplexityAnalyzer(unittest.TestCase):

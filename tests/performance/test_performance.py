@@ -2,7 +2,7 @@
 
 import time
 import pytest
-from baobab_automata.automata.finite.dfa import DFA
+from baobab_automata.finite.dfa import DFA
 
 
 @pytest.mark.performance

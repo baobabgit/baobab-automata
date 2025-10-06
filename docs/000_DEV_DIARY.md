@@ -1,5 +1,66 @@
 # Journal de Développement - Baobab Automata
 
+## 2025-01-27 11:00 - Réorganisation Complète de l'Architecture du Projet
+
+### Description de la modification
+Réorganisation complète et approfondie de l'architecture des dossiers `src/` et `tests/` pour améliorer la structure, la maintenabilité et la clarté du projet. Cette réorganisation inclut :
+- Restructuration du dossier `src/baobab_automata/` avec une hiérarchie claire et logique :
+  - `finite/` - Automates finis avec sous-dossiers spécialisés (dfa/, nfa/, epsilon_nfa/, regex/, language/, optimization/)
+  - `pushdown/` - Automates à pile avec sous-dossiers spécialisés (pda/, dpda/, npda/, grammar/, optimization/, specialized/)
+  - `turing/` - Machines de Turing avec sous-dossiers spécialisés (tm/, dtm/, ntm/, multitape/)
+  - `algorithms/` - Algorithmes organisés par type (finite/, pushdown/, turing/)
+  - `interfaces/` - Interfaces abstraites
+  - `implementations/` - Implémentations de base
+  - `exceptions/` - Gestion d'erreurs
+  - `utils/` - Utilitaires
+  - `visualization/` - Visualisation
+- Réorganisation du dossier `tests/` pour suivre exactement la même arborescence que `src/`
+- Correction de tous les imports dans les fichiers `src/` et `tests/`
+- Création de fichiers `__init__.py` appropriés pour chaque module et sous-module
+- Mise à jour des fichiers de documentation (README.md, spécifications)
+
+### Justification
+Cette réorganisation était nécessaire pour améliorer significativement la structure du projet et faciliter la maintenance. L'ancienne structure avait des dossiers peu organisés avec des fichiers mélangés, ce qui rendait difficile la navigation et la compréhension de l'architecture. La nouvelle structure suit une logique claire : séparation des interfaces/implémentations de base, regroupement des automates par type avec sous-dossiers spécialisés, et organisation des algorithmes par catégorie.
+
+### Méthode
+1. **Analyse de la structure actuelle** : Identification des fichiers et de leur organisation dans `src/` et `tests/`
+2. **Création de la nouvelle architecture hiérarchique** :
+   - Création des dossiers principaux `finite/`, `pushdown/`, `turing/`, `algorithms/` avec leurs sous-dossiers spécialisés
+   - Déplacement des fichiers vers leur nouveau emplacement logique selon leur fonction
+3. **Organisation par spécialisation** :
+   - **Automates finis** : dfa/, nfa/, epsilon_nfa/, regex/, language/, optimization/
+   - **Automates à pile** : pda/, dpda/, npda/, grammar/, optimization/, specialized/
+   - **Machines de Turing** : tm/, dtm/, ntm/, multitape/
+   - **Algorithmes** : finite/, pushdown/, turing/
+4. **Correction des imports** :
+   - Mise à jour des imports relatifs dans tous les fichiers `src/`
+   - Création de fichiers `__init__.py` appropriés pour chaque module
+   - Résolution des imports circulaires en modifiant les fichiers `__init__.py`
+5. **Vérification de la qualité** :
+   - Exécution des tests pour vérifier l'absence de régression
+   - Installation du package en mode développement pour tester les imports
+   - Validation que tous les tests passent correctement
+
+### Résultats
+- **Structure claire et logique** : Organisation en dossiers hiérarchiques facilitant la navigation
+- **Imports corrigés** : Tous les imports `src/` mis à jour avec la nouvelle structure
+- **Absence de régression** : Tous les tests passent (2110 tests passent, 1 ignoré, 0 échec)
+- **Résolution des imports circulaires** : Modification des fichiers `__init__.py` pour éviter les imports circulaires
+- **Maintenabilité améliorée** : Structure plus claire facilitant la maintenance et l'évolution du projet
+- **Cohérence** : Les dossiers `tests/` suivent exactement la même arborescence que `src/`
+- **Documentation mise à jour** : README.md et spécifications reflètent la nouvelle structure
+
+### Fichiers créés/modifiés
+- **Structure des dossiers** : Réorganisation complète de `src/baobab_automata/` avec sous-dossiers spécialisés
+- **Fichiers `__init__.py`** : Création de 15+ fichiers `__init__.py` pour les nouveaux modules et sous-modules
+- **Imports** : Mise à jour de tous les imports dans les fichiers sources
+- **Documentation** : Mise à jour du README.md et des spécifications
+
+### Impact
+Cette réorganisation améliore significativement la structure du projet, facilitant la navigation, la maintenance et l'évolution. La hiérarchie claire des dossiers permet une meilleure compréhension de l'architecture et facilite le développement de nouvelles fonctionnalités.
+
+---
+
 ## 2025-01-27 16:45 - Réorganisation de l'Architecture du Projet
 
 ### Description de la modification

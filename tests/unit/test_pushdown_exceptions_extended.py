@@ -1,35 +1,35 @@
 """Tests étendus pour les exceptions pushdown."""
 
 import pytest
-from baobab_automata.automata.pushdown.dpda_exceptions import (
+from baobab_automata.pushdown.dpda.dpda_exceptions import (
     DPDAError, InvalidDPDAError, DeterminismError, 
     ConflictError, ConversionError, DPDAOptimizationError
 )
-from baobab_automata.automata.pushdown.npda_exceptions import (
+from baobab_automata.pushdown.npda.npda_exceptions import (
     NPDAError, InvalidNPDAError, NPDATimeoutError,
     NPDAMemoryError, NPDAConfigurationError, NPDAConversionError,
     NPDAOptimizationError, NPDAValidationError, NPDAComplexityError
 )
-from baobab_automata.automata.pushdown.pda_exceptions import (
+from baobab_automata.pushdown.pda.pda_exceptions import (
     PDAError, InvalidPDAError, InvalidStateError,
     InvalidTransitionError, PDASimulationError, PDAStackError,
     PDAValidationError, PDAOperationError
 )
-from baobab_automata.automata.pushdown.conversion_exceptions import (
+from baobab_automata.pushdown.conversion_exceptions import (
     ConversionError as PushdownConversionError, 
     ConversionTimeoutError, ConversionValidationError,
     ConversionNotPossibleError, ConversionConfigurationError
 )
-from baobab_automata.automata.pushdown.optimization_exceptions import (
+from baobab_automata.pushdown.optimization.optimization_exceptions import (
     OptimizationError, OptimizationTimeoutError,
     OptimizationEquivalenceError, OptimizationConfigurationError
 )
-from baobab_automata.automata.pushdown.grammar_exceptions import (
+from baobab_automata.pushdown.grammar.grammar_exceptions import (
     GrammarError, GrammarValidationError, GrammarParseError, 
     GrammarConversionError, GrammarNormalizationError, 
     GrammarOptimizationError, GrammarTimeoutError, GrammarMemoryError
 )
-from baobab_automata.automata.pushdown.specialized_exceptions import (
+from baobab_automata.pushdown.specialized.specialized_exceptions import (
     AlgorithmError, AlgorithmTimeoutError, AlgorithmMemoryError,
     AlgorithmValidationError, AlgorithmOptimizationError, CYKError,
     EarleyError, LeftRecursionError, EmptyProductionError, NormalizationError

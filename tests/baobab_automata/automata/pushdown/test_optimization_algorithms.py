@@ -7,20 +7,20 @@ et les classes de support associées.
 
 import pytest
 
-from baobab_automata.automata.pushdown.optimization_algorithms import (
+from baobab_automata.algorithms.pushdown.pushdown_optimization_algorithms import (
     PushdownOptimizationAlgorithms,
     OptimizationStats,
     OptimizationResult,
 )
-from baobab_automata.automata.pushdown.optimization_exceptions import (
+from baobab_automata.pushdown.optimization.optimization_exceptions import (
     OptimizationError,
     OptimizationTimeoutError,
     OptimizationEquivalenceError,
     OptimizationConfigurationError,
 )
-from baobab_automata.automata.pushdown.pda import PDA
-from baobab_automata.automata.pushdown.dpda import DPDA
-from baobab_automata.automata.pushdown.npda import NPDA
+from baobab_automata.pushdown.pda import PDA
+from baobab_automata.pushdown.dpda import DPDA
+from baobab_automata.pushdown.npda import NPDA
 
 
 class TestOptimizationStats:
@@ -739,8 +739,8 @@ class TestPushdownOptimizationAlgorithms:
         optimizer = PushdownOptimizationAlgorithms()
 
         # Tester avec un automate invalide (créer un PDA invalide)
-        from baobab_automata.automata.pushdown.pda import PDA
-        from baobab_automata.automata.pushdown.pda_exceptions import InvalidPDAError
+        from baobab_automata.pushdown.pda import PDA
+        from baobab_automata.pushdown.pda.pda_exceptions import InvalidPDAError
         
         with pytest.raises(InvalidPDAError):
             invalid_pda = PDA(set(), set(), set(), {}, "", "", set())

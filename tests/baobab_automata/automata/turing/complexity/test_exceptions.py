@@ -2,7 +2,7 @@
 
 import unittest
 
-from baobab_automata.automata.turing.complexity.exceptions import (
+from baobab_automata.algorithms.turing.exceptions import (
     ComplexityAnalysisError,
     InvalidComplexityAnalyzerError,
     ComplexityAnalysisTimeoutError,

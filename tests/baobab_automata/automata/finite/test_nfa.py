@@ -8,8 +8,8 @@ selon les spécifications détaillées.
 import pytest
 from typing import Dict, Set, Tuple
 
-from baobab_automata.automata.finite.nfa import NFA
-from baobab_automata.automata.finite.nfa_exceptions import (
+from baobab_automata.finite.nfa import NFA
+from baobab_automata.finite.nfa.nfa_exceptions import (
     ConversionError,
     InvalidNFAError,
     InvalidTransitionError,
@@ -250,7 +250,7 @@ class TestNFA:
         final_states = {"q1"}
 
         # Le constructeur lève une exception pour un NFA invalide
-        from baobab_automata.automata.finite.nfa_exceptions import InvalidNFAError
+        from baobab_automata.finite.nfa.nfa_exceptions import InvalidNFAError
         with pytest.raises(InvalidNFAError):
             NFA(states, alphabet, transitions, initial_state, final_states)
 

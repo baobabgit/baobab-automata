@@ -1,0 +1,2 @@
+# Ce fichier maintient le dossier docs/bandit/ dans le contrôle de version
+# Les rapports Bandit sont générés automatiquement et ignorés par .gitignore

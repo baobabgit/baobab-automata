@@ -1,7 +1,7 @@
 """Tests unitaires pour les exceptions de regex."""
 
 import pytest
-from baobab_automata.automata.finite.regex_exceptions import (
+from baobab_automata.finite.regex.regex_exceptions import (
     RegexError,
     RegexSyntaxError,
     RegexParseError,

@@ -8,8 +8,8 @@ de la classe DFA selon les spécifications détaillées.
 import unittest
 from typing import Dict, Set, Tuple
 
-from baobab_automata.automata.finite.dfa import DFA
-from baobab_automata.automata.finite.dfa_exceptions import (
+from baobab_automata.finite.dfa import DFA
+from baobab_automata.finite.dfa.dfa_exceptions import (
     DFAError,
     InvalidDFAError,
     InvalidStateError,
@@ -223,7 +223,7 @@ class TestDFA(unittest.TestCase):
         dfa2 = self._create_another_dfa()
 
         # L'union est implémentée mais les alphabets sont différents
-        from baobab_automata.automata.finite.language_operations_exceptions import IncompatibleAutomataError
+        from baobab_automata.finite.language.language_operations_exceptions import IncompatibleAutomataError
         with self.assertRaises(IncompatibleAutomataError):
             dfa1.union(dfa2)
 
@@ -233,7 +233,7 @@ class TestDFA(unittest.TestCase):
         dfa2 = self._create_another_dfa()
 
         # L'intersection est implémentée mais les alphabets sont différents
-        from baobab_automata.automata.finite.language_operations_exceptions import IncompatibleAutomataError
+        from baobab_automata.finite.language.language_operations_exceptions import IncompatibleAutomataError
         with self.assertRaises(IncompatibleAutomataError):
             dfa1.intersection(dfa2)
 
@@ -253,7 +253,7 @@ class TestDFA(unittest.TestCase):
         dfa2 = self._create_another_dfa()
 
         # La concaténation est implémentée et retourne un NFA
-        from baobab_automata.automata.finite.nfa import NFA
+        from baobab_automata.finite.nfa import NFA
         result = dfa1.concatenation(dfa2)
         self.assertIsInstance(result, NFA)
         self.assertIsNotNone(result)
@@ -263,7 +263,7 @@ class TestDFA(unittest.TestCase):
         dfa = self._create_simple_dfa()
 
         # L'étoile de Kleene est implémentée et retourne un NFA
-        from baobab_automata.automata.finite.nfa import NFA
+        from baobab_automata.finite.nfa import NFA
         result = dfa.kleene_star()
         self.assertIsInstance(result, NFA)
         self.assertIsNotNone(result)

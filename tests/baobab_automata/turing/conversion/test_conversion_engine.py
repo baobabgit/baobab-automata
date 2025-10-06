@@ -4,15 +4,15 @@ Tests pour le moteur de conversion.
 
 import pytest
 from unittest.mock import Mock, patch
-from src.baobab_automata.turing.conversion.conversion_engine import (
+from baobab_automata.turing.conversion.conversion_engine import (
     ConversionEngine,
 )
-from src.baobab_automata.turing.conversion.conversion_types import (
+from baobab_automata.turing.conversion.conversion_types import (
     ConversionType,
     ConversionResult,
     IConversionAlgorithm,
 )
-from src.baobab_automata.turing.conversion.exceptions import (
+from baobab_automata.turing.conversion.exceptions import (
     ConversionError,
     InvalidConversionEngineError,
     ConversionTimeoutError,
@@ -39,6 +39,7 @@ class MockAlgorithm(IConversionAlgorithm):
         return ConversionResult(
             converted_machine=object(),
             conversion_type=ConversionType.NTM_TO_DTM,
+            success=True,
         )
 
     def verify_equivalence(
@@ -216,11 +217,10 @@ class TestConversionEngine:
         conversion_result = ConversionResult(
             converted_machine=object(),
             conversion_type=ConversionType.NTM_TO_DTM,
+            success=True,
         )
 
-        result = engine.optimize_conversion(
-            conversion_result, ConversionType.NTM_TO_DTM
-        )
+        result = engine.optimize_conversion(conversion_result)
 
         assert isinstance(result, ConversionResult)
         assert result.conversion_type == ConversionType.NTM_TO_DTM
@@ -231,12 +231,11 @@ class TestConversionEngine:
         conversion_result = ConversionResult(
             converted_machine=object(),
             conversion_type=ConversionType.NTM_TO_DTM,
+            success=True,
         )
 
         with pytest.raises(ConversionError):
-            engine.optimize_conversion(
-                conversion_result, ConversionType.NTM_TO_DTM
-            )
+            engine.optimize_conversion(conversion_result)
 
     def test_get_conversion_stats(self):
         """Teste la récupération des statistiques."""

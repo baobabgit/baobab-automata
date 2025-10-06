@@ -6,7 +6,7 @@ Ce module teste l'interface IConverter.
 
 import pytest
 
-from baobab_automata.core.interfaces.converter import IConverter
+from baobab_automata.interfaces.converter import IConverter
 
 
 class TestIConverterInterface:

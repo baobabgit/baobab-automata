@@ -1,8 +1,8 @@
 """Tests unitaires pour la classe Mapping."""
 
 import pytest
-from baobab_automata.automata.finite.mapping import Mapping
-from baobab_automata.automata.finite.language_operations_exceptions import InvalidMappingError
+from baobab_automata.finite.mapping import Mapping
+from baobab_automata.finite.language.language_operations_exceptions import InvalidMappingError
 
 
 @pytest.mark.unit

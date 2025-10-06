@@ -8,8 +8,8 @@ selon les spécifications détaillées.
 import pytest
 from typing import Dict, Set, Tuple
 
-from baobab_automata.automata.finite.epsilon_nfa import EpsilonNFA
-from baobab_automata.automata.finite.epsilon_nfa_exceptions import (
+from baobab_automata.finite.epsilon_nfa import EpsilonNFA
+from baobab_automata.finite.nfa.epsilon_nfa_exceptions import (
     ConversionError,
     EpsilonNFAError,
     InvalidEpsilonNFAError,
@@ -305,7 +305,7 @@ class TestEpsilonNFA:
         final_states = {"q1"}
 
         # Le constructeur lève une exception pour un Epsilon-NFA invalide
-        from baobab_automata.automata.finite.epsilon_nfa_exceptions import InvalidEpsilonNFAError
+        from baobab_automata.finite.nfa.epsilon_nfa_exceptions import InvalidEpsilonNFAError
         with pytest.raises(InvalidEpsilonNFAError):
             EpsilonNFA(
                 states=states,

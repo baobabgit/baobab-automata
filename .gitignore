@@ -406,5 +406,7 @@ pyrightconfig.json
 .benchmarks/
 
 docs/coverage/
+docs/bandit/*.json
+!docs/bandit/.gitkeep
 # End of https://www.toptal.com/developers/gitignore/api/python,pycharm,pycharm+all,pycharm+iml
 uv.lock

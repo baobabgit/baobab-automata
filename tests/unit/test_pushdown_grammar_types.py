@@ -1,7 +1,7 @@
 """Tests pour les types de grammaire pushdown."""
 
 import pytest
-from baobab_automata.automata.pushdown.grammar_types import GrammarType
+from baobab_automata.pushdown.grammar.grammar_types import GrammarType
 
 
 @pytest.mark.unit

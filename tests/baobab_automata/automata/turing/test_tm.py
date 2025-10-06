@@ -8,9 +8,9 @@ et ses composants associés.
 import unittest
 from typing import Dict, Set, Tuple
 
-from baobab_automata.automata.turing.tm import TM
-from baobab_automata.automata.turing.tm_configuration import TMConfiguration
-from baobab_automata.core.interfaces.turing_machine import TapeDirection
+from baobab_automata.turing.tm import TM
+from baobab_automata.turing.tm.tm_configuration import TMConfiguration
+from baobab_automata.interfaces.turing_machine import TapeDirection
 from baobab_automata.exceptions.tm_exceptions import (
     TMError,
     InvalidTMError,

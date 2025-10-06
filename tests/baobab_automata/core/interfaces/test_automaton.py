@@ -7,11 +7,11 @@ et les implémentations d'automates.
 
 import pytest
 from unittest.mock import Mock
-from baobab_automata.core.interfaces.automaton import AutomatonType
-from baobab_automata.core.interfaces.state import StateType
-from baobab_automata.core.interfaces.transition import TransitionType
-from baobab_automata.core.implementations.state import State
-from baobab_automata.core.implementations.transition import Transition
+from baobab_automata.interfaces.automaton import AutomatonType
+from baobab_automata.interfaces.state import StateType
+from baobab_automata.interfaces.transition import TransitionType
+from baobab_automata.implementations.state import State
+from baobab_automata.implementations.transition import Transition
 
 
 class TestAutomatonInterface:

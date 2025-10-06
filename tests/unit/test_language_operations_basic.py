@@ -1,8 +1,8 @@
 """Tests unitaires basiques pour les opérations de langage."""
 
 import pytest
-from baobab_automata.automata.finite.language_operations import LanguageOperations
-from baobab_automata.automata.finite.dfa import DFA
+from baobab_automata.finite.language.language_operations import LanguageOperations
+from baobab_automata.finite.dfa import DFA
 
 
 @pytest.mark.unit

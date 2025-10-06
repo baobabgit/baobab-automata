@@ -7,9 +7,9 @@ incluant les tests de construction, simulation, conversion et optimisation.
 
 import unittest
 
-from baobab_automata.automata.turing.multitape_tm import MultiTapeTM, MultiTapeConfiguration
-from baobab_automata.core.interfaces.multitape_turing_machine import TapeHead
-from baobab_automata.core.interfaces.turing_machine import TapeDirection
+from baobab_automata.turing.multitape.multitape_tm import MultiTapeTM, MultiTapeConfiguration
+from baobab_automata.interfaces.multitape_turing_machine import TapeHead
+from baobab_automata.interfaces.turing_machine import TapeDirection
 from baobab_automata.exceptions.multitape_tm_exceptions import (
     InvalidMultiTapeTMError,
 )
@@ -89,7 +89,7 @@ class TestMultiTapeTM(unittest.TestCase):
 
         single_tape_tm = multitape_tm.convert_to_single_tape()
 
-        from baobab_automata.automata.turing.tm import TM
+        from baobab_automata.turing.tm import TM
 
         self.assertIsInstance(single_tape_tm, TM)
         self.assertEqual(single_tape_tm.name, f"{multitape_tm.name}_single_tape")

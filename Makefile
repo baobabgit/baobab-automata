@@ -50,7 +50,7 @@ flake8:
 	$(VENV)/bin/flake8 src/ tests/
 
 security:
-	$(VENV)/bin/bandit -r src/
+	$(VENV)/bin/bandit -r src/ -f json -o docs/bandit/bandit_report.json
 
 quality: format lint flake8 security
 
@@ -58,6 +58,7 @@ quality: format lint flake8 security
 clean:
 	rm -rf $(VENV)
 	rm -rf docs/coverage/
+	rm -rf docs/bandit/
 	rm -rf .pytest_cache/
 	rm -rf .coverage
 	rm -rf htmlcov/

@@ -8,7 +8,7 @@ de la classe OperationStats selon les spécifications détaillées.
 import time
 import unittest
 
-from baobab_automata.automata.finite.operation_stats import OperationStats
+from baobab_automata.finite.operation_stats import OperationStats
 
 
 class TestOperationStats(unittest.TestCase):

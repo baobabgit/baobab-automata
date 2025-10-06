@@ -3,7 +3,7 @@
 import unittest
 from dataclasses import FrozenInstanceError
 
-from baobab_automata.automata.turing.complexity.types import (
+from baobab_automata.algorithms.turing.types import (
     ComplexityClass,
     DecidabilityStatus,
     ComplexityMetrics,

@@ -10,18 +10,18 @@ import pytest
 
 # Imports de types supprimés car non utilisés
 
-from baobab_automata.automata.pushdown.conversion_algorithms import (
+from baobab_automata.algorithms.pushdown.pushdown_conversion_algorithms import (
     PushdownConversionAlgorithms,
 )
-from baobab_automata.automata.pushdown.conversion_exceptions import (
+from baobab_automata.pushdown.conversion_exceptions import (
     ConversionError,
     ConversionTimeoutError,
     ConversionConfigurationError,
 )
-from baobab_automata.automata.pushdown.pda import PDA
-from baobab_automata.automata.pushdown.dpda import DPDA
-from baobab_automata.automata.pushdown.npda import NPDA
-from baobab_automata.automata.pushdown.grammar_types import (
+from baobab_automata.pushdown.pda import PDA
+from baobab_automata.pushdown.dpda import DPDA
+from baobab_automata.pushdown.npda import NPDA
+from baobab_automata.pushdown.grammar.grammar_types import (
     ContextFreeGrammar,
     Production,
 )

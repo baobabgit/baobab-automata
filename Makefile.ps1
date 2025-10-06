@@ -86,6 +86,28 @@ function Install-Dependencies {
     }
 }
 
+# Fonction pour exécuter l'analyse de sécurité avec Bandit
+function Invoke-SecurityCheck {
+    Test-VirtualEnv
+    
+    Write-ColorOutput "🔒 Exécution de l'analyse de sécurité avec Bandit..." $Blue
+    
+    # Créer le dossier docs/bandit s'il n'existe pas
+    if (-not (Test-Path "docs/bandit")) {
+        New-Item -ItemType Directory -Path "docs/bandit" -Force | Out-Null
+        Write-ColorOutput "  Créé le dossier docs/bandit/" $Yellow
+    }
+    
+    # Exécuter Bandit avec sortie JSON
+    python -m bandit -r src/ -f json -o docs/bandit/bandit_report.json
+    
+    if ($LASTEXITCODE -eq 0) {
+        Write-ColorOutput "✅ Analyse de sécurité terminée - Rapport: docs/bandit/bandit_report.json" $Green
+    } else {
+        Write-ColorOutput "⚠️  Analyse de sécurité terminée avec des avertissements - Rapport: docs/bandit/bandit_report.json" $Yellow
+    }
+}
+
 # Fonction pour nettoyer les fichiers temporaires
 function Clear-TempFiles {
     Write-ColorOutput "🧹 Nettoyage des fichiers temporaires..." $Blue
@@ -94,6 +116,7 @@ function Clear-TempFiles {
         "htmlcov",
         ".coverage",
         ".pytest_cache",
+        "docs/bandit",
         "__pycache__",
         "*.pyc",
         "*.pyo"
@@ -123,6 +146,7 @@ function Show-Help {
     Write-ColorOutput "  .\Makefile.ps1 test-all               - Exécuter tous les tests avec couverture" $White
     Write-ColorOutput "  .\Makefile.ps1 test-watch             - Mode watch (relance automatique)" $White
     Write-ColorOutput "  .\Makefile.ps1 install                - Installer les dépendances" $White
+    Write-ColorOutput "  .\Makefile.ps1 security               - Analyse de sécurité avec Bandit" $White
     Write-ColorOutput "  .\Makefile.ps1 clean                  - Nettoyer les fichiers temporaires" $White
     Write-ColorOutput "  .\Makefile.ps1 help                   - Afficher cette aide" $White
     Write-ColorOutput ""
@@ -151,6 +175,7 @@ function Main {
         "test-all" { Invoke-Tests "coverage" $ExtraArgs }
         "test-watch" { Invoke-TestWatch }
         "install" { Install-Dependencies }
+        "security" { Invoke-SecurityCheck }
         "clean" { Clear-TempFiles }
         "help" { Show-Help }
         default { 

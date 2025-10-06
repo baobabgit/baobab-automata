@@ -156,13 +156,33 @@ Développer une librairie Python complète et performante permettant de gérer t
 ```
 src/
 └── baobab_automata
-    ├── core/              # Classes de base et interfaces
     ├── finite/            # Automates finis
+    │   ├── dfa/           # Automates finis déterministes
+    │   ├── nfa/           # Automates finis non-déterministes et ε-NFA
+    │   ├── regex/         # Parser d'expressions régulières
+    │   ├── language/      # Opérations sur les langages
+    │   └── optimization/  # Algorithmes d'optimisation
     ├── pushdown/          # Automates à pile
+    │   ├── pda/           # Automates à pile non-déterministes
+    │   ├── dpda/          # Automates à pile déterministes
+    │   ├── npda/          # Automates à pile non-déterministes avancés
+    │   ├── grammar/       # Parser de grammaires hors-contexte
+    │   ├── optimization/  # Algorithmes d'optimisation
+    │   └── specialized/   # Algorithmes spécialisés (CYK, Earley)
     ├── turing/            # Machines de Turing
-    ├── algorithms/        # Algorithmes
-    ├── visualization/     # Outils de visualisation
-    └── utils/             # Utilitaires
+    │   ├── tm/            # Machines de Turing de base
+    │   ├── dtm/           # Machines de Turing déterministes
+    │   ├── ntm/           # Machines de Turing non-déterministes
+    │   └── multitape/     # Machines de Turing multi-bandes
+    ├── algorithms/        # Algorithmes organisés par type
+    │   ├── finite/        # Algorithmes pour automates finis
+    │   ├── pushdown/      # Algorithmes pour automates à pile
+    │   └── turing/        # Algorithmes pour machines de Turing
+    ├── interfaces/        # Interfaces abstraites
+    ├── implementations/   # Implémentations de base
+    ├── exceptions/        # Toutes les exceptions
+    ├── utils/             # Utilitaires
+    └── visualization/     # Visualisation
 ```
 
 #### 1.2 Interfaces et Abstractions

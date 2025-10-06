@@ -6,7 +6,7 @@ Ce module teste l'interface IRecognizer.
 
 import pytest
 
-from baobab_automata.core.interfaces.recognizer import IRecognizer
+from baobab_automata.interfaces.recognizer import IRecognizer
 
 
 class TestIRecognizerInterface:

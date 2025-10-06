@@ -9,9 +9,9 @@ import pytest
 import time
 from typing import Dict, Set, Tuple
 
-from baobab_automata.automata.pushdown.npda import NPDA
-from baobab_automata.automata.pushdown.npda_configuration import NPDAConfiguration
-from baobab_automata.automata.pushdown.npda_exceptions import (
+from baobab_automata.pushdown.npda import NPDA
+from baobab_automata.pushdown.npda.npda_configuration import NPDAConfiguration
+from baobab_automata.pushdown.npda.npda_exceptions import (
     InvalidNPDAError,
     NPDAError,
     NPDATimeoutError,
@@ -300,7 +300,7 @@ class TestNPDA:
     def test_npda_conversion_from_pda(self):
         """Test de conversion PDA → NPDA."""
         # Création d'un PDA simple
-        from baobab_automata.automata.pushdown.pda import PDA
+        from baobab_automata.pushdown.pda import PDA
 
         pda = PDA(
             states={"q0", "q1"},
@@ -328,7 +328,7 @@ class TestNPDA:
 
     def test_npda_conversion_from_dpda(self):
         """Test de conversion DPDA → NPDA."""
-        from baobab_automata.automata.pushdown.dpda import DPDA
+        from baobab_automata.pushdown.dpda import DPDA
 
         dpda = DPDA(
             states={"q0", "q1"},

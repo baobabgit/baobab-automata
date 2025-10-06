@@ -1,7 +1,7 @@
 """Tests pour les opérations PDA."""
 
 import pytest
-from baobab_automata.automata.pushdown.pda_operations import PDAOperations
+from baobab_automata.pushdown.pda.pda_operations import PDAOperations
 
 
 @pytest.mark.unit

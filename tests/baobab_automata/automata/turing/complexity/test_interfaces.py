@@ -4,8 +4,8 @@ import unittest
 from abc import ABC
 from unittest.mock import Mock
 
-from baobab_automata.automata.turing.complexity.interfaces import IComplexityAnalyzer
-from baobab_automata.automata.turing.complexity.types import (
+from baobab_automata.algorithms.turing.interfaces import IComplexityAnalyzer
+from baobab_automata.algorithms.turing.types import (
     ComplexityClass,
     DecidabilityStatus,
 )

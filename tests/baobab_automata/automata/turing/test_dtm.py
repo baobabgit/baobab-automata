@@ -8,8 +8,8 @@ et ses fonctionnalités spécifiques.
 import unittest
 from typing import Dict, Set, Tuple
 
-from baobab_automata.automata.turing.dtm import DTM, DTMConfiguration
-from baobab_automata.core.interfaces.turing_machine import TapeDirection
+from baobab_automata.turing.dtm import DTM, DTMConfiguration
+from baobab_automata.interfaces.turing_machine import TapeDirection
 from baobab_automata.exceptions.dtm_exceptions import (
     DTMError,
     InvalidDTMError,

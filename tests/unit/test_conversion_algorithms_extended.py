@@ -1,10 +1,10 @@
 """Tests étendus pour les algorithmes de conversion."""
 
 import pytest
-from baobab_automata.automata.finite.conversion_algorithms import ConversionAlgorithms
-from baobab_automata.automata.finite.dfa import DFA
-from baobab_automata.automata.finite.nfa import NFA
-from baobab_automata.automata.finite.epsilon_nfa import EpsilonNFA
+from baobab_automata.algorithms.finite.conversion_algorithms import ConversionAlgorithms
+from baobab_automata.finite.dfa import DFA
+from baobab_automata.finite.nfa import NFA
+from baobab_automata.finite.epsilon_nfa import EpsilonNFA
 
 
 @pytest.mark.unit

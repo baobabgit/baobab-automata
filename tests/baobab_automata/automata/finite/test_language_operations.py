@@ -8,16 +8,16 @@ des opérations sur les langages réguliers selon les spécifications détaillé
 import unittest
 from typing import Dict, Set, Tuple
 
-from baobab_automata.automata.finite.abstract_finite_automaton import AbstractFiniteAutomaton
-from baobab_automata.automata.finite.dfa import DFA
-from baobab_automata.automata.finite.language_operations import LanguageOperations
-from baobab_automata.automata.finite.language_operations_exceptions import (
+from baobab_automata.finite.abstract_finite_automaton import AbstractFiniteAutomaton
+from baobab_automata.finite.dfa import DFA
+from baobab_automata.finite.language.language_operations import LanguageOperations
+from baobab_automata.finite.language.language_operations_exceptions import (
     IncompatibleAutomataError,
     InvalidOperationError,
     OperationValidationError,
 )
-from baobab_automata.automata.finite.mapping import Mapping
-from baobab_automata.automata.finite.nfa import NFA
+from baobab_automata.finite.mapping import Mapping
+from baobab_automata.finite.nfa import NFA
 
 
 class TestLanguageOperations(unittest.TestCase):

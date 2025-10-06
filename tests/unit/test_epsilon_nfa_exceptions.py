@@ -1,7 +1,7 @@
 """Tests unitaires pour les exceptions EpsilonNFA."""
 
 import pytest
-from baobab_automata.automata.finite.epsilon_nfa_exceptions import (
+from baobab_automata.finite.nfa.epsilon_nfa_exceptions import (
     EpsilonNFAError,
     InvalidEpsilonNFAError,
     InvalidEpsilonTransitionError,

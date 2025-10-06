@@ -1,7 +1,7 @@
 """Tests unitaires pour les classes Token et TokenType."""
 
 import pytest
-from baobab_automata.automata.finite.regex_token import Token, TokenType
+from baobab_automata.finite.regex.regex_token import Token, TokenType
 
 
 @pytest.mark.unit

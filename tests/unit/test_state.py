@@ -1,8 +1,8 @@
 """Tests unitaires pour la classe State."""
 
 import pytest
-from baobab_automata.core.implementations.state import State
-from baobab_automata.core.interfaces.state import StateType
+from baobab_automata.implementations.state import State
+from baobab_automata.interfaces.state import StateType
 
 
 @pytest.mark.unit

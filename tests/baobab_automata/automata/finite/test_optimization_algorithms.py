@@ -8,20 +8,20 @@ et les classes de support associées.
 import pytest
 from typing import Dict, Set, Tuple
 
-from baobab_automata.automata.finite.dfa import DFA
-from baobab_automata.automata.finite.nfa import NFA
-from baobab_automata.automata.finite.epsilon_nfa import EpsilonNFA
-from baobab_automata.automata.finite.optimization_algorithms import (
+from baobab_automata.finite.dfa import DFA
+from baobab_automata.finite.nfa import NFA
+from baobab_automata.finite.epsilon_nfa import EpsilonNFA
+from baobab_automata.algorithms.finite.optimization_algorithms import (
     OptimizationAlgorithms,
     OptimizationStats,
 )
-from baobab_automata.automata.finite.optimization_exceptions import (
+from baobab_automata.finite.optimization.optimization_exceptions import (
     OptimizationError,
     OptimizationMemoryError,
     OptimizationTimeoutError,
     OptimizationValidationError,
 )
-from baobab_automata.automata.finite.transition_change import TransitionChange
+from baobab_automata.finite.optimization.transition_change import TransitionChange
 
 
 class TestOptimizationAlgorithms:

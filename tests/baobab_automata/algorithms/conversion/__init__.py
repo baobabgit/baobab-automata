@@ -3,7 +3,7 @@
 from .test_dependency_analysis import (
     TestComponentDependency,
     TestDevelopmentPhase,
-    TestDependencyAnalyzer,
+    TestSpecializedAlgorithms,
     TestComponentStatus,
     TestDependencyAnalysisError,
     TestIntegration,
@@ -12,7 +12,7 @@ from .test_dependency_analysis import (
 __all__ = [
     "TestComponentDependency",
     "TestDevelopmentPhase",
-    "TestDependencyAnalyzer",
+    "TestSpecializedAlgorithms",
     "TestComponentStatus",
     "TestDependencyAnalysisError",
     "TestIntegration",

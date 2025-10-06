@@ -7,8 +7,8 @@ de la classe Mapping selon les spécifications détaillées.
 
 import unittest
 
-from baobab_automata.automata.finite.language_operations_exceptions import InvalidMappingError
-from baobab_automata.automata.finite.mapping import Mapping
+from baobab_automata.finite.language.language_operations_exceptions import InvalidMappingError
+from baobab_automata.finite.mapping import Mapping
 
 
 class TestMapping(unittest.TestCase):

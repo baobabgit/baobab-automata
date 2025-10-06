@@ -8,7 +8,7 @@ entre différents types d'automates finis.
 import pytest
 from unittest.mock import Mock, patch
 
-from baobab_automata.automata.finite.conversion_algorithms import (
+from baobab_automata.algorithms.finite.conversion_algorithms import (
     ConversionAlgorithms,
     ConversionError,
     ConversionMemoryError,
@@ -16,9 +16,9 @@ from baobab_automata.automata.finite.conversion_algorithms import (
     ConversionTimeoutError,
     ConversionValidationError,
 )
-from baobab_automata.automata.finite.dfa import DFA
-from baobab_automata.automata.finite.epsilon_nfa import EpsilonNFA
-from baobab_automata.automata.finite.nfa import NFA
+from baobab_automata.finite.dfa import DFA
+from baobab_automata.finite.epsilon_nfa import EpsilonNFA
+from baobab_automata.finite.nfa import NFA
 
 
 class TestConversionStats:

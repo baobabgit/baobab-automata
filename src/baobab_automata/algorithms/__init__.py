@@ -5,8 +5,14 @@ Ce module contient tous les algorithmes de conversion, d'optimisation
 et spécialisés pour les différents types d'automates.
 """
 
-# Les imports sont faits de manière paresseuse pour éviter les imports circulaires
+from .finite import ConversionAlgorithms, OptimizationAlgorithms
+from .pushdown import PushdownConversionAlgorithms, PushdownOptimizationAlgorithms
+from .turing import ComplexityAnalyzer
 
 __all__ = [
-    # Les exports seront définis dans les sous-modules
+    "ConversionAlgorithms",
+    "OptimizationAlgorithms",
+    "PushdownConversionAlgorithms",
+    "PushdownOptimizationAlgorithms",
+    "ComplexityAnalyzer",
 ]

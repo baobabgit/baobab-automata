@@ -8,8 +8,8 @@ avec des cas d'usage complexes et des scénarios réels.
 import unittest
 from typing import Dict, List, Set, Tuple
 
-from baobab_automata.automata.turing.ntm import NTM
-from baobab_automata.core.interfaces.turing_machine import TapeDirection
+from baobab_automata.turing.ntm import NTM
+from baobab_automata.interfaces.turing_machine import TapeDirection
 
 
 class TestNTMIntegration(unittest.TestCase):

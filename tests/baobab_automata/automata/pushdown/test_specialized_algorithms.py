@@ -7,12 +7,12 @@ et les automates à pile, incluant CYK, Earley, et les algorithmes de normalisat
 
 import pytest
 
-from baobab_automata.automata.pushdown.specialized_algorithms import (
+from baobab_automata.algorithms.pushdown.specialized_algorithms import (
     SpecializedAlgorithms,
     ParseTree,
     AlgorithmStats,
 )
-from baobab_automata.automata.pushdown.specialized_exceptions import (
+from baobab_automata.pushdown.specialized.specialized_exceptions import (
     AlgorithmError,
     AlgorithmTimeoutError,
     AlgorithmMemoryError,
@@ -22,7 +22,7 @@ from baobab_automata.automata.pushdown.specialized_exceptions import (
     EmptyProductionError,
     NormalizationError,
 )
-from baobab_automata.automata.pushdown.grammar_types import (
+from baobab_automata.pushdown.grammar.grammar_types import (
     ContextFreeGrammar,
     Production,
 )

@@ -1,12 +1,12 @@
 """Tests simples pour les modules pushdown."""
 
 import pytest
-from baobab_automata.automata.pushdown.dpda import DPDA
-from baobab_automata.automata.pushdown.npda import NPDA
-from baobab_automata.automata.pushdown.pda import PDA
-from baobab_automata.automata.pushdown.dpda_exceptions import InvalidDPDAError
-from baobab_automata.automata.pushdown.npda_exceptions import InvalidNPDAError
-from baobab_automata.automata.pushdown.pda_exceptions import InvalidPDAError
+from baobab_automata.pushdown.dpda import DPDA
+from baobab_automata.pushdown.npda import NPDA
+from baobab_automata.pushdown.pda import PDA
+from baobab_automata.pushdown.dpda.dpda_exceptions import InvalidDPDAError
+from baobab_automata.pushdown.npda.npda_exceptions import InvalidNPDAError
+from baobab_automata.pushdown.pda.pda_exceptions import InvalidPDAError
 
 
 @pytest.mark.unit

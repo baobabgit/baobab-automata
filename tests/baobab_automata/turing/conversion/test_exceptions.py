@@ -3,7 +3,7 @@ Tests pour les exceptions personnalisées de conversion.
 """
 
 import pytest
-from src.baobab_automata.turing.conversion.exceptions import (
+from baobab_automata.turing.conversion.exceptions import (
     ConversionError,
     InvalidConversionEngineError,
     ConversionTimeoutError,

@@ -1,7 +1,7 @@
 """Tests unitaires basiques pour la classe EpsilonNFA."""
 
 import pytest
-from baobab_automata.automata.finite.epsilon_nfa import EpsilonNFA
+from baobab_automata.finite.epsilon_nfa import EpsilonNFA
 
 
 @pytest.mark.unit

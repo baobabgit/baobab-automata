@@ -8,12 +8,12 @@ Ce module contient tous les tests unitaires pour la classe NTM
 import unittest
 from typing import Dict, List, Set, Tuple
 
-from baobab_automata.automata.turing.ntm import NTM
-from baobab_automata.automata.turing.ntm_configuration import NTMConfiguration
-from baobab_automata.core.interfaces.non_deterministic_turing_machine import (
+from baobab_automata.turing.ntm import NTM
+from baobab_automata.turing.ntm.ntm_configuration import NTMConfiguration
+from baobab_automata.interfaces.non_deterministic_turing_machine import (
     NTMTransition,
 )
-from baobab_automata.core.interfaces.turing_machine import TapeDirection
+from baobab_automata.interfaces.turing_machine import TapeDirection
 from baobab_automata.exceptions.ntm_exceptions import (
     NTMError,
     InvalidNTMError,

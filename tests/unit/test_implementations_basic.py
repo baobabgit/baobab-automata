@@ -19,7 +19,7 @@ class TestImplementationsBasic:
     def test_state_import(self):
         """Test l'import de State."""
         try:
-            from baobab_automata.core.implementations.state import State
+            from baobab_automata.implementations.state import State
             assert State is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -28,7 +28,7 @@ class TestImplementationsBasic:
     def test_transition_import(self):
         """Test l'import de Transition."""
         try:
-            from baobab_automata.core.implementations.transition import Transition
+            from baobab_automata.implementations.transition import Transition
             assert Transition is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -37,7 +37,7 @@ class TestImplementationsBasic:
     def test_finite_automaton_import(self):
         """Test l'import de FiniteAutomaton."""
         try:
-            from baobab_automata.core.implementations.finite_automaton import FiniteAutomaton
+            from baobab_automata.implementations.finite_automaton import FiniteAutomaton
             assert FiniteAutomaton is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -46,7 +46,7 @@ class TestImplementationsBasic:
     def test_pushdown_automaton_import(self):
         """Test l'import de PushdownAutomaton."""
         try:
-            from baobab_automata.core.implementations.pushdown_automaton import PushdownAutomaton
+            from baobab_automata.implementations.pushdown_automaton import PushdownAutomaton
             assert PushdownAutomaton is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -55,7 +55,7 @@ class TestImplementationsBasic:
     def test_turing_machine_import(self):
         """Test l'import de TuringMachine."""
         try:
-            from baobab_automata.core.implementations.turing_machine import TuringMachine
+            from baobab_automata.implementations.turing_machine import TuringMachine
             assert TuringMachine is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -64,7 +64,7 @@ class TestImplementationsBasic:
     def test_grammar_import(self):
         """Test l'import de Grammar."""
         try:
-            from baobab_automata.core.implementations.grammar import Grammar
+            from baobab_automata.implementations.grammar import Grammar
             assert Grammar is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -73,7 +73,7 @@ class TestImplementationsBasic:
     def test_parser_import(self):
         """Test l'import de Parser."""
         try:
-            from baobab_automata.core.implementations.parser import Parser
+            from baobab_automata.implementations.parser import Parser
             assert Parser is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -82,7 +82,7 @@ class TestImplementationsBasic:
     def test_analyzer_import(self):
         """Test l'import de Analyzer."""
         try:
-            from baobab_automata.core.implementations.analyzer import Analyzer
+            from baobab_automata.implementations.analyzer import Analyzer
             assert Analyzer is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -91,7 +91,7 @@ class TestImplementationsBasic:
     def test_optimizer_import(self):
         """Test l'import de Optimizer."""
         try:
-            from baobab_automata.core.implementations.optimizer import Optimizer
+            from baobab_automata.implementations.optimizer import Optimizer
             assert Optimizer is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -100,7 +100,7 @@ class TestImplementationsBasic:
     def test_converter_import(self):
         """Test l'import de Converter."""
         try:
-            from baobab_automata.core.implementations.converter import Converter
+            from baobab_automata.implementations.converter import Converter
             assert Converter is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -109,7 +109,7 @@ class TestImplementationsBasic:
     def test_validator_import(self):
         """Test l'import de Validator."""
         try:
-            from baobab_automata.core.implementations.validator import Validator
+            from baobab_automata.implementations.validator import Validator
             assert Validator is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -118,7 +118,7 @@ class TestImplementationsBasic:
     def test_serializer_import(self):
         """Test l'import de Serializer."""
         try:
-            from baobab_automata.core.implementations.serializer import Serializer
+            from baobab_automata.implementations.serializer import Serializer
             assert Serializer is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -127,7 +127,7 @@ class TestImplementationsBasic:
     def test_visualizer_import(self):
         """Test l'import de Visualizer."""
         try:
-            from baobab_automata.core.implementations.visualizer import Visualizer
+            from baobab_automata.implementations.visualizer import Visualizer
             assert Visualizer is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -136,7 +136,7 @@ class TestImplementationsBasic:
     def test_benchmarker_import(self):
         """Test l'import de Benchmarker."""
         try:
-            from baobab_automata.core.implementations.benchmarker import Benchmarker
+            from baobab_automata.implementations.benchmarker import Benchmarker
             assert Benchmarker is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -145,7 +145,7 @@ class TestImplementationsBasic:
     def test_tester_import(self):
         """Test l'import de Tester."""
         try:
-            from baobab_automata.core.implementations.tester import Tester
+            from baobab_automata.implementations.tester import Tester
             assert Tester is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -154,7 +154,7 @@ class TestImplementationsBasic:
     def test_metrics_import(self):
         """Test l'import de Metrics."""
         try:
-            from baobab_automata.core.implementations.metrics import Metrics
+            from baobab_automata.implementations.metrics import Metrics
             assert Metrics is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -163,7 +163,7 @@ class TestImplementationsBasic:
     def test_logger_import(self):
         """Test l'import de Logger."""
         try:
-            from baobab_automata.core.implementations.logger import Logger
+            from baobab_automata.implementations.logger import Logger
             assert Logger is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -172,7 +172,7 @@ class TestImplementationsBasic:
     def test_configuration_import(self):
         """Test l'import de Configuration."""
         try:
-            from baobab_automata.core.implementations.configuration import Configuration
+            from baobab_automata.implementations.configuration import Configuration
             assert Configuration is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -181,7 +181,7 @@ class TestImplementationsBasic:
     def test_file_operations_import(self):
         """Test l'import de FileOperations."""
         try:
-            from baobab_automata.core.implementations.file_operations import FileOperations
+            from baobab_automata.implementations.file_operations import FileOperations
             assert FileOperations is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -190,7 +190,7 @@ class TestImplementationsBasic:
     def test_math_import(self):
         """Test l'import de Math."""
         try:
-            from baobab_automata.core.implementations.math import Math
+            from baobab_automata.implementations.math import Math
             assert Math is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -199,7 +199,7 @@ class TestImplementationsBasic:
     def test_string_import(self):
         """Test l'import de String."""
         try:
-            from baobab_automata.core.implementations.string import String
+            from baobab_automata.implementations.string import String
             assert String is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -208,7 +208,7 @@ class TestImplementationsBasic:
     def test_collections_import(self):
         """Test l'import de Collections."""
         try:
-            from baobab_automata.core.implementations.collections import Collections
+            from baobab_automata.implementations.collections import Collections
             assert Collections is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -217,7 +217,7 @@ class TestImplementationsBasic:
     def test_iterators_import(self):
         """Test l'import de Iterators."""
         try:
-            from baobab_automata.core.implementations.iterators import Iterators
+            from baobab_automata.implementations.iterators import Iterators
             assert Iterators is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -226,7 +226,7 @@ class TestImplementationsBasic:
     def test_decorators_import(self):
         """Test l'import de Decorators."""
         try:
-            from baobab_automata.core.implementations.decorators import Decorators
+            from baobab_automata.implementations.decorators import Decorators
             assert Decorators is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -235,7 +235,7 @@ class TestImplementationsBasic:
     def test_context_managers_import(self):
         """Test l'import de ContextManagers."""
         try:
-            from baobab_automata.core.implementations.context_managers import ContextManagers
+            from baobab_automata.implementations.context_managers import ContextManagers
             assert ContextManagers is not None
         except ImportError:
             # Si le module n'est pas disponible, on passe le test
@@ -244,32 +244,32 @@ class TestImplementationsBasic:
     def test_exceptions_import(self):
         """Test l'import des exceptions implementations."""
         try:
-            from baobab_automata.core.implementations.implementations_exceptions import ImplementationsError
-            from baobab_automata.core.implementations.state_exceptions import StateError
-            from baobab_automata.core.implementations.transition_exceptions import TransitionError
-            from baobab_automata.core.implementations.finite_automaton_exceptions import FiniteAutomatonError
-            from baobab_automata.core.implementations.pushdown_automaton_exceptions import PushdownAutomatonError
-            from baobab_automata.core.implementations.turing_machine_exceptions import TuringMachineError
-            from baobab_automata.core.implementations.grammar_exceptions import GrammarError
-            from baobab_automata.core.implementations.parser_exceptions import ParserError
-            from baobab_automata.core.implementations.analyzer_exceptions import AnalyzerError
-            from baobab_automata.core.implementations.optimizer_exceptions import OptimizerError
-            from baobab_automata.core.implementations.converter_exceptions import ConverterError
-            from baobab_automata.core.implementations.validator_exceptions import ValidatorError
-            from baobab_automata.core.implementations.serializer_exceptions import SerializerError
-            from baobab_automata.core.implementations.visualizer_exceptions import VisualizerError
-            from baobab_automata.core.implementations.benchmarker_exceptions import BenchmarkerError
-            from baobab_automata.core.implementations.tester_exceptions import TesterError
-            from baobab_automata.core.implementations.metrics_exceptions import MetricsError
-            from baobab_automata.core.implementations.logger_exceptions import LoggerError
-            from baobab_automata.core.implementations.configuration_exceptions import ConfigurationError
-            from baobab_automata.core.implementations.file_operations_exceptions import FileOperationsError
-            from baobab_automata.core.implementations.math_exceptions import MathError
-            from baobab_automata.core.implementations.string_exceptions import StringError
-            from baobab_automata.core.implementations.collections_exceptions import CollectionsError
-            from baobab_automata.core.implementations.iterators_exceptions import IteratorsError
-            from baobab_automata.core.implementations.decorators_exceptions import DecoratorsError
-            from baobab_automata.core.implementations.context_managers_exceptions import ContextManagersError
+            from baobab_automata.implementations.implementations_exceptions import ImplementationsError
+            from baobab_automata.implementations.state_exceptions import StateError
+            from baobab_automata.implementations.transition_exceptions import TransitionError
+            from baobab_automata.implementations.finite_automaton_exceptions import FiniteAutomatonError
+            from baobab_automata.implementations.pushdown_automaton_exceptions import PushdownAutomatonError
+            from baobab_automata.implementations.turing_machine_exceptions import TuringMachineError
+            from baobab_automata.implementations.grammar_exceptions import GrammarError
+            from baobab_automata.implementations.parser_exceptions import ParserError
+            from baobab_automata.implementations.analyzer_exceptions import AnalyzerError
+            from baobab_automata.implementations.optimizer_exceptions import OptimizerError
+            from baobab_automata.implementations.converter_exceptions import ConverterError
+            from baobab_automata.implementations.validator_exceptions import ValidatorError
+            from baobab_automata.implementations.serializer_exceptions import SerializerError
+            from baobab_automata.implementations.visualizer_exceptions import VisualizerError
+            from baobab_automata.implementations.benchmarker_exceptions import BenchmarkerError
+            from baobab_automata.implementations.tester_exceptions import TesterError
+            from baobab_automata.implementations.metrics_exceptions import MetricsError
+            from baobab_automata.implementations.logger_exceptions import LoggerError
+            from baobab_automata.implementations.configuration_exceptions import ConfigurationError
+            from baobab_automata.implementations.file_operations_exceptions import FileOperationsError
+            from baobab_automata.implementations.math_exceptions import MathError
+            from baobab_automata.implementations.string_exceptions import StringError
+            from baobab_automata.implementations.collections_exceptions import CollectionsError
+            from baobab_automata.implementations.iterators_exceptions import IteratorsError
+            from baobab_automata.implementations.decorators_exceptions import DecoratorsError
+            from baobab_automata.implementations.context_managers_exceptions import ContextManagersError
             assert ImplementationsError is not None
             assert StateError is not None
             assert TransitionError is not None

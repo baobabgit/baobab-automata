@@ -6,10 +6,10 @@ l'implémentation Transition.
 """
 
 import pytest
-from baobab_automata.core.interfaces.state import StateType
-from baobab_automata.core.interfaces.transition import TransitionType
-from baobab_automata.core.implementations.state import State
-from baobab_automata.core.implementations.transition import Transition
+from baobab_automata.interfaces.state import StateType
+from baobab_automata.interfaces.transition import TransitionType
+from baobab_automata.implementations.state import State
+from baobab_automata.implementations.transition import Transition
 
 
 class TestTransition:

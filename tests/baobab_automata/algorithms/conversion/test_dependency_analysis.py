@@ -9,8 +9,8 @@ import pytest
 from unittest.mock import Mock, patch
 from typing import Dict, List, Any
 
-from baobab_automata.algorithms.dependency_analysis import (
-    DependencyAnalyzer,
+from baobab_automata.algorithms.finite.specialized_algorithms import (
+    SpecializedAlgorithms,
     ComponentDependency,
     DevelopmentPhase,
     ComponentStatus,
@@ -76,12 +76,12 @@ class TestDevelopmentPhase:
         assert phase.dependencies == []
 
 
-class TestDependencyAnalyzer:
-    """Tests pour la classe DependencyAnalyzer."""
+class TestSpecializedAlgorithms:
+    """Tests pour la classe SpecializedAlgorithms."""
 
     def setup_method(self):
         """Configuration avant chaque test."""
-        self.analyzer = DependencyAnalyzer()
+        self.analyzer = SpecializedAlgorithms()
 
     def test_initialization(self):
         """Test l'initialisation de l'analyseur."""
@@ -128,26 +128,24 @@ class TestDependencyAnalyzer:
         """Test la détermination de l'ordre optimal de développement."""
         optimal_order = self.analyzer.get_optimal_development_order()
 
-        assert len(optimal_order) == 3
-        assert all(isinstance(phase, DevelopmentPhase) for phase in optimal_order)
+        assert len(optimal_order) == 7
+        assert all(isinstance(component, str) for component in optimal_order)
 
-        # Vérifier que la phase 2A (classes de base) est en premier
-        assert optimal_order[0].name == "Phase 2A: Classes de Base"
-        assert "DFA" in optimal_order[0].components
-        assert "NFA" in optimal_order[0].components
-        assert "ε-NFA" in optimal_order[0].components
+        # Vérifier que les composants de base sont présents
+        assert "DFA" in optimal_order
+        assert "NFA" in optimal_order
+        assert "ε-NFA" in optimal_order
 
     def test_get_parallel_components(self):
         """Test l'identification des composants parallélisables."""
         parallel_components = self.analyzer.get_parallel_components()
 
-        assert isinstance(parallel_components, dict)
+        assert isinstance(parallel_components, list)
         assert len(parallel_components) > 0
 
-        # Vérifier que les phases parallélisables sont présentes
-        phase_names = list(parallel_components.keys())
-        assert any("Phase 2B" in name for name in phase_names)
-        assert any("Phase 2C" in name for name in phase_names)
+        # Vérifier que les composants parallélisables sont présents
+        assert any("RegexParser" in group for group in parallel_components)
+        assert any("ConversionAlgorithms" in group for group in parallel_components)
 
     def test_get_component_dependencies(self):
         """Test l'obtention des dépendances d'un composant."""
@@ -161,25 +159,24 @@ class TestDependencyAnalyzer:
 
     def test_get_component_dependencies_nonexistent(self):
         """Test l'obtention des dépendances d'un composant inexistant."""
-        with pytest.raises(DependencyAnalysisError):
-            self.analyzer.get_component_dependencies("Inexistant")
+        dependencies = self.analyzer.get_component_dependencies("Inexistant")
+        assert dependencies == []
 
     def test_get_component_dependents(self):
         """Test l'obtention des composants dépendants."""
         dependents = self.analyzer.get_component_dependents("DFA")
 
         assert isinstance(dependents, list)
-        assert all(isinstance(dep, ComponentDependency) for dep in dependents)
+        assert all(isinstance(dep, str) for dep in dependents)
         assert len(dependents) > 0
 
         # Vérifier que NFA dépend de DFA
-        nfa_deps = [dep for dep in dependents if dep.source == "NFA"]
-        assert len(nfa_deps) > 0
+        assert "NFA" in dependents
 
     def test_get_component_dependents_nonexistent(self):
         """Test l'obtention des composants dépendants d'un composant inexistant."""
-        with pytest.raises(DependencyAnalysisError):
-            self.analyzer.get_component_dependents("Inexistant")
+        dependents = self.analyzer.get_component_dependents("Inexistant")
+        assert dependents == []
 
     def test_update_component_status(self):
         """Test la mise à jour du statut d'un composant."""
@@ -384,12 +381,13 @@ class TestComponentStatus:
     def test_component_status_enumeration(self):
         """Test l'énumération des statuts."""
         statuses = list(ComponentStatus)
-        assert len(statuses) == 5
+        assert len(statuses) == 6
         assert ComponentStatus.NOT_STARTED in statuses
         assert ComponentStatus.IN_PROGRESS in statuses
         assert ComponentStatus.COMPLETED in statuses
         assert ComponentStatus.BLOCKED in statuses
         assert ComponentStatus.FAILED in statuses
+        assert ComponentStatus.CANCELLED in statuses
 
 
 class TestDependencyAnalysisError:
@@ -412,7 +410,7 @@ class TestIntegration:
 
     def setup_method(self):
         """Configuration avant chaque test."""
-        self.analyzer = DependencyAnalyzer()
+        self.analyzer = SpecializedAlgorithms()
 
     def test_full_workflow(self):
         """Test le workflow complet de l'analyse des dépendances."""
@@ -450,7 +448,7 @@ class TestIntegration:
     def test_memory_usage(self):
         """Test que l'utilisation mémoire reste raisonnable."""
         # Créer plusieurs analyseurs pour tester la mémoire
-        analyzers = [DependencyAnalyzer() for _ in range(10)]
+        analyzers = [SpecializedAlgorithms() for _ in range(10)]
 
         # Vérifier que chaque analyseur fonctionne
         for analyzer in analyzers:

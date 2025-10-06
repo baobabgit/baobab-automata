@@ -6,13 +6,13 @@ et toutes ses fonctionnalités.
 """
 
 import pytest
-from baobab_automata.automata.pushdown.grammar_parser import GrammarParser
-from baobab_automata.automata.pushdown.grammar_types import (
+from baobab_automata.pushdown.grammar.grammar_parser import GrammarParser
+from baobab_automata.pushdown.grammar.grammar_types import (
     ContextFreeGrammar,
     GrammarType,
     Production,
 )
-from baobab_automata.automata.pushdown.grammar_exceptions import (
+from baobab_automata.pushdown.grammar.grammar_exceptions import (
     GrammarError,
     GrammarParseError,
     GrammarValidationError,
@@ -1063,7 +1063,7 @@ class TestGrammarParser:
         parser = GrammarParser()
 
         # Créer un PDA simple
-        from baobab_automata.automata.pushdown.pda import PDA
+        from baobab_automata.pushdown.pda import PDA
 
         pda = PDA(
             states={"q0", "q1", "q2"},

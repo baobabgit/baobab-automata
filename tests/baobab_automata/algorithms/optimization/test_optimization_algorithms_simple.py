@@ -1,9 +1,9 @@
 """Tests simples pour les algorithmes d'optimisation."""
 
 import pytest
-from baobab_automata.automata.finite.optimization_algorithms import OptimizationAlgorithms
-from baobab_automata.automata.finite.dfa import DFA
-from baobab_automata.automata.finite.optimization_exceptions import OptimizationError
+from baobab_automata.algorithms.finite.optimization_algorithms import OptimizationAlgorithms
+from baobab_automata.finite.dfa import DFA
+from baobab_automata.finite.optimization.optimization_exceptions import OptimizationError
 
 
 @pytest.mark.unit

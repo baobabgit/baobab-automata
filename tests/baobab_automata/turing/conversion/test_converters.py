@@ -4,7 +4,7 @@ Tests pour les convertisseurs spécialisés.
 
 import pytest
 from unittest.mock import Mock, patch
-from src.baobab_automata.turing.conversion.converters import (
+from baobab_automata.turing.conversion.converters import (
     NTMToDTMConverter,
     MultiTapeToSingleConverter,
     StateReductionConverter,
@@ -12,11 +12,11 @@ from src.baobab_automata.turing.conversion.converters import (
     DTMToTMConverter,
     TMToDTMConverter,
 )
-from src.baobab_automata.turing.conversion.conversion_types import (
+from baobab_automata.turing.conversion.conversion_types import (
     ConversionType,
     ConversionResult,
 )
-from src.baobab_automata.turing.conversion.exceptions import (
+from baobab_automata.turing.conversion.exceptions import (
     ConversionError,
     EquivalenceVerificationError,
     OptimizationError,
@@ -41,7 +41,7 @@ class TestNTMToDTMConverter:
         source_machine = MockMachine(states={"q0", "q1"}, alphabet={"a", "b"})
         target_type = type("DTM", (), {})
 
-        result = converter.convert(source_machine, target_type)
+        result = converter.convert(source_machine)
 
         assert isinstance(result, ConversionResult)
         assert result.conversion_type == ConversionType.NTM_TO_DTM
@@ -56,7 +56,7 @@ class TestNTMToDTMConverter:
         target_type = type("DTM", (), {})
 
         result = converter.convert(
-            source_machine, target_type, param1="value1"
+            source_machine, param1="value1"
         )
 
         assert isinstance(result, ConversionResult)
@@ -70,7 +70,7 @@ class TestNTMToDTMConverter:
         test_cases = ["test1", "test2"]
 
         result = converter.verify_equivalence(
-            source_machine, converted_machine, test_cases
+            source_machine, converted_machine
         )
 
         assert result is True
@@ -87,7 +87,7 @@ class TestNTMToDTMConverter:
             mock_exec.side_effect = [True, False]  # Différents résultats
 
             result = converter.verify_equivalence(
-                source_machine, converted_machine, test_cases
+                source_machine, converted_machine
             )
 
             assert result is False
@@ -96,6 +96,7 @@ class TestNTMToDTMConverter:
         """Teste l'optimisation d'une conversion."""
         converter = NTMToDTMConverter()
         conversion_result = ConversionResult(
+            success=True,
             converted_machine=MockMachine(),
             conversion_type=ConversionType.NTM_TO_DTM,
         )
@@ -114,7 +115,7 @@ class TestNTMToDTMConverter:
             states={"q0", "q1", "q2"}, alphabet={"a", "b", "c"}
         )
 
-        complexity = converter.get_conversion_complexity(source_machine)
+        complexity = converter.get_conversion_complexity()
 
         assert isinstance(complexity, dict)
         assert "time_complexity" in complexity
@@ -138,7 +139,7 @@ class TestMultiTapeToSingleConverter:
         source_machine = MockMachine(tape_count=3)
         target_type = type("TM", (), {})
 
-        result = converter.convert(source_machine, target_type)
+        result = converter.convert(source_machine)
 
         assert isinstance(result, ConversionResult)
         assert result.conversion_type == ConversionType.MULTITAPE_TO_SINGLE
@@ -157,7 +158,7 @@ class TestMultiTapeToSingleConverter:
         test_cases = ["test1", "test2"]
 
         result = converter.verify_equivalence(
-            source_machine, converted_machine, test_cases
+            source_machine, converted_machine
         )
 
         assert result is True
@@ -166,6 +167,7 @@ class TestMultiTapeToSingleConverter:
         """Teste l'optimisation d'une conversion."""
         converter = MultiTapeToSingleConverter()
         conversion_result = ConversionResult(
+            success=True,
             converted_machine=MockMachine(),
             conversion_type=ConversionType.MULTITAPE_TO_SINGLE,
         )
@@ -181,7 +183,7 @@ class TestMultiTapeToSingleConverter:
         converter = MultiTapeToSingleConverter()
         source_machine = MockMachine(tape_count=3, states={"q0", "q1"})
 
-        complexity = converter.get_conversion_complexity(source_machine)
+        complexity = converter.get_conversion_complexity()
 
         assert isinstance(complexity, dict)
         assert "time_complexity" in complexity
@@ -202,7 +204,7 @@ class TestStateReductionConverter:
         source_machine = MockMachine(states={"q0", "q1", "q2", "q3"})
         target_type = type("TM", (), {})
 
-        result = converter.convert(source_machine, target_type)
+        result = converter.convert(source_machine)
 
         assert isinstance(result, ConversionResult)
         assert result.conversion_type == ConversionType.STATE_REDUCTION
@@ -218,7 +220,7 @@ class TestStateReductionConverter:
         test_cases = ["test1", "test2"]
 
         result = converter.verify_equivalence(
-            source_machine, converted_machine, test_cases
+            source_machine, converted_machine
         )
 
         assert result is True
@@ -227,6 +229,7 @@ class TestStateReductionConverter:
         """Teste l'optimisation d'une conversion."""
         converter = StateReductionConverter()
         conversion_result = ConversionResult(
+            success=True,
             converted_machine=MockMachine(),
             conversion_type=ConversionType.STATE_REDUCTION,
         )
@@ -242,7 +245,7 @@ class TestStateReductionConverter:
         converter = StateReductionConverter()
         source_machine = MockMachine(states={"q0", "q1", "q2", "q3"})
 
-        complexity = converter.get_conversion_complexity(source_machine)
+        complexity = converter.get_conversion_complexity()
 
         assert isinstance(complexity, dict)
         assert "time_complexity" in complexity
@@ -264,7 +267,7 @@ class TestSymbolMinimizationConverter:
         source_machine = MockMachine(alphabet={"a", "b", "c", "d"})
         target_type = type("TM", (), {})
 
-        result = converter.convert(source_machine, target_type)
+        result = converter.convert(source_machine)
 
         assert isinstance(result, ConversionResult)
         assert result.conversion_type == ConversionType.SYMBOL_MINIMIZATION
@@ -280,7 +283,7 @@ class TestSymbolMinimizationConverter:
         test_cases = ["test1", "test2"]
 
         result = converter.verify_equivalence(
-            source_machine, converted_machine, test_cases
+            source_machine, converted_machine
         )
 
         assert result is True
@@ -289,6 +292,7 @@ class TestSymbolMinimizationConverter:
         """Teste l'optimisation d'une conversion."""
         converter = SymbolMinimizationConverter()
         conversion_result = ConversionResult(
+            success=True,
             converted_machine=MockMachine(),
             conversion_type=ConversionType.SYMBOL_MINIMIZATION,
         )
@@ -304,7 +308,7 @@ class TestSymbolMinimizationConverter:
         converter = SymbolMinimizationConverter()
         source_machine = MockMachine(alphabet={"a", "b", "c", "d"})
 
-        complexity = converter.get_conversion_complexity(source_machine)
+        complexity = converter.get_conversion_complexity()
 
         assert isinstance(complexity, dict)
         assert "time_complexity" in complexity
@@ -326,7 +330,7 @@ class TestDTMToTMConverter:
         source_machine = MockMachine(states={"q0", "q1"})
         target_type = type("TM", (), {})
 
-        result = converter.convert(source_machine, target_type)
+        result = converter.convert(source_machine)
 
         assert isinstance(result, ConversionResult)
         assert result.conversion_type == ConversionType.DTM_TO_TM
@@ -342,7 +346,7 @@ class TestDTMToTMConverter:
         test_cases = ["test1", "test2"]
 
         result = converter.verify_equivalence(
-            source_machine, converted_machine, test_cases
+            source_machine, converted_machine
         )
 
         assert result is True
@@ -351,6 +355,7 @@ class TestDTMToTMConverter:
         """Teste l'optimisation d'une conversion."""
         converter = DTMToTMConverter()
         conversion_result = ConversionResult(
+            success=True,
             converted_machine=MockMachine(),
             conversion_type=ConversionType.DTM_TO_TM,
         )
@@ -366,7 +371,7 @@ class TestDTMToTMConverter:
         converter = DTMToTMConverter()
         source_machine = MockMachine(states={"q0", "q1"})
 
-        complexity = converter.get_conversion_complexity(source_machine)
+        complexity = converter.get_conversion_complexity()
 
         assert isinstance(complexity, dict)
         assert "time_complexity" in complexity
@@ -388,7 +393,7 @@ class TestTMToDTMConverter:
         source_machine = MockMachine(states={"q0", "q1"})
         target_type = type("DTM", (), {})
 
-        result = converter.convert(source_machine, target_type)
+        result = converter.convert(source_machine)
 
         assert isinstance(result, ConversionResult)
         assert result.conversion_type == ConversionType.TM_TO_DTM
@@ -404,7 +409,7 @@ class TestTMToDTMConverter:
         test_cases = ["test1", "test2"]
 
         result = converter.verify_equivalence(
-            source_machine, converted_machine, test_cases
+            source_machine, converted_machine
         )
 
         assert result is True
@@ -413,6 +418,7 @@ class TestTMToDTMConverter:
         """Teste l'optimisation d'une conversion."""
         converter = TMToDTMConverter()
         conversion_result = ConversionResult(
+            success=True,
             converted_machine=MockMachine(),
             conversion_type=ConversionType.TM_TO_DTM,
         )
@@ -428,7 +434,7 @@ class TestTMToDTMConverter:
         converter = TMToDTMConverter()
         source_machine = MockMachine(states={"q0", "q1"})
 
-        complexity = converter.get_conversion_complexity(source_machine)
+        complexity = converter.get_conversion_complexity()
 
         assert isinstance(complexity, dict)
         assert "time_complexity" in complexity

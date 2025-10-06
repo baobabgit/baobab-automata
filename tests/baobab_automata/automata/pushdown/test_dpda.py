@@ -9,9 +9,9 @@ import pytest
 
 # Imports pour les tests
 
-from baobab_automata.automata.pushdown.dpda import DPDA
-from baobab_automata.automata.pushdown.dpda_configuration import DPDAConfiguration
-from baobab_automata.automata.pushdown.dpda_exceptions import (
+from baobab_automata.pushdown.dpda import DPDA
+from baobab_automata.pushdown.dpda.dpda_configuration import DPDAConfiguration
+from baobab_automata.pushdown.dpda.dpda_exceptions import (
     DPDAError,
     InvalidDPDAError,
     DeterminismError,
