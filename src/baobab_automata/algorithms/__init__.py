@@ -1,22 +1,12 @@
 """
 Module algorithms - Algorithmes pour les automates.
 
-Ce module contient les algorithmes de conversion, d'optimisation
-et de reconnaissance pour les différents types d'automates.
+Ce module contient tous les algorithmes de conversion, d'optimisation
+et spécialisés pour les différents types d'automates.
 """
 
-from .dependency_analysis import (
-    DependencyAnalyzer,
-    ComponentDependency,
-    DevelopmentPhase,
-    ComponentStatus,
-    DependencyAnalysisError,
-)
+# Les imports sont faits de manière paresseuse pour éviter les imports circulaires
 
 __all__ = [
-    "DependencyAnalyzer",
-    "ComponentDependency",
-    "DevelopmentPhase",
-    "ComponentStatus",
-    "DependencyAnalysisError",
+    # Les exports seront définis dans les sous-modules
 ]

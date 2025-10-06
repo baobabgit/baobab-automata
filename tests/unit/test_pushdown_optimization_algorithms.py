@@ -1,7 +1,7 @@
 """Tests pour les algorithmes d'optimisation pushdown."""
 
 import pytest
-from baobab_automata.pushdown.optimization_algorithms import PushdownOptimizationAlgorithms
+from baobab_automata.automata.pushdown.optimization_algorithms import PushdownOptimizationAlgorithms
 
 
 @pytest.mark.unit

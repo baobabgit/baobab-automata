@@ -1,7 +1,7 @@
 """Tests unitaires pour la classe TransitionChange."""
 
 import pytest
-from baobab_automata.finite.transition_change import TransitionChange
+from baobab_automata.automata.finite.transition_change import TransitionChange
 
 
 @pytest.mark.unit

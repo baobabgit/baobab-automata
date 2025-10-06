@@ -1,8 +1,8 @@
 """Tests unitaires pour la classe RegexParser."""
 
 import pytest
-from baobab_automata.finite.regex_parser import RegexParser
-from baobab_automata.finite.regex_exceptions import (
+from baobab_automata.automata.finite.regex_parser import RegexParser
+from baobab_automata.automata.finite.regex_exceptions import (
     RegexSyntaxError,
     RegexParseError,
     RegexError,

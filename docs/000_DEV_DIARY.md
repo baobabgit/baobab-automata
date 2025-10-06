@@ -1,5 +1,46 @@
 # Journal de Développement - Baobab Automata
 
+## 2025-01-27 16:45 - Réorganisation de l'Architecture du Projet
+
+### Description de la modification
+Réorganisation complète de l'architecture des dossiers `src/` et `tests/` pour améliorer la structure et la maintenabilité du projet. Cette réorganisation inclut :
+- Restructuration du dossier `src/baobab_automata/` avec des dossiers caractéristiques :
+  - `core/` - Interfaces et implémentations de base (interfaces, implementations)
+  - `automata/` - Implémentations des automates (finite, pushdown, turing)
+  - `algorithms/` - Algorithmes de conversion, optimisation et spécialisés
+  - `exceptions/` - Toutes les exceptions
+  - `utils/` - Utilitaires
+  - `visualization/` - Visualisation
+- Réorganisation du dossier `tests/` pour suivre la même arborescence que `src/`
+- Correction de tous les imports dans les fichiers `src/` et `tests/`
+- Résolution des imports circulaires dans les modules d'algorithmes
+- Vérification de l'absence de régression par exécution des tests
+
+### Justification
+Cette réorganisation était nécessaire pour améliorer la structure du projet et faciliter la maintenance. L'ancienne structure avait des dossiers peu organisés avec des fichiers mélangés, ce qui rendait difficile la navigation et la compréhension de l'architecture. La nouvelle structure suit une logique claire : séparation des interfaces/implémentations de base, regroupement des automates par type, et organisation des algorithmes par catégorie.
+
+### Méthode
+1. **Analyse de la structure actuelle** : Identification des fichiers et de leur organisation dans `src/` et `tests/`
+2. **Création de la nouvelle architecture** :
+   - Création des dossiers `core/`, `automata/`, `algorithms/` avec leurs sous-dossiers
+   - Déplacement des fichiers vers leur nouveau emplacement logique
+3. **Correction des imports** :
+   - Mise à jour des imports relatifs dans tous les fichiers `src/`
+   - Création d'un script Python pour corriger automatiquement les imports dans `tests/`
+   - Résolution des imports circulaires en modifiant les fichiers `__init__.py`
+4. **Vérification de la qualité** :
+   - Exécution des tests pour vérifier l'absence de régression
+   - Installation du package en mode développement pour tester les imports
+   - Validation que tous les tests passent correctement
+
+### Résultats
+- **Structure claire et logique** : Organisation en dossiers caractéristiques facilitant la navigation
+- **Imports corrigés** : 66 fichiers de tests corrigés automatiquement, tous les imports `src/` mis à jour
+- **Absence de régression** : Tous les tests passent (State: 16/16, DFA: 27/27, DPDA: 31/31, TM: 25/25)
+- **Résolution des imports circulaires** : Modification des fichiers `__init__.py` pour éviter les imports circulaires
+- **Maintenabilité améliorée** : Structure plus claire facilitant la maintenance et l'évolution du projet
+- **Cohérence** : Les dossiers `tests/` suivent exactement la même arborescence que `src/`
+
 ## 2025-10-02 14:00 - Implémentation de l'Analyse de Complexité des Machines de Turing (Phase 004.006)
 
 ### Description de la modification

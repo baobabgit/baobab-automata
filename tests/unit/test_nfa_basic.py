@@ -1,7 +1,7 @@
 """Tests unitaires basiques pour la classe NFA."""
 
 import pytest
-from baobab_automata.finite.nfa import NFA
+from baobab_automata.automata.finite.nfa import NFA
 
 
 @pytest.mark.unit

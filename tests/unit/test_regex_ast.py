@@ -1,7 +1,7 @@
 """Tests unitaires pour les classes regex_ast."""
 
 import pytest
-from baobab_automata.finite.regex_ast import ASTNode, NodeType
+from baobab_automata.automata.finite.regex_ast import ASTNode, NodeType
 
 
 @pytest.mark.unit

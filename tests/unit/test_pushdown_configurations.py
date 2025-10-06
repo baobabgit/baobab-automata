@@ -1,9 +1,9 @@
 """Tests pour les configurations pushdown."""
 
 import pytest
-from baobab_automata.pushdown.dpda_configuration import DPDAConfiguration
-from baobab_automata.pushdown.npda_configuration import NPDAConfiguration
-from baobab_automata.pushdown.pda_configuration import PDAConfiguration
+from baobab_automata.automata.pushdown.dpda_configuration import DPDAConfiguration
+from baobab_automata.automata.pushdown.npda_configuration import NPDAConfiguration
+from baobab_automata.automata.pushdown.pda_configuration import PDAConfiguration
 
 
 @pytest.mark.unit

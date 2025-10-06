@@ -10,15 +10,15 @@ __author__ = "Baobab Automata Team"
 __email__ = "team@baobab-automata.dev"
 
 # Imports des interfaces principales
-from .interfaces.state import IState, StateType
-from .interfaces.transition import ITransition, TransitionType
-from .interfaces.automaton import IAutomaton, AutomatonType
-from .interfaces.recognizer import IRecognizer
-from .interfaces.converter import IConverter
+from .core.interfaces.state import IState, StateType
+from .core.interfaces.transition import ITransition, TransitionType
+from .core.interfaces.automaton import IAutomaton, AutomatonType
+from .core.interfaces.recognizer import IRecognizer
+from .core.interfaces.converter import IConverter
 
 # Imports des implémentations concrètes
-from .implementations.state import State
-from .implementations.transition import Transition
+from .core.implementations.state import State
+from .core.implementations.transition import Transition
 
 # Imports des exceptions
 from .exceptions import (

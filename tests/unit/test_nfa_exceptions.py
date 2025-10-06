@@ -1,7 +1,7 @@
 """Tests unitaires pour les exceptions NFA."""
 
 import pytest
-from baobab_automata.finite.nfa_exceptions import (
+from baobab_automata.automata.finite.nfa_exceptions import (
     NFAError,
     InvalidNFAError,
     InvalidTransitionError,

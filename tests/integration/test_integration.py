@@ -1,9 +1,9 @@
 """Tests d'intégration pour les workflows complets."""
 
 import pytest
-from baobab_automata.finite.dfa import DFA
-from baobab_automata.finite.epsilon_nfa import EpsilonNFA
-from baobab_automata.finite.dfa_exceptions import InvalidDFAError
+from baobab_automata.automata.finite.dfa import DFA
+from baobab_automata.automata.finite.epsilon_nfa import EpsilonNFA
+from baobab_automata.automata.finite.dfa_exceptions import InvalidDFAError
 
 
 @pytest.mark.integration
